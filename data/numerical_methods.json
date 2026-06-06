@@ -1,0 +1,267 @@
+{
+  "methods": [
+    {
+      "id": "dichotomie",
+      "name": "Méthode de Dichotomie",
+      "slug": "dichotomie",
+      "category": "resolution",
+      "objectif": "Trouver la racine x* d'une fonction f(x) = 0 dans un intervalle [a, b].",
+      "principe": "La méthode consiste à rétrécir progressivement l'intervalle [a, b] jusqu'à faire confondre a et b, donc a = b = x*. On coupe l'intervalle en deux à chaque étape et on garde la moitié qui contient la racine.",
+      "hypotheses": [
+        "f est continue sur [a, b]",
+        "f(a) × f(b) < 0 (f change de signe sur [a, b])",
+        "Si f est monotone sur [a, b], la racine est unique"
+      ],
+      "avantages": [
+        "Méthode simple et robuste",
+        "Convergence garantie si les hypothèses sont vérifiées",
+        "Facile à implémenter"
+      ],
+      "limites": [
+        "Convergence lente (linéaire)",
+        "Nécessite de connaître un intervalle [a, b] contenant la racine",
+        "Nécessite que f change de signe sur [a, b]"
+      ],
+      "demonstration": {
+        "titre": "D'où vient la méthode ?",
+        "etapes": [
+          "On sait que f(a) × f(b) < 0, donc il existe x* ∈ [a, b] tel que f(x*) = 0 (théorème des valeurs intermédiaires).",
+          "On calcule le milieu c = (a + b) / 2 de l'intervalle.",
+          "On calcule f(c). Deux cas :",
+          "• Si f(a) × f(c) < 0 : la racine est dans [a, c] → on pose b = c",
+          "• Sinon : la racine est dans [c, b] → on pose a = c",
+          "On répète jusqu'à ce que |a - b| < ε (précision souhaitée).",
+          "À chaque étape, l'intervalle est divisé par 2 : après n étapes, sa largeur est (b-a)/2ⁿ."
+        ],
+        "formule": "c = (a + b) / 2",
+        "critere_arret": "|a - b| < ε"
+      },
+      "algorithme": {
+        "etapes": [
+          "Étape 1 : Choisir [a, b] tel que f(a) × f(b) < 0. Choisir ε.",
+          "Étape 2 : Calculer c = (a + b) / 2",
+          "Étape 3 : Si f(a) × f(c) < 0, remplacer b par c. Sinon, remplacer a par c.",
+          "Étape 4 : Si |a - b| < ε, afficher x* = (a+b)/2. Sinon, retourner à l'étape 2."
+        ],
+        "pseudocode": "Algorithme Dichotomie\nVariables a, b, c, ya, yb, yc, e : Réels\nDébut\n  Lire(a, b, e)\n  ya = f(a)\n  yb = f(b)\n  tantque abs(a - b) > e faire\n    c = (a + b) / 2\n    yc = f(c)\n    si ya * yc < 0 alors\n      b = c\n      yb = yc\n    sinon\n      a = c\n      ya = yc\n    finsi\n  fintantque\n  Ecrire('Racine x = ', (a+b)/2)\nFin",
+        "matlab": "a = 0;\nb = 1;\ne = 0.0000000001;\nya = exp(a) + 3*a - 2;\nyb = exp(b) + 3*b - 2;\nwhile abs(a-b) > e\n  c = (a+b)/2;\n  yc = exp(c) + 3*c - 2;\n  if ya*yc < 0\n    b = c;\n  else\n    a = c;\n    ya = exp(a) + 3*a - 2;\n  end\nend\nfprintf('racine x=%f\\n', c);"
+      },
+      "exercice": {
+        "enonce": "Trouver la racine de f(x) = eˣ + 3x − 2 dans l'intervalle [0, 1] avec ε = 10⁻¹⁰.",
+        "solution_approx": "x ≈ 0.4428544"
+      },
+      "tableau_iterations": {
+        "colonnes": ["Itération", "a", "b", "c = (a+b)/2", "f(c)", "|a-b|"]
+      }
+    },
+    {
+      "id": "newton",
+      "name": "Méthode de Newton",
+      "slug": "newton",
+      "category": "resolution",
+      "objectif": "Trouver numériquement une approximation précise d'un zéro (racine) d'une fonction réelle f(x).",
+      "principe": "On approche la fonction par sa tangente en un point x₀ proche de la racine, puis on calcule où cette tangente croise l'axe des x. Ce point devient la nouvelle approximation.",
+      "hypotheses": [
+        "f est dérivable sur l'intervalle considéré",
+        "f'(x) ≠ 0 au voisinage de la racine",
+        "x₀ est choisi suffisamment proche de la racine"
+      ],
+      "avantages": [
+        "Convergence quadratique (très rapide)",
+        "Peu d'itérations nécessaires"
+      ],
+      "limites": [
+        "Nécessite de calculer la dérivée f'(x)",
+        "Peut diverger si x₀ est mal choisi",
+        "Problème si f'(xₙ) = 0"
+      ],
+      "demonstration": {
+        "titre": "D'où vient la formule de Newton ?",
+        "etapes": [
+          "On part d'un point x₀ proche de la racine.",
+          "On approche f au premier ordre (développement de Taylor) : f(x) ≈ f(x₀) + f'(x₀)(x − x₀)",
+          "Pour trouver le zéro de cette approximation affine, on pose f(x) = 0 :",
+          "0 = f(x₀) + f'(x₀)(x − x₀)",
+          "On résout pour x : x = x₀ − f(x₀)/f'(x₀)",
+          "Ce point x₁ est en général plus proche de la racine que x₀.",
+          "On répète l'opération : x₂, x₃, ... convergent vers la racine."
+        ],
+        "formule": "xₙ₊₁ = xₙ − f(xₙ) / f'(xₙ)",
+        "critere_arret": "|xₙ₊₁ − xₙ| < ε"
+      },
+      "algorithme": {
+        "etapes": [
+          "Étape 1 : Choisir x₀ et calculer f(x₀) et f'(x₀)",
+          "Étape 2 : Calculer x₁ = x₀ − [f(x₀) / f'(x₀)]",
+          "Étape 3 : Calculer |x₁ − x₀|",
+          "Si |x₁ − x₀| < ε : afficher x₁ (racine trouvée)",
+          "Sinon : remplacer x₀ par x₁ et retourner à l'étape 1"
+        ],
+        "pseudocode": "Algorithme Newton\nVariables x0, x1, y, yp, e : Réels\nDébut\n  Lire(x0, e)\n  y = f(x0)\n  yp = f'(x0)\n  x1 = x0 - y/yp\n  tantque abs(x1 - x0) > e faire\n    x0 = x1\n    y = f(x0)\n    yp = f'(x0)\n    x1 = x0 - y/yp\n  fintantque\n  Ecrire('Racine x = ', x1)\nFin",
+        "matlab": "x0 = 0.5;\ne = 0.0000000001;\ny = cos(x0) - x0^3;\nyp = -sin(x0) - 3*x0^2;\nx1 = x0 - y/yp;\nwhile abs(x1-x0) > e\n  x0 = x1;\n  y = cos(x0) - x0^3;\n  yp = -sin(x0) - 3*x0^2;\n  x1 = x0 - y/yp;\nend\nfprintf('racine x=%f\\n', x1);"
+      },
+      "exercice": {
+        "enonce": "Trouver la racine de f(x) = cos(x) − x³ avec x₀ = 0.5 et ε = 10⁻¹⁰.",
+        "derivee": "f'(x) = −sin(x) − 3x²",
+        "solution_approx": "x ≈ 0.8654740"
+      },
+      "tableau_iterations": {
+        "colonnes": ["Itération n", "xₙ", "f(xₙ)", "f'(xₙ)", "xₙ₊₁", "|xₙ₊₁ − xₙ|"]
+      }
+    },
+    {
+      "id": "rectangles",
+      "name": "Méthode des Rectangles",
+      "slug": "rectangles",
+      "category": "integration",
+      "objectif": "Calculer une approximation de l'intégrale I(f) = ∫ᵃᵇ f(x) dx.",
+      "principe": "On subdivise l'intervalle [a, b] en M sous-intervalles égaux, puis on approxime l'intégrale sur chaque sous-intervalle par l'aire d'un rectangle.",
+      "hypotheses": [
+        "f est continue sur [a, b]",
+        "M est le nombre de sous-intervalles (M > 0)"
+      ],
+      "avantages": [
+        "Simple à comprendre et implémenter",
+        "Rapide à calculer"
+      ],
+      "limites": [
+        "Précision faible pour M petit",
+        "Erreur d'ordre 1 (méthode du 1er ordre)"
+      ],
+      "demonstration": {
+        "titre": "D'où vient la formule ?",
+        "etapes": [
+          "On veut calculer I(f) = ∫ᵃᵇ f(x) dx.",
+          "On divise [a, b] en M sous-intervalles Iₖ = [xₖ₋₁, xₖ] avec xₖ = a + k·H et H = (b−a)/M.",
+          "Sur chaque Iₖ, on remplace la courbe f par un polynôme de degré 0 (constante) : une droite horizontale.",
+          "Trois choix possibles : rectangle à gauche, à droite, ou du point milieu.",
+          "On fait la somme de toutes les aires de rectangles."
+        ],
+        "formules": {
+          "gauche": "I(f) = H × Σₖ₌₁ᴹ f(xₖ)",
+          "droite": "I(f) = H × Σₖ₌₁ᴹ f(xₖ₋₁)",
+          "milieu": "I(f) = H × Σₖ₌₁ᴹ f((xₖ₋₁ + xₖ)/2)"
+        },
+        "H_formule": "H = (b − a) / M"
+      },
+      "algorithme": {
+        "etapes": [
+          "Étape 1 : Choisir f, [a, b] et M (nombre de sous-intervalles).",
+          "Étape 2 : Calculer H = (b−a)/M (largeur de chaque rectangle).",
+          "Étape 3 : I = 0, x₀ = a.",
+          "Étape 4 : Pour k = 1 à M :",
+          "  S = H × f(xₖ)  (rectangle à gauche)",
+          "  ou S = H × f(xₖ₋₁)  (rectangle à droite)",
+          "  ou S = H × f((xₖ₋₁+xₖ)/2)  (point milieu)",
+          "  I = I + S",
+          "Étape 5 : Afficher I."
+        ],
+        "pseudocode": "Algorithme Rectangles\nVariables a, b, H, I, S, x : Réels\nVariables M, k : Entiers\nDébut\n  Lire(a, b, M)\n  H = (b - a) / M\n  I = 0\n  x = a\n  pour k de 1 à M par 1 faire\n    S = H * f(x)\n    I = I + S\n    x = x + H\n  finpour\n  Ecrire('Intégrale ≈ ', I)\nFin",
+        "matlab": "a = 0; b = 1; M = 100;\nH = (b-a)/M;\nI = 0;\nfor k = 1:M\n  x = a + (k-1)*H;\n  I = I + H*f(x);\nend\ndisp(['I = ', num2str(I)]);"
+      },
+      "tableau_iterations": {
+        "colonnes": ["k", "xₖ₋₁", "xₖ", "f(xₖ)", "S = H×f(xₖ)", "I cumulé"]
+      }
+    },
+    {
+      "id": "trapezes",
+      "name": "Méthode des Trapèzes",
+      "slug": "trapezes",
+      "category": "integration",
+      "objectif": "Calculer une approximation de l'intégrale I(f) = ∫ᵃᵇ f(x) dx avec une meilleure précision que la méthode des rectangles.",
+      "principe": "On remplace la courbe f sur chaque sous-intervalle [xₖ₋₁, xₖ] par le polynôme de degré 1 (droite) interpolant f en xₖ₋₁ et xₖ. Les rectangles sont remplacés par des trapèzes.",
+      "hypotheses": [
+        "f est continue sur [a, b]",
+        "M est le nombre de sous-intervalles"
+      ],
+      "avantages": [
+        "Plus précise que la méthode des rectangles",
+        "Erreur d'ordre 2"
+      ],
+      "limites": [
+        "Moins précise que Simpson",
+        "Peut sous-estimer ou surestimer selon la convexité de f"
+      ],
+      "demonstration": {
+        "titre": "D'où vient la formule des trapèzes ?",
+        "etapes": [
+          "Sur chaque Iₖ = [xₖ₋₁, xₖ], on remplace f par la droite passant par (xₖ₋₁, f(xₖ₋₁)) et (xₖ, f(xₖ)).",
+          "L'intégrale de la droite sur Iₖ est l'aire d'un trapèze de bases f(xₖ₋₁) et f(xₖ) et de hauteur H.",
+          "Aire du trapèze = H × [f(xₖ₋₁) + f(xₖ)] / 2",
+          "En sommant sur tous les sous-intervalles, les termes intérieurs apparaissent deux fois.",
+          "On obtient la formule simplifiée."
+        ],
+        "formule": "I(f) = (H/2) × [f(a) + f(b)] + H × Σₖ₌₁ᴹ⁻¹ f(xₖ)",
+        "formule_detail": "I(f) = (H/2) × Σₖ₌₁ᴹ [f(xₖ₋₁) + f(xₖ)]",
+        "H_formule": "H = (b − a) / M"
+      },
+      "algorithme": {
+        "etapes": [
+          "Étape 1 : Choisir f, [a, b] et M.",
+          "Étape 2 : Calculer H = (b−a)/M.",
+          "Étape 3 : I = 0, x₀ = a.",
+          "Étape 4 : Pour k = 1 à M−1 : I = I + H×f(xₖ)",
+          "Étape 5 : I = I + H×[f(a)+f(b)]/2",
+          "Étape 6 : Afficher I."
+        ],
+        "pseudocode": "Algorithme Trapezes\nVariables a, b, H, I : Réels\nVariables M, k : Entiers\nDébut\n  Lire(a, b, M)\n  H = (b - a) / M\n  I = 0\n  pour k de 1 à M-1 par 1 faire\n    I = I + H * f(a + k*H)\n  finpour\n  I = I + H * (f(a) + f(b)) / 2\n  Ecrire('Intégrale ≈ ', I)\nFin",
+        "matlab": "a = 0; b = 1; M = 100;\nH = (b-a)/M;\nI = 0;\nfor k = 1:M-1\n  I = I + H*f(a + k*H);\nend\nI = I + H*(f(a)+f(b))/2;\ndisp(['I = ', num2str(I)]);"
+      },
+      "tableau_iterations": {
+        "colonnes": ["k", "xₖ", "f(xₖ)", "Contribution trapèze", "I cumulé"]
+      }
+    },
+    {
+      "id": "simpson",
+      "name": "Méthode de Simpson",
+      "slug": "simpson",
+      "category": "integration",
+      "objectif": "Calculer une approximation très précise de l'intégrale I(f) = ∫ᵃᵇ f(x) dx.",
+      "principe": "On remplace f sur chaque sous-intervalle par le polynôme d'interpolation de degré 2 (parabole) aux noeuds xₖ₋₁, x̄ₖ = (xₖ₋₁+xₖ)/2 et xₖ.",
+      "hypotheses": [
+        "f est continue (et de préférence dérivable 4 fois) sur [a, b]",
+        "M est le nombre de sous-intervalles"
+      ],
+      "avantages": [
+        "Très bonne précision — erreur d'ordre 4",
+        "Converge rapidement avec peu de sous-intervalles"
+      ],
+      "limites": [
+        "Légèrement plus complexe à implémenter",
+        "Nécessite de calculer les points milieux"
+      ],
+      "demonstration": {
+        "titre": "D'où vient la formule de Simpson ?",
+        "etapes": [
+          "On prend 3 points sur [xₖ₋₁, xₖ] : xₖ₋₁, le milieu x̄ₖ = (xₖ₋₁+xₖ)/2, et xₖ.",
+          "On construit la parabole (polynôme de degré 2) passant par ces 3 points.",
+          "On intègre cette parabole analytiquement sur [xₖ₋₁, xₖ].",
+          "La formule de quadrature de Simpson donne :",
+          "∫ f dx ≈ (H/6) × [f(xₖ₋₁) + 4f(x̄ₖ) + f(xₖ)]",
+          "Le coefficient 4 au milieu vient de la pondération de la parabole.",
+          "On somme sur tous les M sous-intervalles."
+        ],
+        "formule": "I(f) = (H/6) × Σₖ₌₁ᴹ [f(xₖ₋₁) + 4f(x̄ₖ) + f(xₖ)]",
+        "x_barre": "x̄ₖ = (xₖ₋₁ + xₖ) / 2",
+        "H_formule": "H = (b − a) / M"
+      },
+      "algorithme": {
+        "etapes": [
+          "Étape 1 : Choisir f, [a, b] et M.",
+          "Étape 2 : Calculer H = (b−a)/M.",
+          "Étape 3 : I = 0, x₀ = a.",
+          "Étape 4 : Pour k = 1 à M :",
+          "  x̄ = (xₖ₋₁ + xₖ) / 2",
+          "  S = [f(xₖ₋₁) + 4×f(x̄) + f(xₖ)] × H/6",
+          "  I = I + S",
+          "Étape 5 : Afficher I."
+        ],
+        "pseudocode": "Algorithme Simpson\nVariables a, b, H, I, S, xk, xbar : Réels\nVariables M, k : Entiers\nDébut\n  Lire(a, b, M)\n  H = (b - a) / M\n  I = 0\n  pour k de 1 à M par 1 faire\n    xk = a + k*H\n    xbar = (a + (k-1)*H + xk) / 2\n    S = (f(a+(k-1)*H) + 4*f(xbar) + f(xk)) * H/6\n    I = I + S\n  finpour\n  Ecrire('Intégrale ≈ ', I)\nFin",
+        "matlab": "a = 0; b = 1; M = 100;\nH = (b-a)/M;\nI = 0;\nfor k = 1:M\n  xk = a + k*H;\n  xbar = (a + (k-1)*H + xk)/2;\n  S = (f(a+(k-1)*H) + 4*f(xbar) + f(xk))*H/6;\n  I = I + S;\nend\ndisp(['I = ', num2str(I)]);"
+      },
+      "tableau_iterations": {
+        "colonnes": ["k", "xₖ₋₁", "x̄ₖ", "xₖ", "f(xₖ₋₁)", "4f(x̄ₖ)", "f(xₖ)", "S=(H/6)×[...]", "I cumulé"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,284 @@
+{
+  "algorithmique": {
+    "title": "Algorithmique et Organigrammes",
+    "description": "Concepts fondamentaux de l'algorithmique selon le cours S3 - Université d'Antananarivo",
+    "chapters": [
+      {
+        "id": "intro",
+        "title": "I. Introduction à l'Algorithmique",
+        "content": "L'algorithmique est la science des algorithmes utilisés notamment en informatique. Elle consiste en la conception et la rédaction d'algorithmes.\n\nLe mot « algorithme » vient du nom du mathématicien Al Khuwarizmi (latinisé au Moyen Âge en Algoritmi), qui a écrit le premier ouvrage systématique donnant des solutions aux équations linéaires et quadratiques.",
+        "definition": "Un algorithme est une suite finie et non-ambiguë d'instructions permettant de donner la réponse à un problème. Il énonce une résolution sous la forme d'une série d'opérations à effectuer.",
+        "properties": [
+          "Il est fini et se termine après un nombre fini d'opérations",
+          "Il est défini sans ambiguïté",
+          "Il manipule des objets qui sont définis de façon précise",
+          "Il doit avoir au moins un résultat"
+        ],
+        "example": {
+          "title": "Calcul de la surface d'un disque",
+          "code": "Algorithme Surface\nVariables R, S : Réels\nDébut\n  Ecrire('entrer le rayon du disque R')\n  Lire(R)\n  S = π * R²\n  Ecrire(S)\nFin"
+        }
+      },
+      {
+        "id": "si-alors",
+        "title": "III-1. Structure SI ... ALORS ... SINON",
+        "content": "Il s'agit de l'instruction de base pour faire un choix entre deux possibilités selon qu'une condition est vraie ou fausse.",
+        "syntax": "si expression vraie alors\n    Bloc 1 d'instructions\nsinon\n    Bloc 2 d'instructions\nfinsi",
+        "example": {
+          "title": "Vérification du rayon",
+          "code": "si R > 0 alors\n    S = π * R²\n    Ecrire(S)\nsinon\n    Ecrire('Erreur : rayon négatif')\nfinsi"
+        },
+        "exercice": {
+          "enonce": "Écrire un algorithme qui lit un nombre et affiche s'il est positif ou négatif.",
+          "solution": "Variables n : Réel\nDébut\n  Lire(n)\n  si n >= 0 alors\n    Ecrire('positif')\n  sinon\n    Ecrire('négatif')\n  finsi\nFin"
+        }
+      },
+      {
+        "id": "selon",
+        "title": "III-2. Structure SELON (choix multiples)",
+        "content": "La structure SI...ALORS...SINON permet un choix parmi deux possibilités. Quand le nombre de cas augmente, on utilise la structure SELON qui permet de comparer une variable avec une série de valeurs.",
+        "syntax": "selon variable\n    C1 : BLOC 1 D'INSTRUCTIONS\n    C2 : BLOC 2 D'INSTRUCTIONS\n    C3 : BLOC 3 D'INSTRUCTIONS\n    ...\n    Cn : BLOC n D'INSTRUCTIONS\nsinon\n    BLOC n+1 D'INSTRUCTIONS\nfinselon",
+        "example": {
+          "title": "Jour de la semaine",
+          "code": "selon jour\n    1 : Ecrire('Lundi')\n    2 : Ecrire('Mardi')\n    3 : Ecrire('Mercredi')\n    4 : Ecrire('Jeudi')\n    5 : Ecrire('Vendredi')\nsinon\n    Ecrire('Week-end')\nfinselon"
+        }
+      },
+      {
+        "id": "tantque",
+        "title": "III-3. La boucle TANTQUE",
+        "content": "La boucle TANTQUE exécute un bloc d'instructions tant qu'une condition est vraie. La condition est testée AVANT d'entrer dans la boucle — si elle est fausse dès le départ, le bloc n'est jamais exécuté.",
+        "syntax": "tantque condition est vraie faire\n    BLOC D'INSTRUCTIONS\nfintantque",
+        "example": {
+          "title": "Afficher les nombres de 1 à 5",
+          "code": "Variables i : Entier\nDébut\n  i = 1\n  tantque i <= 5 faire\n    Ecrire(i)\n    i = i + 1\n  fintantque\nFin"
+        },
+        "note": "La condition est vérifiée AVANT chaque itération. Si elle est fausse au départ, le bloc ne s'exécute jamais."
+      },
+      {
+        "id": "repeter",
+        "title": "III-4. La boucle REPETER ... JUSQUA",
+        "content": "La boucle REPETER exécute un bloc d'instructions, puis teste la condition. Le bloc est donc exécuté AU MOINS UNE FOIS, contrairement à la boucle TANTQUE.",
+        "syntax": "repeter\n    BLOC D'INSTRUCTIONS\njusqua condition est vraie",
+        "example": {
+          "title": "Saisie d'un nombre positif",
+          "code": "Variables n : Entier\nDébut\n  repeter\n    Ecrire('Entrer un nombre positif')\n    Lire(n)\n  jusqua n > 0\nFin"
+        },
+        "note": "Le bloc s'exécute TOUJOURS au moins une fois car la condition est vérifiée après."
+      },
+      {
+        "id": "pour",
+        "title": "III-5. L'instruction POUR",
+        "content": "La boucle POUR est utilisée quand on connaît à l'avance le nombre d'itérations. Un compteur part d'une valeur initiale, s'incrémente d'un pas et s'arrête quand il dépasse la valeur finale.",
+        "syntax": "pour compteur de initiale à finale par pas faire\n    Bloc d'instructions\nfinpour",
+        "example": {
+          "title": "Calcul de n!",
+          "code": "Algorithme Factoriel\nVariables n, f, i : Entiers\nDébut\n  Lire(n)\n  f = 1\n  pour i de 2 à n par 1 faire\n    f = f * i\n  finpour\n  Ecrire(f)\nFin"
+        }
+      }
+    ],
+    "exercices_cours": [
+      {
+        "id": 1,
+        "enonce": "Écrire un algorithme et faire un organigramme pour trouver le plus grand parmi trois nombres a, b, c.",
+        "solution": "Algorithme Plus_Grand_Nombre\nVariables a, b, c, Max : Réels\nDébut\n  Ecrire('Entrer a, b, c')\n  Lire(a)\n  Lire(b)\n  Lire(c)\n  Si a > b alors\n    Max = a\n  Sinon\n    Max = b\n  finsi\n  Si c > Max alors\n    Max = c\n  finsi\n  Ecrire(Max)\nFin"
+      },
+      {
+        "id": 2,
+        "enonce": "Écrire un algorithme et faire un organigramme pour calculer n!",
+        "solution": "Algorithme Factoriel\nVariables n, f, i : Entiers\nDébut\n  Lire(n)\n  f = 1\n  pour i de 2 à n par 1 faire\n    f = f * i\n  finpour\n  Ecrire(f)\nFin"
+      },
+      {
+        "id": 3,
+        "enonce": "Écrire un algorithme et faire un organigramme pour calculer C(n,k).",
+        "solution": "Algorithme Combinaison\nVariable n, k, nf, kf, nkf, C : Entiers\nDébut\n  Lire(n, k)\n  nf = Factoriel(n)\n  kf = Factoriel(k)\n  nkf = Factoriel(n-k)\n  C = nf / (kf * nkf)\n  Ecrire(C)\nFin"
+      },
+      {
+        "id": 4,
+        "enonce": "Écrire un algorithme et faire un organigramme pour résoudre une équation du second degré (à solutions réelles).",
+        "solution": "Algorithme Resolution_2nd_degre\nVariables a, b, c, delta, x1, x2 : Réels\nDébut\n  Lire(a, b, c)\n  delta = b*b - 4*a*c\n  si delta < 0 alors\n    Ecrire('Pas de solution réelle')\n  sinon\n    si delta > 0 alors\n      x1 = (-b - sqrt(delta)) / (2*a)\n      x2 = (-b + sqrt(delta)) / (2*a)\n      Ecrire(x1, x2)\n    sinon\n      x1 = -b / (2*a)\n      Ecrire(x1)\n    finsi\n  finsi\nFin"
+      }
+    ]
+  },
+  "matlab": {
+    "title": "Premier pas avec MATLAB",
+    "description": "Introduction à MATLAB selon le cours S3 - Université d'Antananarivo",
+    "chapters": [
+      {
+        "id": "intro-matlab",
+        "title": "I. Introduction",
+        "content": "MATLAB, abréviation de MATrix LABoratory, est un logiciel développé par MathWorks sous Windows, Linux et Mac, dédié au calcul numérique.\n\nMATLAB est une application scientifique interactive orientée au calcul vectoriel et matriciel avec une puissante librairie de visualisation.",
+        "modes": [
+          "Mode interactif : MATLAB exécute les instructions au fur et à mesure qu'elles sont données par l'usager, comme pour les commandes DOS.",
+          "Mode exécutif : MATLAB exécute ligne par ligne un fichier .m (fichier dont l'extension est .m, et qui contient un code en MATLAB), comme pour un programme en C."
+        ]
+      },
+      {
+        "id": "variables-matlab",
+        "title": "II. Les variables en MATLAB",
+        "content": "MATLAB travaille essentiellement avec un seul type d'objet : les matrices de dimension m×n (m_lignes × n_colonnes).",
+        "types": [
+          { "nom": "Vecteur colonne (m×1)", "exemple": "vc = [1;2;3;4]" },
+          { "nom": "Vecteur ligne (1×n)", "exemple": "vl = [1 2 3 4]" },
+          { "nom": "Matrice (m×n)", "exemple": "m = [1 2 3; 4 5 6]" },
+          { "nom": "Scalaire (1×1)", "exemple": "s = 2" }
+        ],
+        "examples": [
+          {
+            "code": "vl = [1 2 3 4]",
+            "result": "vl =\n   1   2   3   4"
+          },
+          {
+            "code": "vc = [1;2;3;4]",
+            "result": "vc =\n   1\n   2\n   3\n   4"
+          },
+          {
+            "code": "m = [1 2 3; 4 5 6]",
+            "result": "m =\n   1   2   3\n   4   5   6"
+          }
+        ]
+      },
+      {
+        "id": "operateurs",
+        "title": "III. Les opérateurs mathématiques",
+        "sections": [
+          {
+            "titre": "III.1. Addition (+) et Soustraction (-)",
+            "contenu": "Pour des scalaires, opération habituelle. Pour des matrices, opération membre à membre — les dimensions doivent être identiques.",
+            "formule": "A+B = Aij+Bij   et   A-B = Aij-Bij"
+          },
+          {
+            "titre": "III.2. Multiplication (*) et Puissance (^)",
+            "contenu": "La multiplication matricielle suit les règles algébriques. Pour une multiplication élément par élément, utiliser .* — et .^ pour la puissance élément par élément.",
+            "formules": [
+              "A*B = somme_k(Aik * Bkj)  (multiplication matricielle)",
+              "A.*B = Aij * Bij  (membre à membre)",
+              "A.^B = Aij^Bij  (puissance membre à membre)"
+            ]
+          },
+          {
+            "titre": "III.3. Division (/ ou \\)",
+            "contenu": "Division à droite (/) et division à gauche (\\). Pour scalaires : a/b division normale, a\\b = b/a. Pour matrices : A/B = A*B⁻¹ et A\\B = A⁻¹*B."
+          },
+          {
+            "titre": "III.4. Fonctions mathématiques",
+            "fonctions": [
+              "log — logarithme naturel (base e)",
+              "log10 — logarithme base 10",
+              "sqrt — racine carrée",
+              "sin, cos, tan — fonctions trigonométriques",
+              "asin, acos, atan — fonctions inverses",
+              "exp — exponentielle",
+              "abs — valeur absolue",
+              "mod — modulo"
+            ]
+          }
+        ]
+      },
+      {
+        "id": "entree-sortie",
+        "title": "IV. Entrée / Sortie",
+        "sections": [
+          {
+            "titre": "IV.1. Entrée : fonction input",
+            "syntaxe": "NomDeVariable = input('message')",
+            "exemples": [
+              { "code": "Variable = input('Entrer la valeur : ');", "description": "Affiche le message et attend une saisie clavier" },
+              { "code": "n = input('n = ');", "description": "Stocke la valeur saisie dans n" }
+            ]
+          },
+          {
+            "titre": "IV.2. Sortie : fonction disp",
+            "syntaxe": "disp(NomDeVariable)",
+            "exemples": [
+              { "code": "disp(10);", "result": "10" },
+              { "code": "disp('nom et prénom');", "result": "nom et prénom" },
+              { "code": "disp([1 2 3]);", "result": "1   2   3" }
+            ],
+            "remarque": "La fonction num2str permet d'afficher une variable numérique à côté d'une chaîne de caractères.",
+            "exemple_num2str": {
+              "code": "age = 20;\nv = ['Votre age est : ', num2str(age)];\ndisp(v);",
+              "result": "Votre age est : 20"
+            }
+          }
+        ]
+      },
+      {
+        "id": "fichiers-m",
+        "title": "V. Les fichiers m (m files)",
+        "content": "Les commandes MATLAB peuvent être lancées depuis la Command Window. Le symbole '>>' indique qu'on peut taper une commande et le symbole ';' à la fin d'une commande indique que le résultat ne sera pas affiché.",
+        "types": [
+          {
+            "nom": "Script",
+            "description": "Regroupe des séries de commandes MATLAB. À son lancement, les instructions s'exécutent séquentiellement.",
+            "exemple": {
+              "fichier": "facto2.m",
+              "code": "n = input('Entrer un nombre entier positif n = ');\nf = fact2(n);\ndisp(['f = ', num2str(f)]);"
+            }
+          },
+          {
+            "nom": "Function",
+            "description": "Effectue des opérations à partir d'une ou plusieurs entrées et fournit une ou plusieurs sorties.",
+            "syntaxe": "[sortie1, sortie2, ...] = nomfonction(entree1, entree2, ...)",
+            "exemple": {
+              "fichier": "surfacevolume.m",
+              "code": "function [S, V] = surfacevolume(r)\n  S = 4*pi*r^2;\n  V = 4*pi*r^3/3;\n  disp(['Surface : ', num2str(S)]);\n  disp(['Volume : ', num2str(V)]);\nend"
+            },
+            "utilisation": ">> r = 10;\n>> [S, V] = surfacevolume(r);\nSurface : 1256.6371\nVolume : 4188.7902"
+          }
+        ]
+      },
+      {
+        "id": "structures-controle",
+        "title": "VI. Structures de contrôle",
+        "content": "Les structures de contrôle modifient la séquence d'exécution des instructions.",
+        "comparaison": [
+          {
+            "algorithme": "si expression alors\n  instructions\nfinsi",
+            "matlab": "if expression\n  instructions\nend"
+          },
+          {
+            "algorithme": "si expression alors\n  instructions 1\nsinon\n  instructions 2\nfinsi",
+            "matlab": "if expression\n  instructions 1\nelse\n  instructions 2\nend"
+          },
+          {
+            "algorithme": "selon variable\n  valeur1: instructions1\n  valeur2: instructions2\nsinon\n  instructions\nfinselon",
+            "matlab": "switch variable\n  case valeur1\n    instructions1\n  case valeur2\n    instructions2\n  otherwise\n    instructions\nend"
+          },
+          {
+            "algorithme": "tantque condition faire\n  instructions\nfintantque",
+            "matlab": "while condition\n  instructions\nend"
+          },
+          {
+            "algorithme": "pour variable de debut à fin par pas faire\n  instructions\nfinpour",
+            "matlab": "for variable = debut:pas:fin\n  instructions\nend"
+          }
+        ],
+        "exercices": [
+          {
+            "id": 1,
+            "enonce": "Calculer n! avec n=15",
+            "script": "facto2.m",
+            "code_script": "n = input('Entrer un nombre entier positif n = ');\nf = fact2(n);\ndisp(['f = ', num2str(f)]);",
+            "code_function": "function [f] = fact2(n)\n  if n <= 1\n    f = 1;\n  else\n    f = 1;\n    for ii = 2:n\n      f = f * ii;\n    end\n  end\nend"
+          },
+          {
+            "id": 2,
+            "enonce": "Calculer C(n,k) avec n=42 et k=6",
+            "code": "clear all;\nclc;\ndisp('Calcul de la combinaison Cnk, n doit être supérieur à k');\nn = input('n : ');\nk = input('k : ');\ncombin = fact2(n) / (fact2(k) * fact2(n-k));\ndisp(['Combinaison C', num2str(n), ',', num2str(k), ' : ', num2str(combin)]);"
+          },
+          {
+            "id": 3,
+            "enonce": "Résoudre une équation du 2nd degré (x²-4x+2=0)",
+            "code_script": "disp('Résolution d''une équation de 2nd degré de la forme ax2 + bx + c = 0');\na = input('a = ');\nb = input('b = ');\nc = input('c = ');\nd = delta(a, b, c);\nif d < 0\n  disp('pas de solution réelle');\nelseif d > 0\n  disp('deux racines distinctes');\n  x1 = (-b - sqrt(d)) / (2*a);\n  x2 = (-b + sqrt(d)) / (2*a);\n  disp(['x1 = ', num2str(x1)]);\n  disp(['x2 = ', num2str(x2)]);\nelse\n  disp('une racine double');\n  x1 = -b / (2*a);\n  disp(['x1 = x2 = ', num2str(x1)]);\nend",
+            "code_function": "function [d] = delta(a, b, c)\n  d = b^2 - 4*a*c;\nend"
+          },
+          {
+            "id": 4,
+            "enonce": "Trouver le plus grand parmi a=1.2, b=-14, c=130",
+            "code": "a = input('a = ');\nb = input('b = ');\nc = input('c = ');\nif a > b\n  maxabc = a;\nelse\n  maxabc = b;\nend\nif c > maxabc\n  maxabc = c;\nend\ndisp(['max entre a,b,c : ', num2str(maxabc)]);"
+          }
+        ]
+      }
+    ]
+  }
+}
