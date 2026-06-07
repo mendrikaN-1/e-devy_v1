@@ -5,500 +5,1745 @@
       "titre": "Surface d'un disque",
       "categorie": "Variables",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme qui lit le rayon R d'un disque et calcule sa surface S = π × R².",
-      "pseudocode": "Algorithme Surface\nVariables R, S : Réels\nDébut\n  Ecrire('Entrer le rayon R')\n  Lire(R)\n  S = 3.14159 * R * R\n  Ecrire('Surface =', S)\nFin",
-      "solution": "S = π × R². Pour R = 5 : S ≈ 78.54",
-      "explication": "On déclare deux variables réelles R et S. On lit R au clavier, on calcule S avec la formule, puis on affiche le résultat. C'est le premier exemple du cours."
+      "enonce": "Calculez la surface S d'un disque de rayon R. La formule est S = π × R².",
+      "entree": "R = 5",
+      "sortie_attendue": "78.54",
+      "variables_suggerees": ["R", "S"],
+      "pseudocode_solution": "Variables R, S : Réels\nDébut\n  Lire(R)\n  S = 3.14159 * R * R\n  Ecrire(S)\nFin",
+      "solution": "S = π × R² = 3.14159 × 5² = 78.54",
+      "explication": "On déclare R et S. On lit R, on applique la formule S = π×R² puis on affiche S.",
+      "tests": [
+        {"entree": "5", "sortie": "78.54"},
+        {"entree": "1", "sortie": "3.14"},
+        {"entree": "10", "sortie": "314.16"}
+      ]
     },
     {
       "id": 2,
       "titre": "Maximum de deux nombres",
       "categorie": "Conditions",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme qui lit deux nombres a et b et affiche le plus grand.",
-      "pseudocode": "Algorithme Maximum2\nVariables a, b : Réels\nDébut\n  Lire(a, b)\n  si a > b alors\n    Ecrire('Max =', a)\n  sinon\n    Ecrire('Max =', b)\n  finsi\nFin",
-      "solution": "On compare a et b avec SI...ALORS...SINON.",
-      "explication": "La structure SI...ALORS...SINON permet de faire un choix entre deux possibilités. Si a est supérieur à b, on affiche a. Sinon on affiche b."
+      "enonce": "Lisez deux nombres a et b. Affichez le plus grand des deux.",
+      "entree": "a = 7, b = 3",
+      "sortie_attendue": "7",
+      "variables_suggerees": ["a", "b"],
+      "pseudocode_solution": "Variables a, b : Réels\nDébut\n  Lire(a)\n  Lire(b)\n  Si a > b Alors\n    Ecrire(a)\n  Sinon\n    Ecrire(b)\n  FinSi\nFin",
+      "solution": "max(7,3) = 7",
+      "explication": "On compare a et b avec SI/SINON. Si a>b on affiche a, sinon b.",
+      "tests": [
+        {"entree": "7\n3", "sortie": "7"},
+        {"entree": "2\n9", "sortie": "9"},
+        {"entree": "5\n5", "sortie": "5"}
+      ]
     },
     {
       "id": 3,
       "titre": "Maximum de trois nombres",
       "categorie": "Conditions",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme pour trouver le plus grand parmi trois nombres a, b, c. (Exercice 1 du cours)",
-      "pseudocode": "Algorithme Plus_Grand_Nombre\nVariables a, b, c, Max : Réels\nDébut\n  Ecrire('Entrer a, b, c')\n  Lire(a)\n  Lire(b)\n  Lire(c)\n  si a > b alors\n    Max = a\n  sinon\n    Max = b\n  finsi\n  si c > Max alors\n    Max = c\n  finsi\n  Ecrire('Max =', Max)\nFin",
-      "solution": "On trouve d'abord le max entre a et b, puis on compare ce max avec c.",
-      "explication": "On utilise deux structures SI imbriquées. D'abord on compare a et b, le plus grand est mis dans Max. Ensuite on compare Max avec c pour voir si c est encore plus grand."
+      "enonce": "Lisez trois entiers a, b, c. Affichez le plus grand des trois. (Exercice 1 du cours S3)",
+      "entree": "a=12, b=7, c=19",
+      "sortie_attendue": "19",
+      "variables_suggerees": ["a", "b", "c", "max"],
+      "pseudocode_solution": "Variables a, b, c, max : Réels\nDébut\n  Lire(a, b, c)\n  Si a > b Alors\n    max <- a\n  Sinon\n    max <- b\n  FinSi\n  Si c > max Alors\n    max <- c\n  FinSi\n  Ecrire(max)\nFin",
+      "solution": "max(12,7,19) = 19",
+      "explication": "On trouve d'abord le max entre a et b, puis on le compare à c.",
+      "tests": [
+        {"entree": "12\n7\n19", "sortie": "19"},
+        {"entree": "1\n2\n3", "sortie": "3"},
+        {"entree": "9\n9\n1", "sortie": "9"}
+      ]
     },
     {
       "id": 4,
-      "titre": "Signe d'un nombre",
+      "titre": "Parité d'un nombre",
       "categorie": "Conditions",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme qui lit un nombre et affiche 'positif', 'négatif' ou 'nul'.",
-      "pseudocode": "Algorithme Signe\nVariables n : Réel\nDébut\n  Lire(n)\n  si n > 0 alors\n    Ecrire('positif')\n  sinon\n    si n < 0 alors\n      Ecrire('négatif')\n    sinon\n      Ecrire('nul')\n    finsi\n  finsi\nFin",
-      "solution": "Trois cas : n > 0, n < 0, n = 0.",
-      "explication": "On imbrique deux SI pour gérer trois cas. Le premier SI teste si n > 0. Si non, on rentre dans le SINON et on teste si n < 0. Si aucun des deux, n est forcément nul."
+      "enonce": "Lisez un entier n. Affichez 'pair' s'il est divisible par 2, 'impair' sinon.",
+      "entree": "n = 4",
+      "sortie_attendue": "pair",
+      "variables_suggerees": ["n"],
+      "pseudocode_solution": "Variables n : Entier\nDébut\n  Lire(n)\n  Si n mod 2 = 0 Alors\n    Ecrire('pair')\n  Sinon\n    Ecrire('impair')\n  FinSi\nFin",
+      "solution": "4 mod 2 = 0 → pair",
+      "explication": "Un nombre est pair si son reste par 2 (mod) est 0.",
+      "tests": [
+        {"entree": "4", "sortie": "pair"},
+        {"entree": "7", "sortie": "impair"},
+        {"entree": "0", "sortie": "pair"}
+      ]
     },
     {
       "id": 5,
       "titre": "Équation du second degré",
       "categorie": "Conditions",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme pour résoudre ax² + bx + c = 0. (Exercice 4 du cours)",
-      "pseudocode": "Algorithme Resolution_2nd_degre\nVariables a, b, c, delta, x1, x2 : Réels\nDébut\n  Lire(a, b, c)\n  delta = b*b - 4*a*c\n  si delta < 0 alors\n    Ecrire('Pas de solution réelle')\n  sinon\n    si delta > 0 alors\n      x1 = (-b - sqrt(delta)) / (2*a)\n      x2 = (-b + sqrt(delta)) / (2*a)\n      Ecrire(x1, x2)\n    sinon\n      x1 = -b / (2*a)\n      Ecrire(x1)\n    finsi\n  finsi\nFin",
-      "solution": "Pour x²-4x+2=0 : delta=8, x1≈0.586, x2≈3.414",
-      "explication": "On calcule le discriminant delta = b²-4ac. Trois cas : delta < 0 (pas de solution), delta > 0 (deux solutions), delta = 0 (une solution double)."
+      "enonce": "Résolvez ax²+bx+c=0. Affichez les racines réelles ou 'pas de solution reelle'. (Exercice 4 du cours S3)",
+      "entree": "a=1, b=-4, c=2",
+      "sortie_attendue": "x1=0.59 x2=3.41",
+      "variables_suggerees": ["a", "b", "c", "delta", "x1", "x2"],
+      "pseudocode_solution": "Variables a,b,c,delta,x1,x2 : Réels\nDébut\n  Lire(a,b,c)\n  delta <- b*b - 4*a*c\n  Si delta < 0 Alors\n    Ecrire('pas de solution reelle')\n  Sinon\n    Si delta > 0 Alors\n      x1 <- (-b - sqrt(delta))/(2*a)\n      x2 <- (-b + sqrt(delta))/(2*a)\n      Ecrire(x1, x2)\n    Sinon\n      x1 <- -b/(2*a)\n      Ecrire(x1)\n    FinSi\n  FinSi\nFin",
+      "solution": "delta=8 → x1≈0.59, x2≈3.41",
+      "explication": "On calcule le discriminant delta=b²-4ac. Selon son signe : pas de solution, deux solutions ou une racine double.",
+      "tests": [
+        {"entree": "1\n-4\n2", "sortie": "0.59 3.41"},
+        {"entree": "1\n0\n1", "sortie": "pas de solution reelle"},
+        {"entree": "1\n-2\n1", "sortie": "1"}
+      ]
     },
     {
       "id": 6,
-      "titre": "Compteur de 1 à n",
+      "titre": "Compteur de 1 à N",
       "categorie": "Boucles",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme qui affiche tous les entiers de 1 à n en utilisant la boucle TANTQUE.",
-      "pseudocode": "Algorithme Compteur\nVariables n, i : Entiers\nDébut\n  Lire(n)\n  i = 1\n  tantque i <= n faire\n    Ecrire(i)\n    i = i + 1\n  fintantque\nFin",
-      "solution": "Pour n=5 : affiche 1, 2, 3, 4, 5",
-      "explication": "On initialise i à 1. La boucle TANTQUE vérifie si i <= n. Si oui, on affiche i et on l'incrémente. La boucle s'arrête quand i > n."
+      "enonce": "Lisez un entier N. Affichez tous les entiers de 1 à N, un par ligne.",
+      "entree": "N = 5",
+      "sortie_attendue": "1\n2\n3\n4\n5",
+      "variables_suggerees": ["N", "i"],
+      "pseudocode_solution": "Variables N, i : Entiers\nDébut\n  Lire(N)\n  Pour i <- 1 à N\n    Ecrire(i)\n  FinPour\nFin",
+      "solution": "Boucle POUR de 1 à N",
+      "explication": "La boucle POUR itère i de 1 à N et affiche i à chaque étape.",
+      "tests": [
+        {"entree": "5", "sortie": "1\n2\n3\n4\n5"},
+        {"entree": "3", "sortie": "1\n2\n3"},
+        {"entree": "1", "sortie": "1"}
+      ]
     },
     {
       "id": 7,
-      "titre": "Factorielle n!",
+      "titre": "Factorielle",
       "categorie": "Boucles",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme pour calculer n! (Exercice 2 du cours)",
-      "pseudocode": "Algorithme Factoriel\nVariables n, f, i : Entiers\nDébut\n  Lire(n)\n  f = 1\n  pour i de 2 à n par 1 faire\n    f = f * i\n  finpour\n  Ecrire('n! =', f)\nFin",
-      "solution": "Pour n=5 : 5! = 1×2×3×4×5 = 120",
-      "explication": "On initialise f à 1 (car 0! = 1! = 1). Puis on multiplie f par chaque entier de 2 à n. La boucle POUR est parfaite ici car on connaît le nombre d'itérations à l'avance."
+      "enonce": "Calculez n! (factorielle de n). Exemple : 5! = 1×2×3×4×5 = 120. (Exercice 2 du cours S3)",
+      "entree": "n = 5",
+      "sortie_attendue": "120",
+      "variables_suggerees": ["n", "f", "i"],
+      "pseudocode_solution": "Variables n, f, i : Entiers\nDébut\n  Lire(n)\n  f <- 1\n  Pour i <- 2 à n\n    f <- f * i\n  FinPour\n  Ecrire(f)\nFin",
+      "solution": "5! = 120",
+      "explication": "On initialise f=1 et on multiplie par chaque entier de 2 à n.",
+      "tests": [
+        {"entree": "5", "sortie": "120"},
+        {"entree": "0", "sortie": "1"},
+        {"entree": "10", "sortie": "3628800"}
+      ]
     },
     {
       "id": 8,
       "titre": "Somme des entiers",
       "categorie": "Boucles",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme qui calcule la somme S = 1 + 2 + 3 + ... + n.",
-      "pseudocode": "Algorithme Somme\nVariables n, S, i : Entiers\nDébut\n  Lire(n)\n  S = 0\n  pour i de 1 à n par 1 faire\n    S = S + i\n  finpour\n  Ecrire('Somme =', S)\nFin",
-      "solution": "Pour n=5 : S = 1+2+3+4+5 = 15. Formule : S = n(n+1)/2",
-      "explication": "On initialise S à 0 (accumulateur). À chaque itération, on ajoute i à S. Ce principe d'accumulation est fondamental en algorithmique."
+      "enonce": "Lisez N. Calculez et affichez la somme S = 1 + 2 + ... + N.",
+      "entree": "N = 10",
+      "sortie_attendue": "55",
+      "variables_suggerees": ["N", "S", "i"],
+      "pseudocode_solution": "Variables N, S, i : Entiers\nDébut\n  Lire(N)\n  S <- 0\n  Pour i <- 1 à N\n    S <- S + i\n  FinPour\n  Ecrire(S)\nFin",
+      "solution": "S = N×(N+1)/2 = 55",
+      "explication": "Accumulateur S initialisé à 0. On y ajoute chaque i dans la boucle.",
+      "tests": [
+        {"entree": "10", "sortie": "55"},
+        {"entree": "1", "sortie": "1"},
+        {"entree": "100", "sortie": "5050"}
+      ]
     },
     {
       "id": 9,
       "titre": "Table de multiplication",
       "categorie": "Boucles",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme qui lit un entier n et affiche sa table de multiplication de 1 à 10.",
-      "pseudocode": "Algorithme Table\nVariables n, i : Entiers\nDébut\n  Lire(n)\n  pour i de 1 à 10 par 1 faire\n    Ecrire(n, '×', i, '=', n*i)\n  finpour\nFin",
-      "solution": "Pour n=3 : 3×1=3, 3×2=6, ..., 3×10=30",
-      "explication": "La boucle POUR itère i de 1 à 10. À chaque itération, on calcule et affiche n × i. Le compteur i joue le rôle du multiplicateur."
+      "enonce": "Lisez un entier n. Affichez sa table de multiplication de 1 à 10, sous la forme 'n x i = resultat'.",
+      "entree": "n = 3",
+      "sortie_attendue": "3 x 1 = 3\n3 x 2 = 6\n...\n3 x 10 = 30",
+      "variables_suggerees": ["n", "i"],
+      "pseudocode_solution": "Variables n, i : Entiers\nDébut\n  Lire(n)\n  Pour i <- 1 à 10\n    Ecrire(n, 'x', i, '=', n*i)\n  FinPour\nFin",
+      "solution": "Boucle de 1 à 10 affichant n×i",
+      "explication": "On fixe n et on multiplie par i qui varie de 1 à 10.",
+      "tests": [
+        {"entree": "3", "sortie": "3 x 1 = 3\n3 x 2 = 6\n3 x 3 = 9\n3 x 4 = 12\n3 x 5 = 15\n3 x 6 = 18\n3 x 7 = 21\n3 x 8 = 24\n3 x 9 = 27\n3 x 10 = 30"},
+        {"entree": "7", "sortie": "7 x 1 = 7\n7 x 2 = 14\n7 x 3 = 21\n7 x 4 = 28\n7 x 5 = 35\n7 x 6 = 42\n7 x 7 = 49\n7 x 8 = 56\n7 x 9 = 63\n7 x 10 = 70"}
+      ]
     },
     {
       "id": 10,
-      "titre": "Saisie avec validation REPETER",
+      "titre": "Nombres pairs de 1 à N",
       "categorie": "Boucles",
       "niveau": "Débutant",
-      "enonce": "Écrire un algorithme qui demande un entier positif à l'utilisateur et recommence tant que la saisie est incorrecte.",
-      "pseudocode": "Algorithme SaisieValide\nVariables n : Entier\nDébut\n  repeter\n    Ecrire('Entrer un entier positif')\n    Lire(n)\n  jusqua n > 0\n  Ecrire('Valeur acceptée :', n)\nFin",
-      "solution": "La boucle REPETER garantit une exécution au moins une fois.",
-      "explication": "La différence avec TANTQUE : REPETER exécute le bloc AVANT de tester la condition. Cela convient parfaitement pour la validation de saisie car on doit toujours demander au moins une fois."
+      "enonce": "Lisez N. Affichez tous les nombres pairs entre 1 et N inclus.",
+      "entree": "N = 10",
+      "sortie_attendue": "2\n4\n6\n8\n10",
+      "variables_suggerees": ["N", "i"],
+      "pseudocode_solution": "Variables N, i : Entiers\nDébut\n  Lire(N)\n  Pour i <- 2 à N par 2\n    Ecrire(i)\n  FinPour\nFin",
+      "solution": "Boucle avec pas de 2",
+      "explication": "On démarre à 2 et on avance de 2 en 2 — tous sont pairs.",
+      "tests": [
+        {"entree": "10", "sortie": "2\n4\n6\n8\n10"},
+        {"entree": "7", "sortie": "2\n4\n6"},
+        {"entree": "2", "sortie": "2"}
+      ]
     },
     {
       "id": 11,
       "titre": "Combinaison C(n,k)",
       "categorie": "Fonctions",
       "niveau": "Intermédiaire",
-      "enonce": "Écrire un algorithme qui calcule C(n,k) = n! / (k! × (n-k)!) en utilisant une fonction Factoriel. (Exercice 3 du cours)",
-      "pseudocode": "Algorithme Combinaison\nVariables n, k, C : Entiers\nDébut\n  Lire(n, k)\n  C = Factoriel(n) / (Factoriel(k) * Factoriel(n-k))\n  Ecrire('C(n,k) =', C)\nFin\n\nFonction Factoriel(n : Entier) : Entier\nVariables f, i : Entiers\nDébut\n  f = 1\n  pour i de 2 à n par 1 faire\n    f = f * i\n  finpour\n  Retourner f\nFin",
-      "solution": "C(5,2) = 5! / (2! × 3!) = 120 / (2×6) = 10",
-      "explication": "On utilise la réutilisabilité des fonctions. La fonction Factoriel est appelée 3 fois avec des arguments différents. C'est un exemple parfait de modularité."
+      "enonce": "Calculez C(n,k) = n! / (k! × (n-k)!). Utilisez une fonction Factorielle. (Exercice 3 du cours S3)",
+      "entree": "n=5, k=2",
+      "sortie_attendue": "10",
+      "variables_suggerees": ["n", "k", "C"],
+      "pseudocode_solution": "Fonction Factoriel(n) : Entier\n  f <- 1\n  Pour i <- 2 à n : f <- f*i\n  Retourner f\n\nDébut\n  Lire(n, k)\n  C <- Factoriel(n) / (Factoriel(k) * Factoriel(n-k))\n  Ecrire(C)\nFin",
+      "solution": "C(5,2) = 5!/(2!×3!) = 120/(2×6) = 10",
+      "explication": "On réutilise la fonction Factoriel trois fois avec n, k et n-k.",
+      "tests": [
+        {"entree": "5\n2", "sortie": "10"},
+        {"entree": "4\n0", "sortie": "1"},
+        {"entree": "42\n6", "sortie": "5245786"}
+      ]
     },
     {
       "id": 12,
-      "titre": "Nombres pairs entre 1 et n",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Écrire un algorithme qui affiche tous les nombres pairs entre 1 et n.",
-      "pseudocode": "Algorithme Pairs\nVariables n, i : Entiers\nDébut\n  Lire(n)\n  pour i de 2 à n par 2 faire\n    Ecrire(i)\n  finpour\nFin",
-      "solution": "Pour n=10 : 2, 4, 6, 8, 10",
-      "explication": "On utilise le paramètre PAS de la boucle POUR. En mettant un pas de 2, on saute directement d'un nombre pair au suivant. Cela évite d'utiliser un SI à l'intérieur de la boucle."
-    },
-    {
-      "id": 13,
-      "titre": "Somme des carrés",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Calculer S = 1² + 2² + 3² + ... + n².",
-      "pseudocode": "Algorithme SommeCarres\nVariables n, S, i : Entiers\nDébut\n  Lire(n)\n  S = 0\n  pour i de 1 à n par 1 faire\n    S = S + i * i\n  finpour\n  Ecrire('Somme des carrés =', S)\nFin",
-      "solution": "Pour n=4 : S = 1+4+9+16 = 30. Formule : n(n+1)(2n+1)/6",
-      "explication": "À chaque étape de la boucle, on ajoute i² à l'accumulateur S. On initialise S à 0 avant la boucle."
-    },
-    {
-      "id": 14,
-      "titre": "PGCD de deux entiers",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Calculer le PGCD de deux entiers a et b par l'algorithme d'Euclide.",
-      "pseudocode": "Algorithme PGCD\nVariables a, b, r : Entiers\nDébut\n  Lire(a, b)\n  tantque b != 0 faire\n    r = a mod b\n    a = b\n    b = r\n  fintantque\n  Ecrire('PGCD =', a)\nFin",
-      "solution": "PGCD(48, 18) = 6",
-      "explication": "L'algorithme d'Euclide remplace (a, b) par (b, a mod b) jusqu'à ce que b = 0. Quand b = 0, le PGCD est a. L'opérateur mod donne le reste de la division entière."
-    },
-    {
-      "id": 15,
-      "titre": "Vérification de palindrome",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Un nombre est palindrome s'il se lit de la même façon de gauche à droite et de droite à gauche. Ex: 121, 1331. Vérifier si un nombre entier est palindrome.",
-      "pseudocode": "Algorithme Palindrome\nVariables n, copie, inverse, r : Entiers\nDébut\n  Lire(n)\n  copie = n\n  inverse = 0\n  tantque copie > 0 faire\n    r = copie mod 10\n    inverse = inverse * 10 + r\n    copie = copie / 10  (division entière)\n  fintantque\n  si inverse = n alors\n    Ecrire('Palindrome')\n  sinon\n    Ecrire('Pas palindrome')\n  finsi\nFin",
-      "solution": "121 → inverse = 121 → Palindrome. 123 → inverse = 321 → Pas palindrome.",
-      "explication": "On inverse le nombre chiffre par chiffre. À chaque itération, on extrait le dernier chiffre (mod 10) et on le place en tête de l'inverse. On compare l'inverse au nombre original."
-    },
-    {
-      "id": 16,
-      "titre": "Puissance entière",
-      "categorie": "Fonctions",
-      "niveau": "Intermédiaire",
-      "enonce": "Écrire une fonction Puissance(x, n) qui calcule xⁿ sans utiliser l'opérateur ^ .",
-      "pseudocode": "Fonction Puissance(x : Réel, n : Entier) : Réel\nVariables p : Réel\nVariables i : Entier\nDébut\n  p = 1\n  pour i de 1 à n par 1 faire\n    p = p * x\n  finpour\n  Retourner p\nFin",
-      "solution": "Puissance(2,10) = 1024",
-      "explication": "On multiplie x par lui-même n fois. L'accumulateur p commence à 1 (élément neutre de la multiplication) et on le multiplie par x à chaque itération."
-    },
-    {
-      "id": 17,
-      "titre": "Somme des diviseurs",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Calculer la somme de tous les diviseurs d'un entier n (y compris 1 et n).",
-      "pseudocode": "Algorithme SommeDiviseurs\nVariables n, S, i : Entiers\nDébut\n  Lire(n)\n  S = 0\n  pour i de 1 à n par 1 faire\n    si n mod i = 0 alors\n      S = S + i\n    finsi\n  finpour\n  Ecrire('Somme diviseurs =', S)\nFin",
-      "solution": "Pour n=6 : diviseurs = {1,2,3,6}, somme = 12",
-      "explication": "On teste chaque entier de 1 à n. Si n mod i = 0, alors i divise n. On accumule ces diviseurs dans S."
-    },
-    {
-      "id": 18,
-      "titre": "Nombre premier",
-      "categorie": "Fonctions",
-      "niveau": "Intermédiaire",
-      "enonce": "Écrire une fonction EstPremier(n) qui retourne Vrai si n est premier, Faux sinon.",
-      "pseudocode": "Fonction EstPremier(n : Entier) : Booléen\nVariables i : Entier\nDébut\n  si n <= 1 alors\n    Retourner Faux\n  finsi\n  pour i de 2 à sqrt(n) par 1 faire\n    si n mod i = 0 alors\n      Retourner Faux\n    finsi\n  finpour\n  Retourner Vrai\nFin",
-      "solution": "EstPremier(7) = Vrai. EstPremier(12) = Faux (12 = 3×4).",
-      "explication": "Un nombre est premier s'il n'est divisible que par 1 et lui-même. On teste les diviseurs jusqu'à sqrt(n) (optimisation). Si on trouve un diviseur, le nombre n'est pas premier."
-    },
-    {
-      "id": 19,
-      "titre": "Calcul de π par la série de Leibniz",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Approximer π en utilisant la série : π/4 = 1 - 1/3 + 1/5 - 1/7 + ... Calculer les n premiers termes.",
-      "pseudocode": "Algorithme ApproxPi\nVariables n, i : Entiers\nVariables pi, signe : Réels\nDébut\n  Lire(n)\n  pi = 0\n  signe = 1\n  pour i de 0 à n-1 par 1 faire\n    pi = pi + signe / (2*i + 1)\n    signe = -signe\n  finpour\n  pi = pi * 4\n  Ecrire('π ≈', pi)\nFin",
-      "solution": "Pour n=1000 termes : π ≈ 3.14059...",
-      "explication": "La série de Leibniz converge lentement. On alterne le signe (+1, -1, +1, ...) et on divise par les impairs (1, 3, 5, ...). On multiplie la somme par 4 pour obtenir π."
-    },
-    {
-      "id": 20,
-      "titre": "Conversion décimal → binaire",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Convertir un entier n en base 2 (binaire).",
-      "pseudocode": "Algorithme DecimalBinaire\nVariables n, r : Entiers\nVariable binaire : Chaîne\nDébut\n  Lire(n)\n  binaire = ''\n  tantque n > 0 faire\n    r = n mod 2\n    binaire = r + binaire  (concaténation à gauche)\n    n = n / 2  (division entière)\n  fintantque\n  Ecrire('Binaire =', binaire)\nFin",
-      "solution": "13 en binaire = 1101 (13 = 8+4+1)",
-      "explication": "On divise n par 2 répétitivement et on note les restes. Les restes lus de bas en haut donnent la représentation binaire."
-    },
-    {
-      "id": 21,
-      "titre": "Remplissage d'un tableau",
-      "categorie": "Tableaux",
-      "niveau": "Intermédiaire",
-      "enonce": "Écrire un algorithme qui lit n valeurs dans un tableau T, puis affiche la somme et la moyenne.",
-      "pseudocode": "Algorithme TableauSomme\nVariables n, i : Entiers\nVariables S, moy : Réels\nVariables T : Tableau de n Réels\nDébut\n  Lire(n)\n  S = 0\n  pour i de 1 à n par 1 faire\n    Lire(T[i])\n    S = S + T[i]\n  finpour\n  moy = S / n\n  Ecrire('Somme =', S, ' Moyenne =', moy)\nFin",
-      "solution": "T = [2, 4, 6, 8] → S = 20, moy = 5",
-      "explication": "On utilise un indice i pour accéder à chaque case du tableau T[i]. On accumule la somme pendant la lecture pour éviter un second parcours."
-    },
-    {
-      "id": 22,
-      "titre": "Maximum dans un tableau",
-      "categorie": "Tableaux",
-      "niveau": "Intermédiaire",
-      "enonce": "Trouver la valeur maximale dans un tableau T de n éléments.",
-      "pseudocode": "Algorithme MaxTableau\nVariables n, i : Entiers\nVariable Max : Réel\nVariables T : Tableau de n Réels\nDébut\n  Lire(n)\n  pour i de 1 à n par 1 faire\n    Lire(T[i])\n  finpour\n  Max = T[1]\n  pour i de 2 à n par 1 faire\n    si T[i] > Max alors\n      Max = T[i]\n    finsi\n  finpour\n  Ecrire('Max =', Max)\nFin",
-      "solution": "T = [3, 1, 7, 2, 5] → Max = 7",
-      "explication": "On initialise Max avec le premier élément T[1]. On parcourt le reste du tableau. Si on trouve un élément plus grand, on met à jour Max. Après le parcours, Max contient le plus grand élément."
-    },
-    {
-      "id": 23,
-      "titre": "Tri par sélection",
-      "categorie": "Tableaux",
-      "niveau": "Avancé",
-      "enonce": "Trier un tableau T de n éléments par ordre croissant en utilisant le tri par sélection.",
-      "pseudocode": "Algorithme TriSelection\nVariables n, i, j, posMin : Entiers\nVariable temp : Réel\nVariables T : Tableau de n Réels\nDébut\n  Lire(n, T)\n  pour i de 1 à n-1 par 1 faire\n    posMin = i\n    pour j de i+1 à n par 1 faire\n      si T[j] < T[posMin] alors\n        posMin = j\n      finsi\n    finpour\n    temp = T[i]\n    T[i] = T[posMin]\n    T[posMin] = temp\n  finpour\n  Ecrire(T)\nFin",
-      "solution": "T = [5,3,8,1,4] → T trié = [1,3,4,5,8]",
-      "explication": "À chaque étape i, on cherche le minimum dans T[i..n] et on l'échange avec T[i]. Après n-1 étapes, le tableau est trié. La variable temp est indispensable pour l'échange (swap)."
-    },
-    {
-      "id": 24,
-      "titre": "Recherche dans un tableau",
-      "categorie": "Tableaux",
-      "niveau": "Intermédiaire",
-      "enonce": "Chercher une valeur v dans un tableau T de n éléments et retourner sa position (ou -1 si absente).",
-      "pseudocode": "Algorithme Recherche\nVariables n, i, pos : Entiers\nVariable v : Réel\nVariables T : Tableau de n Réels\nDébut\n  Lire(n, T, v)\n  pos = -1\n  pour i de 1 à n par 1 faire\n    si T[i] = v alors\n      pos = i\n    finsi\n  finpour\n  si pos = -1 alors\n    Ecrire('Valeur absente')\n  sinon\n    Ecrire('Position :', pos)\n  finsi\nFin",
-      "solution": "T=[3,7,1,9], v=7 → position = 2",
-      "explication": "On initialise pos à -1 (valeur sentinelle). On parcourt tout le tableau. Si on trouve v, on enregistre sa position. À la fin, on teste si pos a été mis à jour."
-    },
-    {
-      "id": 25,
-      "titre": "Produit de matrices 2×2",
-      "categorie": "Matrices",
-      "niveau": "Avancé",
-      "enonce": "Calculer le produit C = A × B de deux matrices 2×2.",
-      "pseudocode": "Algorithme ProduitMatrice\nVariables A, B, C : Matrices 2×2\nVariables i, j, k : Entiers\nDébut\n  Lire(A)\n  Lire(B)\n  pour i de 1 à 2 par 1 faire\n    pour j de 1 à 2 par 1 faire\n      C[i][j] = 0\n      pour k de 1 à 2 par 1 faire\n        C[i][j] = C[i][j] + A[i][k] * B[k][j]\n      finpour\n    finpour\n  finpour\n  Ecrire(C)\nFin",
-      "solution": "A=[[1,2],[3,4]], B=[[5,6],[7,8]] → C=[[19,22],[43,50]]",
-      "explication": "La règle de multiplication matricielle : C[i][j] = somme de A[i][k]*B[k][j]. On utilise 3 boucles imbriquées : i pour les lignes de C, j pour les colonnes de C, k pour la sommation."
-    },
-    {
-      "id": 26,
-      "titre": "Trace d'une matrice",
-      "categorie": "Matrices",
-      "niveau": "Intermédiaire",
-      "enonce": "Calculer la trace d'une matrice carrée n×n (somme des éléments diagonaux).",
-      "pseudocode": "Algorithme Trace\nVariables n, i : Entiers\nVariable tr : Réel\nVariables A : Matrice n×n\nDébut\n  Lire(n, A)\n  tr = 0\n  pour i de 1 à n par 1 faire\n    tr = tr + A[i][i]\n  finpour\n  Ecrire('Trace =', tr)\nFin",
-      "solution": "A=[[1,2],[3,4]] → Trace = 1+4 = 5",
-      "explication": "Les éléments diagonaux d'une matrice carrée sont ceux dont l'indice de ligne est égal à l'indice de colonne : A[i][i]. On les accumule dans une seule boucle."
-    },
-    {
-      "id": 27,
-      "titre": "Transposée d'une matrice",
-      "categorie": "Matrices",
-      "niveau": "Intermédiaire",
-      "enonce": "Calculer la transposée d'une matrice A de dimension m×n.",
-      "pseudocode": "Algorithme Transposee\nVariables m, n, i, j : Entiers\nVariables A : Matrice m×n\nVariables T : Matrice n×m\nDébut\n  Lire(m, n, A)\n  pour i de 1 à m par 1 faire\n    pour j de 1 à n par 1 faire\n      T[j][i] = A[i][j]\n    finpour\n  finpour\n  Ecrire(T)\nFin",
-      "solution": "A=[[1,2,3],[4,5,6]] → T=[[1,4],[2,5],[3,6]]",
-      "explication": "La transposée échange lignes et colonnes : T[j][i] = A[i][j]. Une matrice m×n donne une transposée n×m."
-    },
-    {
-      "id": 28,
-      "titre": "Méthode de Dichotomie — f(x) = eˣ + 3x − 2",
-      "categorie": "Méthodes numériques",
-      "niveau": "Avancé",
-      "enonce": "Appliquer la méthode de dichotomie pour trouver la racine de f(x) = eˣ + 3x − 2 dans [0,1] avec ε = 10⁻⁴. Donner les 5 premières itérations.",
-      "pseudocode": "a = 0, b = 1, ε = 0.0001\n\nItération 1 : c = (0+1)/2 = 0.5\n  f(0) = e⁰+3(0)-2 = -1 < 0\n  f(0.5) = e^0.5+3(0.5)-2 ≈ 0.1487 > 0\n  f(0)*f(0.5) < 0 → b = 0.5\n\nItération 2 : c = (0+0.5)/2 = 0.25\n  f(0.25) ≈ -0.4652 < 0\n  f(0)*f(0.25) > 0 → a = 0.25\n\nItération 3 : c = (0.25+0.5)/2 = 0.375\n  f(0.375) ≈ -0.1700 < 0 → a = 0.375\n\nItération 4 : c = (0.375+0.5)/2 = 0.4375\n  f(0.4375) ≈ -0.0125 < 0 → a = 0.4375\n\nItération 5 : c = (0.4375+0.5)/2 = 0.46875\n  f(0.46875) ≈ 0.0674 > 0 → b = 0.46875",
-      "solution": "Racine x* ≈ 0.44285",
-      "explication": "À chaque itération, l'intervalle est divisé par 2. On conserve toujours la moitié qui contient le changement de signe. Après n itérations, la largeur est (b-a)/2ⁿ."
-    },
-    {
-      "id": 29,
-      "titre": "Méthode de Newton — f(x) = cos(x) − x³",
-      "categorie": "Méthodes numériques",
-      "niveau": "Avancé",
-      "enonce": "Appliquer la méthode de Newton pour f(x) = cos(x) − x³ avec x₀ = 0.5 et ε = 10⁻⁶. Donner les 4 premières itérations.",
-      "pseudocode": "f(x) = cos(x) - x³\nf'(x) = -sin(x) - 3x²\nFormule : xₙ₊₁ = xₙ - f(xₙ)/f'(xₙ)\n\nItération 1 : x₀ = 0.5\n  f(0.5) = cos(0.5) - 0.125 = 0.8776 - 0.125 = 0.7526\n  f'(0.5) = -sin(0.5) - 3(0.25) = -0.4794 - 0.75 = -1.2294\n  x₁ = 0.5 - 0.7526/(-1.2294) = 0.5 + 0.6121 = 1.1121\n\nItération 2 : x₁ = 1.1121\n  f(1.1121) = cos(1.1121) - (1.1121)³ ≈ 0.4159 - 1.3762 = -0.9603\n  f'(1.1121) ≈ -0.9096 - 3.7126 = -4.6222\n  x₂ = 1.1121 - (-0.9603)/(-4.6222) ≈ 0.9040\n\n... (convergence vers 0.8654)",
-      "solution": "Racine x* ≈ 0.86547",
-      "explication": "Newton converge très rapidement (quadratiquement). En seulement quelques itérations, on obtient une très bonne précision. La tangente en xₙ croise l'axe des x en xₙ₊₁."
-    },
-    {
-      "id": 30,
-      "titre": "Méthode des trapèzes — ∫₀¹ x² dx",
-      "categorie": "Méthodes numériques",
-      "niveau": "Avancé",
-      "enonce": "Calculer ∫₀¹ x² dx par la méthode des trapèzes avec M=4 sous-intervalles. Comparer avec la valeur exacte 1/3.",
-      "pseudocode": "a=0, b=1, M=4\nH = (1-0)/4 = 0.25\nx₀=0, x₁=0.25, x₂=0.5, x₃=0.75, x₄=1\n\nI = H/2 × [f(x₀) + f(x₄)] + H × [f(x₁)+f(x₂)+f(x₃)]\n  = 0.25/2 × [0² + 1²] + 0.25 × [0.25²+0.5²+0.75²]\n  = 0.125 × 1 + 0.25 × [0.0625+0.25+0.5625]\n  = 0.125 + 0.25 × 0.875\n  = 0.125 + 0.21875\n  = 0.34375",
-      "solution": "I ≈ 0.34375. Valeur exacte = 1/3 ≈ 0.33333. Erreur ≈ 0.010",
-      "explication": "Avec seulement 4 sous-intervalles, on obtient déjà une bonne approximation. Plus M est grand, plus le résultat est précis. L'erreur est en O(H²) = O(1/M²)."
-    },
-    {
-      "id": 31,
-      "titre": "Méthode de Simpson — ∫₀¹ x² dx",
-      "categorie": "Méthodes numériques",
-      "niveau": "Avancé",
-      "enonce": "Calculer ∫₀¹ x² dx par la méthode de Simpson avec M=4. Comparer avec la valeur exacte 1/3.",
-      "pseudocode": "a=0, b=1, M=4, H=0.25\n\nPour chaque sous-intervalle [xₖ₋₁, xₖ] :\nx̄ₖ = (xₖ₋₁ + xₖ)/2\nSₖ = H/6 × [f(xₖ₋₁) + 4f(x̄ₖ) + f(xₖ)]\n\nSous-intervalle [0, 0.25] :\nx̄=0.125, S₁ = 0.25/6×[0 + 4×0.015625 + 0.0625]\n= 0.25/6 × 0.125 = 0.005208\n\nTotal = somme des 4 S_k ≈ 0.33333",
-      "solution": "I = 1/3 exactement ! Simpson est exact pour les polynômes de degré ≤ 3.",
-      "explication": "Simpson utilise une parabole (degré 2) au lieu d'une droite. Puisque f(x)=x² est elle-même un polynôme de degré 2, Simpson donne le résultat EXACT quelle que soit la valeur de M."
-    },
-    {
-      "id": 32,
       "titre": "Suite de Fibonacci",
       "categorie": "Boucles",
       "niveau": "Intermédiaire",
-      "enonce": "Afficher les n premiers termes de la suite de Fibonacci : 0, 1, 1, 2, 3, 5, 8, 13, 21...",
-      "pseudocode": "Algorithme Fibonacci\nVariables n, i, a, b, c : Entiers\nDébut\n  Lire(n)\n  a = 0\n  b = 1\n  Ecrire(a)\n  Ecrire(b)\n  pour i de 3 à n par 1 faire\n    c = a + b\n    Ecrire(c)\n    a = b\n    b = c\n  finpour\nFin",
-      "solution": "n=7 : 0, 1, 1, 2, 3, 5, 8",
-      "explication": "Chaque terme est la somme des deux précédents. On utilise trois variables a, b, c pour conserver les deux termes précédents et calculer le suivant. Après chaque calcul, on décale : a prend la valeur de b, b prend la valeur de c."
+      "enonce": "Affichez les N premiers termes de la suite de Fibonacci (0, 1, 1, 2, 3, 5, 8, ...).",
+      "entree": "N = 7",
+      "sortie_attendue": "0\n1\n1\n2\n3\n5\n8",
+      "variables_suggerees": ["N", "a", "b", "c", "i"],
+      "pseudocode_solution": "Variables N, a, b, c, i : Entiers\nDébut\n  Lire(N)\n  a <- 0\n  b <- 1\n  Ecrire(a)\n  Ecrire(b)\n  Pour i <- 3 à N\n    c <- a + b\n    Ecrire(c)\n    a <- b\n    b <- c\n  FinPour\nFin",
+      "solution": "Chaque terme = somme des deux précédents",
+      "explication": "On garde les deux derniers termes (a, b) et on calcule c=a+b, puis on décale.",
+      "tests": [
+        {"entree": "7", "sortie": "0\n1\n1\n2\n3\n5\n8"},
+        {"entree": "2", "sortie": "0\n1"},
+        {"entree": "10", "sortie": "0\n1\n1\n2\n3\n5\n8\n13\n21\n34"}
+      ]
+    },
+    {
+      "id": 13,
+      "titre": "PGCD par Euclide",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Calculez le PGCD de deux entiers a et b par l'algorithme d'Euclide.",
+      "entree": "a=48, b=18",
+      "sortie_attendue": "6",
+      "variables_suggerees": ["a", "b", "r"],
+      "pseudocode_solution": "Variables a, b, r : Entiers\nDébut\n  Lire(a, b)\n  TantQue b != 0 Faire\n    r <- a mod b\n    a <- b\n    b <- r\n  FinTantQue\n  Ecrire(a)\nFin",
+      "solution": "PGCD(48,18) = 6",
+      "explication": "On remplace (a,b) par (b, a mod b) jusqu'à b=0. Le PGCD est alors a.",
+      "tests": [
+        {"entree": "48\n18", "sortie": "6"},
+        {"entree": "100\n25", "sortie": "25"},
+        {"entree": "17\n13", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 14,
+      "titre": "Puissance entière",
+      "categorie": "Fonctions",
+      "niveau": "Intermédiaire",
+      "enonce": "Calculez x^n sans utiliser l'opérateur puissance, uniquement des multiplications.",
+      "entree": "x=2, n=10",
+      "sortie_attendue": "1024",
+      "variables_suggerees": ["x", "n", "p", "i"],
+      "pseudocode_solution": "Variables x : Réel\nVariables n, i : Entiers\nVariable p : Réel\nDébut\n  Lire(x, n)\n  p <- 1\n  Pour i <- 1 à n\n    p <- p * x\n  FinPour\n  Ecrire(p)\nFin",
+      "solution": "2^10 = 1024",
+      "explication": "On multiplie x par lui-même n fois via un accumulateur p.",
+      "tests": [
+        {"entree": "2\n10", "sortie": "1024"},
+        {"entree": "3\n4", "sortie": "81"},
+        {"entree": "5\n0", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 15,
+      "titre": "Nombre premier",
+      "categorie": "Fonctions",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez un entier n. Affichez 'premier' s'il est premier, 'non premier' sinon.",
+      "entree": "n = 17",
+      "sortie_attendue": "premier",
+      "variables_suggerees": ["n", "i", "premier"],
+      "pseudocode_solution": "Variables n, i : Entiers\nVariable premier : Booléen\nDébut\n  Lire(n)\n  premier <- Vrai\n  Si n <= 1 Alors\n    premier <- Faux\n  Sinon\n    Pour i <- 2 à sqrt(n)\n      Si n mod i = 0 Alors\n        premier <- Faux\n      FinSi\n    FinPour\n  FinSi\n  Si premier Alors Ecrire('premier')\n  Sinon Ecrire('non premier')\nFin",
+      "solution": "17 est premier",
+      "explication": "On teste tous les diviseurs de 2 à sqrt(n). Si on en trouve un, n n'est pas premier.",
+      "tests": [
+        {"entree": "17", "sortie": "premier"},
+        {"entree": "12", "sortie": "non premier"},
+        {"entree": "2", "sortie": "premier"},
+        {"entree": "1", "sortie": "non premier"}
+      ]
+    },
+    {
+      "id": 16,
+      "titre": "Somme des chiffres",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez un entier positif n. Calculez la somme de ses chiffres. Ex: 1234 → 1+2+3+4 = 10.",
+      "entree": "n = 1234",
+      "sortie_attendue": "10",
+      "variables_suggerees": ["n", "S", "r"],
+      "pseudocode_solution": "Variables n, S, r : Entiers\nDébut\n  Lire(n)\n  S <- 0\n  TantQue n > 0 Faire\n    r <- n mod 10\n    S <- S + r\n    n <- n / 10\n  FinTantQue\n  Ecrire(S)\nFin",
+      "solution": "1+2+3+4 = 10",
+      "explication": "On extrait les chiffres un à un avec mod 10 et division entière par 10.",
+      "tests": [
+        {"entree": "1234", "sortie": "10"},
+        {"entree": "9999", "sortie": "36"},
+        {"entree": "100", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 17,
+      "titre": "Conversion décimal → binaire",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Convertissez un entier positif n en binaire. Affichez les bits de poids fort au poids faible.",
+      "entree": "n = 13",
+      "sortie_attendue": "1101",
+      "variables_suggerees": ["n", "bits", "r"],
+      "pseudocode_solution": "Variables n, r : Entiers\nDébut\n  Lire(n)\n  bits <- ''\n  TantQue n > 0 Faire\n    r <- n mod 2\n    bits <- r + bits\n    n <- n / 2\n  FinTantQue\n  Ecrire(bits)\nFin",
+      "solution": "13 = 8+4+1 = 1101₂",
+      "explication": "On divise par 2 et on note les restes de bas en haut.",
+      "tests": [
+        {"entree": "13", "sortie": "1101"},
+        {"entree": "8", "sortie": "1000"},
+        {"entree": "255", "sortie": "11111111"}
+      ]
+    },
+    {
+      "id": 18,
+      "titre": "Inverse d'un nombre",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez un entier n. Affichez le nombre avec ses chiffres inversés. Ex: 1234 → 4321.",
+      "entree": "n = 1234",
+      "sortie_attendue": "4321",
+      "variables_suggerees": ["n", "inverse", "r"],
+      "pseudocode_solution": "Variables n, inverse, r : Entiers\nDébut\n  Lire(n)\n  inverse <- 0\n  TantQue n > 0 Faire\n    r <- n mod 10\n    inverse <- inverse * 10 + r\n    n <- n / 10\n  FinTantQue\n  Ecrire(inverse)\nFin",
+      "solution": "4321",
+      "explication": "On extrait le dernier chiffre et on le place en tête de l'inverse.",
+      "tests": [
+        {"entree": "1234", "sortie": "4321"},
+        {"entree": "100", "sortie": "1"},
+        {"entree": "9", "sortie": "9"}
+      ]
+    },
+    {
+      "id": 19,
+      "titre": "Palindrome",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Un entier est palindrome s'il se lit de la même façon dans les deux sens (ex: 121). Affichez 'palindrome' ou 'non palindrome'.",
+      "entree": "n = 121",
+      "sortie_attendue": "palindrome",
+      "variables_suggerees": ["n", "copie", "inverse", "r"],
+      "pseudocode_solution": "Variables n, copie, inverse, r : Entiers\nDébut\n  Lire(n)\n  copie <- n\n  inverse <- 0\n  TantQue copie > 0 Faire\n    r <- copie mod 10\n    inverse <- inverse * 10 + r\n    copie <- copie / 10\n  FinTantQue\n  Si inverse = n Alors\n    Ecrire('palindrome')\n  Sinon\n    Ecrire('non palindrome')\n  FinSi\nFin",
+      "solution": "121 inversé = 121 → palindrome",
+      "explication": "On inverse le nombre et on compare avec l'original.",
+      "tests": [
+        {"entree": "121", "sortie": "palindrome"},
+        {"entree": "1331", "sortie": "palindrome"},
+        {"entree": "123", "sortie": "non palindrome"}
+      ]
+    },
+    {
+      "id": 20,
+      "titre": "Nombre parfait",
+      "categorie": "Fonctions",
+      "niveau": "Intermédiaire",
+      "enonce": "Un nombre est parfait si la somme de ses diviseurs propres (sans lui-même) lui est égale. Ex: 6=1+2+3. Affichez 'parfait' ou 'non parfait'.",
+      "entree": "n = 28",
+      "sortie_attendue": "parfait",
+      "variables_suggerees": ["n", "i", "S"],
+      "pseudocode_solution": "Variables n, i, S : Entiers\nDébut\n  Lire(n)\n  S <- 0\n  Pour i <- 1 à n-1\n    Si n mod i = 0 Alors\n      S <- S + i\n    FinSi\n  FinPour\n  Si S = n Alors Ecrire('parfait')\n  Sinon Ecrire('non parfait')\nFin",
+      "solution": "28=1+2+4+7+14 → parfait",
+      "explication": "On somme tous les diviseurs propres de n. S'ils sont égaux à n, il est parfait.",
+      "tests": [
+        {"entree": "28", "sortie": "parfait"},
+        {"entree": "6", "sortie": "parfait"},
+        {"entree": "12", "sortie": "non parfait"}
+      ]
+    },
+    {
+      "id": 21,
+      "titre": "Maximum dans un tableau",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N puis N entiers. Affichez le maximum du tableau.",
+      "entree": "N=5, valeurs: 3 7 1 9 4",
+      "sortie_attendue": "9",
+      "variables_suggerees": ["N", "i", "max", "val"],
+      "pseudocode_solution": "Variables N, i, max, val : Entiers\nDébut\n  Lire(N)\n  Lire(max)\n  Pour i <- 2 à N\n    Lire(val)\n    Si val > max Alors\n      max <- val\n    FinSi\n  FinPour\n  Ecrire(max)\nFin",
+      "solution": "max(3,7,1,9,4) = 9",
+      "explication": "On initialise max avec le premier élément et on le met à jour si on trouve plus grand.",
+      "tests": [
+        {"entree": "5\n3\n7\n1\n9\n4", "sortie": "9"},
+        {"entree": "3\n5\n5\n5", "sortie": "5"},
+        {"entree": "1\n42", "sortie": "42"}
+      ]
+    },
+    {
+      "id": 22,
+      "titre": "Moyenne d'un tableau",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N puis N réels. Affichez leur moyenne arrondie à 2 décimales.",
+      "entree": "N=4, valeurs: 10 20 30 40",
+      "sortie_attendue": "25.00",
+      "variables_suggerees": ["N", "i", "S", "val", "moy"],
+      "pseudocode_solution": "Variables N, i : Entiers\nVariables S, val, moy : Réels\nDébut\n  Lire(N)\n  S <- 0\n  Pour i <- 1 à N\n    Lire(val)\n    S <- S + val\n  FinPour\n  moy <- S / N\n  Ecrire(moy)\nFin",
+      "solution": "(10+20+30+40)/4 = 25.00",
+      "explication": "On accumule la somme S et on divise par N.",
+      "tests": [
+        {"entree": "4\n10\n20\n30\n40", "sortie": "25.00"},
+        {"entree": "2\n0\n100", "sortie": "50.00"},
+        {"entree": "3\n1\n2\n3", "sortie": "2.00"}
+      ]
+    },
+    {
+      "id": 23,
+      "titre": "Comptage d'occurrences",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N entiers puis une valeur cible. Comptez combien de fois la cible apparaît.",
+      "entree": "N=6, valeurs: 3 1 3 3 2 1, cible: 3",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["N", "i", "cible", "cpt", "val"],
+      "pseudocode_solution": "Variables N, i, cible, cpt, val : Entiers\nDébut\n  Lire(N)\n  cpt <- 0\n  Pour i <- 1 à N\n    Lire(val)\n    Si val = cible Alors\n      cpt <- cpt + 1\n    FinSi\n  FinPour\n  Ecrire(cpt)\nFin",
+      "solution": "3 apparaît 3 fois",
+      "explication": "On parcourt le tableau et on incrémente le compteur à chaque occurrence.",
+      "tests": [
+        {"entree": "6\n3\n1\n3\n3\n2\n1\n3", "sortie": "3"},
+        {"entree": "4\n1\n2\n3\n4\n5", "sortie": "0"},
+        {"entree": "3\n7\n7\n7\n7", "sortie": "3"}
+      ]
+    },
+    {
+      "id": 24,
+      "titre": "Tri à bulles",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Lisez N puis N entiers. Triez-les par ordre croissant et affichez-les séparés par des espaces.",
+      "entree": "N=5, valeurs: 5 3 8 1 4",
+      "sortie_attendue": "1 3 4 5 8",
+      "variables_suggerees": ["N", "i", "j", "temp", "T"],
+      "pseudocode_solution": "Variables N, i, j, temp : Entiers\nVariables T : Tableau d'entiers\nDébut\n  Lire(N, T)\n  Pour i <- 1 à N-1\n    Pour j <- 1 à N-i\n      Si T[j] > T[j+1] Alors\n        temp <- T[j]\n        T[j] <- T[j+1]\n        T[j+1] <- temp\n      FinSi\n    FinPour\n  FinPour\n  Ecrire(T)\nFin",
+      "solution": "1 3 4 5 8",
+      "explication": "Le tri à bulles compare les voisins et échange si nécessaire, en répétant N-1 passes.",
+      "tests": [
+        {"entree": "5\n5\n3\n8\n1\n4", "sortie": "1 3 4 5 8"},
+        {"entree": "3\n3\n1\n2", "sortie": "1 2 3"},
+        {"entree": "1\n42", "sortie": "42"}
+      ]
+    },
+    {
+      "id": 25,
+      "titre": "Recherche binaire",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Tableau trié donné. Lisez N entiers triés puis une cible. Retournez sa position (1-indexée) ou -1 si absente. Utilisez la recherche binaire.",
+      "entree": "N=6, valeurs: 1 3 5 7 9 11, cible: 7",
+      "sortie_attendue": "4",
+      "variables_suggerees": ["N", "g", "d", "m", "cible", "T"],
+      "pseudocode_solution": "Variables N, g, d, m, cible : Entiers\nDébut\n  Lire(N, T, cible)\n  g <- 1\n  d <- N\n  TantQue g <= d Faire\n    m <- (g+d)/2\n    Si T[m] = cible Alors Ecrire(m) Arrêt\n    Sinon Si T[m] < cible Alors g <- m+1\n    Sinon d <- m-1\n  FinTantQue\n  Ecrire(-1)\nFin",
+      "solution": "Position 4",
+      "explication": "La recherche binaire divise l'espace par 2 à chaque étape — O(log n).",
+      "tests": [
+        {"entree": "6\n1\n3\n5\n7\n9\n11\n7", "sortie": "4"},
+        {"entree": "5\n2\n4\n6\n8\n10\n5", "sortie": "-1"},
+        {"entree": "3\n1\n2\n3\n1", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 26,
+      "titre": "Produit de matrices 2×2",
+      "categorie": "Matrices",
+      "niveau": "Avancé",
+      "enonce": "Lisez deux matrices 2×2 A et B (ligne par ligne). Affichez leur produit C=A×B, une ligne par ligne, éléments séparés par des espaces.",
+      "entree": "A=[[1,2],[3,4]], B=[[5,6],[7,8]]",
+      "sortie_attendue": "19 22\n43 50",
+      "variables_suggerees": ["A", "B", "C", "i", "j", "k"],
+      "pseudocode_solution": "Variables A, B, C : Matrices 2×2\nVariables i, j, k : Entiers\nDébut\n  Lire(A)\n  Lire(B)\n  Pour i <- 1 à 2\n    Pour j <- 1 à 2\n      C[i][j] <- 0\n      Pour k <- 1 à 2\n        C[i][j] <- C[i][j] + A[i][k]*B[k][j]\n      FinPour\n    FinPour\n  FinPour\n  Ecrire(C)\nFin",
+      "solution": "C=[[19,22],[43,50]]",
+      "explication": "C[i][j] = somme de A[i][k]×B[k][j] sur k. Trois boucles imbriquées.",
+      "tests": [
+        {"entree": "1\n2\n3\n4\n5\n6\n7\n8", "sortie": "19 22\n43 50"},
+        {"entree": "1\n0\n0\n1\n5\n6\n7\n8", "sortie": "5 6\n7 8"}
+      ]
+    },
+    {
+      "id": 27,
+      "titre": "Trace d'une matrice",
+      "categorie": "Matrices",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez n puis une matrice carrée n×n. Calculez et affichez sa trace (somme des éléments diagonaux).",
+      "entree": "n=3, M=[[1,2,3],[4,5,6],[7,8,9]]",
+      "sortie_attendue": "15",
+      "variables_suggerees": ["n", "i", "tr", "M"],
+      "pseudocode_solution": "Variables n, i, tr : Entiers\nVariables M : Matrice n×n\nDébut\n  Lire(n)\n  tr <- 0\n  Pour i <- 1 à n\n    Lire(M[i][i])\n    tr <- tr + M[i][i]\n  FinPour\n  Ecrire(tr)\nFin",
+      "solution": "tr = 1+5+9 = 15",
+      "explication": "La trace est la somme des M[i][i]. Une seule boucle suffit.",
+      "tests": [
+        {"entree": "3\n1\n2\n3\n4\n5\n6\n7\n8\n9", "sortie": "15"},
+        {"entree": "2\n3\n0\n0\n7", "sortie": "10"}
+      ]
+    },
+    {
+      "id": 28,
+      "titre": "Matrice identité",
+      "categorie": "Matrices",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez n. Affichez la matrice identité n×n (1 sur la diagonale, 0 ailleurs), une ligne par ligne.",
+      "entree": "n = 3",
+      "sortie_attendue": "1 0 0\n0 1 0\n0 0 1",
+      "variables_suggerees": ["n", "i", "j"],
+      "pseudocode_solution": "Variables n, i, j : Entiers\nDébut\n  Lire(n)\n  Pour i <- 1 à n\n    Pour j <- 1 à n\n      Si i = j Alors Ecrire(1)\n      Sinon Ecrire(0)\n    FinPour\n  FinPour\nFin",
+      "solution": "Diagonale = 1, reste = 0",
+      "explication": "Deux boucles imbriquées : si i=j (diagonale) on affiche 1, sinon 0.",
+      "tests": [
+        {"entree": "3", "sortie": "1 0 0\n0 1 0\n0 0 1"},
+        {"entree": "2", "sortie": "1 0\n0 1"},
+        {"entree": "1", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 29,
+      "titre": "Dichotomie — eˣ+3x−2=0",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Appliquez la méthode de dichotomie sur f(x)=eˣ+3x−2 dans [0,1] avec ε=0.0001. Affichez la racine approchée arrondie à 4 décimales.",
+      "entree": "a=0, b=1, eps=0.0001",
+      "sortie_attendue": "0.4429",
+      "variables_suggerees": ["a", "b", "c", "ya", "yc", "e"],
+      "pseudocode_solution": "Variables a,b,c,ya,yc,e : Réels\nDébut\n  a <- 0; b <- 1; e <- 0.0001\n  ya <- exp(a)+3*a-2\n  TantQue abs(a-b) > e Faire\n    c <- (a+b)/2\n    yc <- exp(c)+3*c-2\n    Si ya*yc < 0 Alors\n      b <- c\n    Sinon\n      a <- c\n      ya <- yc\n    FinSi\n  FinTantQue\n  Ecrire(c)\nFin",
+      "solution": "x ≈ 0.4429",
+      "explication": "On réduit l'intervalle par deux à chaque étape en gardant la moitié qui change de signe.",
+      "tests": [
+        {"entree": "0\n1\n0.0001", "sortie": "0.4429"}
+      ]
+    },
+    {
+      "id": 30,
+      "titre": "Newton — cos(x)−x³=0",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Appliquez Newton sur f(x)=cos(x)−x³ avec x₀=0.5 et ε=0.0001. f'(x)=−sin(x)−3x². Affichez la racine à 4 décimales.",
+      "entree": "x0=0.5, eps=0.0001",
+      "sortie_attendue": "0.8655",
+      "variables_suggerees": ["x0", "x1", "y", "yp", "e"],
+      "pseudocode_solution": "Variables x0,x1,y,yp,e : Réels\nDébut\n  x0 <- 0.5; e <- 0.0001\n  y <- cos(x0)-x0^3\n  yp <- -sin(x0)-3*x0^2\n  x1 <- x0-y/yp\n  TantQue abs(x1-x0) > e Faire\n    x0 <- x1\n    y <- cos(x0)-x0^3\n    yp <- -sin(x0)-3*x0^2\n    x1 <- x0-y/yp\n  FinTantQue\n  Ecrire(x1)\nFin",
+      "solution": "x ≈ 0.8655",
+      "explication": "xₙ₊₁ = xₙ − f(xₙ)/f'(xₙ). Convergence quadratique.",
+      "tests": [
+        {"entree": "0.5\n0.0001", "sortie": "0.8655"}
+      ]
+    },
+    {
+      "id": 31,
+      "titre": "Intégrale par trapèzes",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Calculez ∫₀¹ x² dx par la méthode des trapèzes avec M=4 sous-intervalles. Valeur exacte = 1/3 ≈ 0.3333. Affichez à 4 décimales.",
+      "entree": "a=0, b=1, M=4",
+      "sortie_attendue": "0.3438",
+      "variables_suggerees": ["a", "b", "M", "H", "I", "k", "x"],
+      "pseudocode_solution": "Variables a,b,H,I,x : Réels\nVariables M,k : Entiers\nDébut\n  a<-0; b<-1; M<-4\n  H <- (b-a)/M\n  I <- 0\n  Pour k <- 1 à M-1\n    x <- a+k*H\n    I <- I + H*f(x)\n  FinPour\n  I <- I + H*(f(a)+f(b))/2\n  Ecrire(I)\nFin",
+      "solution": "I ≈ 0.3438",
+      "explication": "On somme les termes intérieurs et on ajoute la contribution des extrémités divisée par 2.",
+      "tests": [
+        {"entree": "0\n1\n4", "sortie": "0.3438"}
+      ]
+    },
+    {
+      "id": 32,
+      "titre": "Intégrale par Simpson",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Calculez ∫₀¹ x² dx par Simpson avec M=4. Attendu = 0.3333 (résultat exact pour les polynômes ≤3). Affichez à 4 décimales.",
+      "entree": "a=0, b=1, M=4",
+      "sortie_attendue": "0.3333",
+      "variables_suggerees": ["a", "b", "M", "H", "I", "k", "xk", "xbar"],
+      "pseudocode_solution": "Variables a,b,H,I,xk,xbar : Réels\nVariables M,k : Entiers\nDébut\n  a<-0; b<-1; M<-4\n  H <- (b-a)/M\n  I <- 0\n  Pour k <- 1 à M\n    xk <- a+k*H\n    xbar <- (a+(k-1)*H+xk)/2\n    I <- I + (f(a+(k-1)*H)+4*f(xbar)+f(xk))*H/6\n  FinPour\n  Ecrire(I)\nFin",
+      "solution": "I = 1/3 = 0.3333",
+      "explication": "Simpson est exact pour f(x)=x² car c'est un polynôme de degré 2.",
+      "tests": [
+        {"entree": "0\n1\n4", "sortie": "0.3333"}
+      ]
     },
     {
       "id": 33,
-      "titre": "Comptage de voyelles",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Compter le nombre de voyelles (a, e, i, o, u) dans une chaîne de caractères.",
-      "pseudocode": "Algorithme CompterVoyelles\nVariables chaine : Chaîne\nVariables n, i, cpt : Entiers\nVariable c : Caractère\nDébut\n  Lire(chaine)\n  n = longueur(chaine)\n  cpt = 0\n  pour i de 1 à n par 1 faire\n    c = chaine[i]\n    selon c\n      'a', 'e', 'i', 'o', 'u' : cpt = cpt + 1\n    finselon\n  finpour\n  Ecrire('Voyelles :', cpt)\nFin",
-      "solution": "'algorithme' → 4 voyelles (a, o, i, e)",
-      "explication": "On parcourt la chaîne caractère par caractère. Pour chaque caractère, on utilise la structure SELON pour vérifier si c'est une voyelle. Si oui, on incrémente le compteur."
+      "titre": "FizzBuzz",
+      "categorie": "Conditions",
+      "niveau": "Débutant",
+      "enonce": "Pour les entiers de 1 à N : affichez 'Fizz' si divisible par 3, 'Buzz' si par 5, 'FizzBuzz' si par les deux, sinon le nombre.",
+      "entree": "N = 15",
+      "sortie_attendue": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz",
+      "variables_suggerees": ["N", "i"],
+      "pseudocode_solution": "Pour i <- 1 à N\n  Si i mod 15 = 0 Alors Ecrire('FizzBuzz')\n  Sinon Si i mod 3 = 0 Alors Ecrire('Fizz')\n  Sinon Si i mod 5 = 0 Alors Ecrire('Buzz')\n  Sinon Ecrire(i)\nFinPour",
+      "solution": "Tester d'abord 15 (les deux), puis 3, puis 5",
+      "explication": "L'ordre des tests est crucial : on vérifie 15 en premier pour éviter le chevauchement.",
+      "tests": [
+        {"entree": "15", "sortie": "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz"},
+        {"entree": "5", "sortie": "1\n2\nFizz\n4\nBuzz"}
+      ]
     },
     {
       "id": 34,
-      "titre": "Vérification de nombre parfait",
-      "categorie": "Fonctions",
-      "niveau": "Avancé",
-      "enonce": "Un nombre est parfait si la somme de ses diviseurs propres (sans lui-même) est égale à lui-même. Ex: 6 = 1+2+3. Tester si un nombre est parfait.",
-      "pseudocode": "Fonction EstParfait(n : Entier) : Booléen\nVariables i, S : Entiers\nDébut\n  S = 0\n  pour i de 1 à n-1 par 1 faire\n    si n mod i = 0 alors\n      S = S + i\n    finsi\n  finpour\n  Retourner (S = n)\nFin",
-      "solution": "6=1+2+3 : parfait. 28=1+2+4+7+14 : parfait. 12 : non parfait.",
-      "explication": "On somme tous les diviseurs propres (de 1 à n-1). Si la somme vaut n, le nombre est parfait. Les premiers nombres parfaits sont 6, 28, 496, 8128."
+      "titre": "Compte à rebours",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez N. Affichez un compte à rebours de N jusqu'à 0 inclus, puis 'Décollage !'.",
+      "entree": "N = 5",
+      "sortie_attendue": "5\n4\n3\n2\n1\n0\nDécollage !",
+      "variables_suggerees": ["N", "i"],
+      "pseudocode_solution": "Variables N, i : Entiers\nDébut\n  Lire(N)\n  Pour i <- N à 0 par -1\n    Ecrire(i)\n  FinPour\n  Ecrire('Décollage !')\nFin",
+      "solution": "Boucle décroissante puis message",
+      "explication": "Boucle POUR avec pas négatif (-1) : on descend de N à 0.",
+      "tests": [
+        {"entree": "5", "sortie": "5\n4\n3\n2\n1\n0\nDécollage !"},
+        {"entree": "3", "sortie": "3\n2\n1\n0\nDécollage !"}
+      ]
     },
     {
       "id": 35,
-      "titre": "Initialisation d'une matrice identité",
-      "categorie": "Matrices",
+      "titre": "Nombre d'Armstrong",
+      "categorie": "Boucles",
       "niveau": "Intermédiaire",
-      "enonce": "Construire la matrice identité I de dimension n×n (1 sur la diagonale, 0 ailleurs).",
-      "pseudocode": "Algorithme MatriceIdentite\nVariables n, i, j : Entiers\nVariables I : Matrice n×n\nDébut\n  Lire(n)\n  pour i de 1 à n par 1 faire\n    pour j de 1 à n par 1 faire\n      si i = j alors\n        I[i][j] = 1\n      sinon\n        I[i][j] = 0\n      finsi\n    finpour\n  finpour\n  Ecrire(I)\nFin",
-      "solution": "n=3 : [[1,0,0],[0,1,0],[0,0,1]]",
-      "explication": "La matrice identité a 1 sur la diagonale principale (i=j) et 0 partout ailleurs. On utilise deux boucles imbriquées pour parcourir tous les éléments et un SI pour distinguer diagonale et hors-diagonale."
+      "enonce": "Un nombre est Armstrong si la somme de ses chiffres élevés à la puissance (nombre de chiffres) est égale au nombre. Ex: 153 = 1³+5³+3³. Affichez 'armstrong' ou 'non armstrong'.",
+      "entree": "n = 153",
+      "sortie_attendue": "armstrong",
+      "variables_suggerees": ["n", "copie", "S", "d", "r", "p"],
+      "pseudocode_solution": "Variables n, copie, S, d, r : Entiers\nDébut\n  Lire(n)\n  copie <- n; d <- 0; S <- 0\n  TantQue copie > 0 Faire\n    d <- d+1; copie <- copie/10\n  FinTantQue\n  copie <- n\n  TantQue copie > 0 Faire\n    r <- copie mod 10\n    S <- S + r^d\n    copie <- copie/10\n  FinTantQue\n  Si S = n Alors Ecrire('armstrong')\n  Sinon Ecrire('non armstrong')\nFin",
+      "solution": "153 = 1³+5³+3³ = 153 ✓",
+      "explication": "On compte d'abord les chiffres (d), puis on somme chiffre^d.",
+      "tests": [
+        {"entree": "153", "sortie": "armstrong"},
+        {"entree": "370", "sortie": "armstrong"},
+        {"entree": "100", "sortie": "non armstrong"}
+      ]
     },
     {
       "id": 36,
-      "titre": "Factorielle récursive",
-      "categorie": "Fonctions",
-      "niveau": "Avancé",
-      "enonce": "Écrire une fonction RÉCURSIVE qui calcule n! en utilisant la relation n! = n × (n-1)!",
-      "pseudocode": "Fonction FactorielRec(n : Entier) : Entier\nDébut\n  si n <= 1 alors\n    Retourner 1\n  sinon\n    Retourner n * FactorielRec(n - 1)\n  finsi\nFin",
-      "solution": "FactorielRec(5) = 5 × 4 × 3 × 2 × 1 = 120",
-      "explication": "Une fonction récursive s'appelle elle-même. Le cas de base (n<=1 retourne 1) arrête la récursion. Pour n=5 : 5×FactorielRec(4) = 5×4×FactorielRec(3) = ... = 5×4×3×2×1."
+      "titre": "Séquence de Collatz",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Partant de n, appliquez : si n pair → n/2 ; si n impair → 3n+1. Répétez jusqu'à n=1. Affichez le nombre d'étapes.",
+      "entree": "n = 6",
+      "sortie_attendue": "8",
+      "variables_suggerees": ["n", "etapes"],
+      "pseudocode_solution": "Variables n, etapes : Entiers\nDébut\n  Lire(n)\n  etapes <- 0\n  TantQue n != 1 Faire\n    Si n mod 2 = 0 Alors\n      n <- n/2\n    Sinon\n      n <- 3*n+1\n    FinSi\n    etapes <- etapes+1\n  FinTantQue\n  Ecrire(etapes)\nFin",
+      "solution": "6→3→10→5→16→8→4→2→1 : 8 étapes",
+      "explication": "La conjecture de Collatz affirme que cette suite converge toujours vers 1.",
+      "tests": [
+        {"entree": "6", "sortie": "8"},
+        {"entree": "1", "sortie": "0"},
+        {"entree": "27", "sortie": "111"}
+      ]
     },
     {
       "id": 37,
-      "titre": "Recherche binaire dans un tableau trié",
-      "categorie": "Tableaux",
+      "titre": "Triangle de Pascal",
+      "categorie": "Matrices",
       "niveau": "Avancé",
-      "enonce": "Chercher une valeur v dans un tableau trié T par dichotomie (recherche binaire).",
-      "pseudocode": "Algorithme RechercheBinaire\nVariables n, g, d, m : Entiers\nVariable v : Réel\nVariables T : Tableau trié de n Réels\nDébut\n  Lire(n, T, v)\n  g = 1\n  d = n\n  tantque g <= d faire\n    m = (g + d) / 2\n    si T[m] = v alors\n      Ecrire('Trouvé en position', m)\n      Arrêt\n    sinon si T[m] < v alors\n      g = m + 1\n    sinon\n      d = m - 1\n    finsi\n  fintantque\n  Ecrire('Valeur absente')\nFin",
-      "solution": "T=[1,3,5,7,9,11], v=7 → trouvé en position 4",
-      "explication": "La recherche binaire dans un tableau TRIÉ divise l'espace de recherche par 2 à chaque étape. C'est le même principe que la dichotomie pour les fonctions mathématiques, appliqué aux données."
+      "enonce": "Affichez les N premières lignes du triangle de Pascal. Chaque ligne est centrée et les éléments sont séparés par des espaces.",
+      "entree": "N = 5",
+      "sortie_attendue": "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1",
+      "variables_suggerees": ["N", "i", "j", "C"],
+      "pseudocode_solution": "Variables N, i, j : Entiers\nVariables C : Tableau 2D\nDébut\n  Lire(N)\n  Pour i <- 0 à N-1\n    C[i][0] <- 1; C[i][i] <- 1\n    Pour j <- 1 à i-1\n      C[i][j] <- C[i-1][j-1]+C[i-1][j]\n    FinPour\n    Ecrire(ligne C[i])\n  FinPour\nFin",
+      "solution": "C[i][j] = C[i-1][j-1] + C[i-1][j]",
+      "explication": "Chaque élément est la somme des deux au-dessus. Les bords valent toujours 1.",
+      "tests": [
+        {"entree": "5", "sortie": "1\n1 1\n1 2 1\n1 3 3 1\n1 4 6 4 1"},
+        {"entree": "3", "sortie": "1\n1 1\n1 2 1"}
+      ]
     },
     {
       "id": 38,
-      "titre": "MATLAB — Calcul de n! (n=15)",
-      "categorie": "Boucles",
+      "titre": "Norme euclidienne",
+      "categorie": "Tableaux",
       "niveau": "Intermédiaire",
-      "enonce": "Traduire l'algorithme Factoriel en MATLAB pour calculer 15! Écrire un script et une function.",
-      "pseudocode": "Fichier Script (facto2.m) :\nn = input('Entrer un nombre entier positif n = ');\nf = fact2(n);\ndisp(['f = ', num2str(f)]);\n\nFichier Function (fact2.m) :\nfunction [f] = fact2(n)\n  if n <= 1\n    f = 1;\n  else\n    f = 1;\n    for ii = 2:n\n      f = f * ii;\n    end\n  end\nend",
-      "solution": "15! = 1307674368000",
-      "explication": "En MATLAB, la structure POUR devient for ii=2:n...end. On sépare le script (qui appelle la fonction) de la function (qui définit le calcul). Les noms de fichiers doivent correspondre aux noms des fonctions."
+      "enonce": "Lisez N puis N réels (composantes d'un vecteur). Calculez et affichez sa norme euclidienne √(v₁²+...+vₙ²) arrondie à 4 décimales.",
+      "entree": "N=3, v=[3, 4, 0]",
+      "sortie_attendue": "5.0000",
+      "variables_suggerees": ["N", "i", "S", "vi", "norme"],
+      "pseudocode_solution": "Variables N, i : Entiers\nVariables S, vi, norme : Réels\nDébut\n  Lire(N)\n  S <- 0\n  Pour i <- 1 à N\n    Lire(vi)\n    S <- S + vi*vi\n  FinPour\n  norme <- sqrt(S)\n  Ecrire(norme)\nFin",
+      "solution": "√(9+16+0) = √25 = 5.0000",
+      "explication": "On somme les carrés des composantes et on prend la racine.",
+      "tests": [
+        {"entree": "3\n3\n4\n0", "sortie": "5.0000"},
+        {"entree": "2\n1\n1", "sortie": "1.4142"},
+        {"entree": "1\n7", "sortie": "7.0000"}
+      ]
     },
     {
       "id": 39,
-      "titre": "MATLAB — C(n,k) avec n=42, k=6",
-      "categorie": "Fonctions",
-      "niveau": "Intermédiaire",
-      "enonce": "Traduire l'algorithme Combinaison en MATLAB pour calculer C(42,6).",
-      "pseudocode": "clear all;\nclc;\ndisp('Calcul de la combinaison Cnk');\nn = input('n : ');\nk = input('k : ');\ncombin = fact2(n) / (fact2(k) * fact2(n-k));\ndisp(['Combinaison C', num2str(n), ',', num2str(k), ' : ', num2str(combin)]);",
-      "solution": "C(42,6) = 42! / (6! × 36!) = 5245786",
-      "explication": "On réutilise la function fact2. C'est le principe de modularité : on écrit une fois la fonction et on l'appelle autant de fois qu'on veut. On utilise num2str pour afficher la concaténation nombre+texte."
+      "titre": "Spirale de nombres",
+      "categorie": "Matrices",
+      "niveau": "Expert",
+      "enonce": "Affichez une matrice n×n remplie en spirale (sens horaire depuis le coin haut-gauche). Exemple pour n=3 : [[1,2,3],[8,9,4],[7,6,5]].",
+      "entree": "n = 3",
+      "sortie_attendue": "1 2 3\n8 9 4\n7 6 5",
+      "variables_suggerees": ["n", "haut", "bas", "gauche", "droite", "num", "M"],
+      "pseudocode_solution": "Initialiser M[n][n]\nnum <- 1\nhaut <- 1; bas <- n; gauche <- 1; droite <- n\nTantQue num <= n*n Faire\n  Remplir ligne haut de gauche à droite\n  Remplir colonne droite de haut+1 à bas\n  Remplir ligne bas de droite-1 à gauche\n  Remplir colonne gauche de bas-1 à haut+1\n  haut++; bas--; gauche++; droite--\nFinTantQue",
+      "solution": "Remplissage en spirale couche par couche",
+      "explication": "On remplit couche par couche : haut→droite→bas→gauche, en réduisant les bornes.",
+      "tests": [
+        {"entree": "3", "sortie": "1 2 3\n8 9 4\n7 6 5"},
+        {"entree": "2", "sortie": "1 2\n4 3"}
+      ]
     },
     {
       "id": 40,
-      "titre": "MATLAB — Équation 2nd degré (x²-4x+2=0)",
-      "categorie": "Conditions",
-      "niveau": "Intermédiaire",
-      "enonce": "Résoudre x²-4x+2=0 en MATLAB en écrivant un script et une function delta.",
-      "pseudocode": "Script equat2nd.m :\na = input('a = ');\nb = input('b = ');\nc = input('c = ');\nd = delta(a, b, c);\nif d < 0\n  disp('pas de solution réelle');\nelseif d > 0\n  x1 = (-b-sqrt(d))/(2*a);\n  x2 = (-b+sqrt(d))/(2*a);\n  disp(['x1 = ', num2str(x1)]);\n  disp(['x2 = ', num2str(x2)]);\nelse\n  x1 = -b/(2*a);\n  disp(['x1 = x2 = ', num2str(x1)]);\nend\n\nFunction delta.m :\nfunction [d] = delta(a, b, c)\n  d = b^2 - 4*a*c;\nend",
-      "solution": "x²-4x+2=0 : delta=8 > 0 → x1 ≈ 0.5858, x2 ≈ 3.4142",
-      "explication": "On sépare le calcul de delta dans une function. Le script principal appelle delta puis décide selon le signe de d. Les if/elseif/else correspondent aux SI/SINONSI/SINON de l'algorithme."
-    },
-    {
-      "id": 41,
-      "titre": "MATLAB — Dichotomie pour eˣ+3x−2=0",
-      "categorie": "Méthodes numériques",
-      "niveau": "Avancé",
-      "enonce": "Implémenter la méthode de dichotomie en MATLAB pour f(x) = eˣ + 3x − 2 sur [0,1] avec ε = 10⁻¹⁰.",
-      "pseudocode": "a = 0;\nb = 1;\ne = 0.0000000001;\nya = exp(a) + 3*a - 2;\nyb = exp(b) + 3*b - 2;\nwhile abs(a-b) > e\n  c = (a+b)/2;\n  yc = exp(c) + 3*c - 2;\n  if ya*yc < 0\n    b = c;\n  else\n    a = c;\n    ya = exp(a) + 3*a - 2;\n  end\nend\nfprintf('racine x = %f\\n', c);",
-      "solution": "x ≈ 0.442854",
-      "explication": "La traduction directe de l'algorithme en MATLAB. while remplace tantque, abs() calcule la valeur absolue. Le test ya*yc<0 vérifie si f change de signe entre a et c."
-    },
-    {
-      "id": 42,
-      "titre": "MATLAB — Newton pour cos(x)−x³=0",
-      "categorie": "Méthodes numériques",
-      "niveau": "Avancé",
-      "enonce": "Implémenter la méthode de Newton en MATLAB pour f(x) = cos(x) − x³ avec x₀=0.5 et ε=10⁻¹⁰.",
-      "pseudocode": "x0 = 0.5;\ne = 0.0000000001;\ny = cos(x0) - x0^3;\nyp = -sin(x0) - 3*x0^2;\nx1 = x0 - y/yp;\nwhile abs(x1-x0) > e\n  x0 = x1;\n  y = cos(x0) - x0^3;\n  yp = -sin(x0) - 3*x0^2;\n  x1 = x0 - y/yp;\nend\nfprintf('racine x = %f\\n', x1);",
-      "solution": "x ≈ 0.865474",
-      "explication": "La dérivée de f(x)=cos(x)-x³ est f'(x)=-sin(x)-3x². On calcule x₁=x₀-f(x₀)/f'(x₀). On répète jusqu'à ce que |x₁-x₀| < ε. Newton converge en très peu d'itérations."
-    },
-    {
-      "id": 43,
-      "titre": "Nombres de Fibonacci jusqu'à 1000",
-      "categorie": "Boucles",
-      "niveau": "Intermédiaire",
-      "enonce": "Afficher tous les nombres de Fibonacci inférieurs ou égaux à 1000.",
-      "pseudocode": "Algorithme FibMax\nVariables a, b, c : Entiers\nDébut\n  a = 0\n  b = 1\n  Ecrire(a)\n  tantque b <= 1000 faire\n    Ecrire(b)\n    c = a + b\n    a = b\n    b = c\n  fintantque\nFin",
-      "solution": "0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377, 610, 987",
-      "explication": "On utilise TANTQUE car on ne connaît pas le nombre d'itérations à l'avance (contrairement à POUR). La condition d'arrêt est b > 1000."
-    },
-    {
-      "id": 44,
       "titre": "Moyenne pondérée",
       "categorie": "Tableaux",
       "niveau": "Intermédiaire",
-      "enonce": "Calculer la moyenne pondérée de n notes avec leurs coefficients respectifs.",
-      "pseudocode": "Algorithme MoyennePonderee\nVariables n, i : Entiers\nVariables sommeCoeff, somme, note, coeff : Réels\nDébut\n  Lire(n)\n  somme = 0\n  sommeCoeff = 0\n  pour i de 1 à n par 1 faire\n    Lire(note, coeff)\n    somme = somme + note * coeff\n    sommeCoeff = sommeCoeff + coeff\n  finpour\n  Ecrire('Moyenne =', somme / sommeCoeff)\nFin",
-      "solution": "Notes [12,15,8] avec coefficients [2,3,1] → Moy = (24+45+8)/6 = 77/6 ≈ 12.83",
-      "explication": "La moyenne pondérée = somme(note×coeff) / somme(coeff). On accumule séparément le numérateur et le dénominateur."
+      "enonce": "Lisez N, puis N paires (note, coefficient). Calculez la moyenne pondérée arrondie à 2 décimales.",
+      "entree": "N=3, paires: (12,2) (15,3) (8,1)",
+      "sortie_attendue": "12.83",
+      "variables_suggerees": ["N", "i", "note", "coeff", "sumNC", "sumC"],
+      "pseudocode_solution": "Variables N, i : Entiers\nVariables note, coeff, sumNC, sumC : Réels\nDébut\n  Lire(N)\n  sumNC <- 0; sumC <- 0\n  Pour i <- 1 à N\n    Lire(note, coeff)\n    sumNC <- sumNC + note*coeff\n    sumC <- sumC + coeff\n  FinPour\n  Ecrire(sumNC/sumC)\nFin",
+      "solution": "(24+45+8)/6 ≈ 12.83",
+      "explication": "Moy = Σ(note×coeff) / Σ(coeff). On accumule les deux sommes séparément.",
+      "tests": [
+        {"entree": "3\n12\n2\n15\n3\n8\n1", "sortie": "12.83"},
+        {"entree": "2\n10\n1\n20\n1", "sortie": "15.00"}
+      ]
+    },
+    {
+      "id": 41,
+      "titre": "Anagramme",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Deux mots sont anagrammes s'ils ont les mêmes lettres (ordre non important). Lisez deux mots. Affichez 'anagramme' ou 'non anagramme'.",
+      "entree": "mot1='listen', mot2='silent'",
+      "sortie_attendue": "anagramme",
+      "variables_suggerees": ["mot1", "mot2", "freq"],
+      "pseudocode_solution": "Créer tableau freq[26] de zéros\nPour chaque lettre de mot1: freq[lettre]++\nPour chaque lettre de mot2: freq[lettre]--\nSi tous freq[i]=0 Alors anagramme\nSinon non anagramme",
+      "solution": "listen et silent ont les mêmes lettres",
+      "explication": "On compte les occurrences de chaque lettre dans mot1 (++), puis on soustrait mot2 (--). Si tout est 0, c'est une anagramme.",
+      "tests": [
+        {"entree": "listen\nsilent", "sortie": "anagramme"},
+        {"entree": "hello\nworld", "sortie": "non anagramme"},
+        {"entree": "cinema\niceman", "sortie": "anagramme"}
+      ]
+    },
+    {
+      "id": 42,
+      "titre": "Suite arithmétique",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez le premier terme a, la raison r et le nombre N de termes. Affichez les N termes de la suite arithmétique.",
+      "entree": "a=2, r=3, N=5",
+      "sortie_attendue": "2\n5\n8\n11\n14",
+      "variables_suggerees": ["a", "r", "N", "i", "terme"],
+      "pseudocode_solution": "Variables a, r : Réels\nVariables N, i : Entiers\nDébut\n  Lire(a, r, N)\n  terme <- a\n  Pour i <- 1 à N\n    Ecrire(terme)\n    terme <- terme + r\n  FinPour\nFin",
+      "solution": "2, 5, 8, 11, 14",
+      "explication": "Chaque terme = terme précédent + raison r.",
+      "tests": [
+        {"entree": "2\n3\n5", "sortie": "2\n5\n8\n11\n14"},
+        {"entree": "10\n-2\n4", "sortie": "10\n8\n6\n4"}
+      ]
+    },
+    {
+      "id": 43,
+      "titre": "Suite géométrique",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez le premier terme a, la raison q et le nombre N de termes. Affichez les N termes de la suite géométrique.",
+      "entree": "a=1, q=2, N=6",
+      "sortie_attendue": "1\n2\n4\n8\n16\n32",
+      "variables_suggerees": ["a", "q", "N", "i", "terme"],
+      "pseudocode_solution": "Variables a, q, terme : Réels\nVariables N, i : Entiers\nDébut\n  Lire(a, q, N)\n  terme <- a\n  Pour i <- 1 à N\n    Ecrire(terme)\n    terme <- terme * q\n  FinPour\nFin",
+      "solution": "1, 2, 4, 8, 16, 32",
+      "explication": "Chaque terme = terme précédent × raison q.",
+      "tests": [
+        {"entree": "1\n2\n6", "sortie": "1\n2\n4\n8\n16\n32"},
+        {"entree": "3\n3\n4", "sortie": "3\n9\n27\n81"}
+      ]
+    },
+    {
+      "id": 44,
+      "titre": "Nombre de voyelles",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez un mot. Comptez et affichez le nombre de voyelles (a, e, i, o, u).",
+      "entree": "mot = 'algorithmique'",
+      "sortie_attendue": "5",
+      "variables_suggerees": ["mot", "cpt", "i", "c"],
+      "pseudocode_solution": "Variables mot : Chaîne\nVariables cpt, i : Entiers\nDébut\n  Lire(mot)\n  cpt <- 0\n  Pour i <- 1 à longueur(mot)\n    c <- mot[i]\n    Selon c\n      'a','e','i','o','u' : cpt <- cpt+1\n    FinSelon\n  FinPour\n  Ecrire(cpt)\nFin",
+      "solution": "a, o, i, i, u, e = 5 voyelles (ou compter dans algorithmique)",
+      "explication": "On parcourt chaque caractère et on teste s'il est une voyelle avec SELON.",
+      "tests": [
+        {"entree": "algorithmique", "sortie": "5"},
+        {"entree": "rythme", "sortie": "1"},
+        {"entree": "aeiou", "sortie": "5"}
+      ]
     },
     {
       "id": 45,
-      "titre": "Surface d'une sphère (MATLAB function)",
-      "categorie": "Fonctions",
+      "titre": "Somme des carrés",
+      "categorie": "Boucles",
       "niveau": "Débutant",
-      "enonce": "Écrire une function MATLAB surfacevolume(r) qui retourne la surface et le volume d'une sphère de rayon r. (Exemple du cours MATLAB)",
-      "pseudocode": "function [S, V] = surfacevolume(r)\n  S = 4*pi*r^2;\n  V = 4*pi*r^3/3;\n  disp(['Surface : ', num2str(S)]);\n  disp(['Volume : ', num2str(V)]);\nend\n\nUtilisation :\n>> r = 10;\n>> [S, V] = surfacevolume(r);",
-      "solution": "r=10 : Surface = 1256.6371, Volume = 4188.7902",
-      "explication": "Une function MATLAB peut retourner plusieurs sorties [S, V]. Le nom du fichier doit être identique au nom de la function (surfacevolume.m). On utilise num2str pour afficher les valeurs numériques dans des chaînes."
+      "enonce": "Calculez S = 1² + 2² + 3² + ... + N².",
+      "entree": "N = 5",
+      "sortie_attendue": "55",
+      "variables_suggerees": ["N", "S", "i"],
+      "pseudocode_solution": "Variables N, S, i : Entiers\nDébut\n  Lire(N)\n  S <- 0\n  Pour i <- 1 à N\n    S <- S + i*i\n  FinPour\n  Ecrire(S)\nFin",
+      "solution": "1+4+9+16+25 = 55",
+      "explication": "Formule : N(N+1)(2N+1)/6 = 5×6×11/6 = 55.",
+      "tests": [
+        {"entree": "5", "sortie": "55"},
+        {"entree": "3", "sortie": "14"},
+        {"entree": "10", "sortie": "385"}
+      ]
     },
     {
       "id": 46,
-      "titre": "Intégrale des rectangles — ∫₀² sin(x) dx",
-      "categorie": "Méthodes numériques",
+      "titre": "Décomposition en facteurs premiers",
+      "categorie": "Boucles",
       "niveau": "Avancé",
-      "enonce": "Calculer ∫₀² sin(x) dx par la méthode des rectangles à gauche avec M=100 sous-intervalles. Valeur exacte = 1 - cos(2) ≈ 1.4161.",
-      "pseudocode": "a = 0; b = 2; M = 100;\nH = (b-a)/M = 0.02;\nI = 0;\npour k de 1 à M par 1 faire\n  x = a + (k-1)*H\n  I = I + H * sin(x)\nfinpour\nAfficher I",
-      "solution": "I ≈ 1.4147 (erreur ≈ 0.0014 avec M=100)",
-      "explication": "Plus M est grand, plus l'approximation est précise. Rectangle à gauche utilise f(xₖ₋₁) pour chaque intervalle. L'erreur est en O(H) = O(1/M)."
+      "enonce": "Lisez n. Affichez sa décomposition en facteurs premiers (ex: 12 → 2 2 3).",
+      "entree": "n = 12",
+      "sortie_attendue": "2 2 3",
+      "variables_suggerees": ["n", "d", "facteurs"],
+      "pseudocode_solution": "Variables n, d : Entiers\nDébut\n  Lire(n)\n  d <- 2\n  TantQue d*d <= n Faire\n    TantQue n mod d = 0 Faire\n      Ecrire(d)\n      n <- n/d\n    FinTantQue\n    d <- d+1\n  FinTantQue\n  Si n > 1 Alors Ecrire(n)\nFin",
+      "solution": "12 = 2×2×3",
+      "explication": "On divise par le plus petit diviseur possible, en répétant tant que c'est divisible.",
+      "tests": [
+        {"entree": "12", "sortie": "2 2 3"},
+        {"entree": "17", "sortie": "17"},
+        {"entree": "360", "sortie": "2 2 2 3 3 5"}
+      ]
     },
     {
       "id": 47,
-      "titre": "Norme d'un vecteur (MATLAB)",
+      "titre": "Transposée d'une matrice",
       "categorie": "Matrices",
       "niveau": "Intermédiaire",
-      "enonce": "Calculer la norme euclidienne d'un vecteur v = [v₁, v₂, ..., vₙ] : ||v|| = √(v₁²+v₂²+...+vₙ²)",
-      "pseudocode": "Algorithme Norme\nVariables n, i : Entiers\nVariable norme, s : Réels\nVariables v : Tableau de n Réels\nDébut\n  Lire(n, v)\n  s = 0\n  pour i de 1 à n par 1 faire\n    s = s + v[i] * v[i]\n  finpour\n  norme = sqrt(s)\n  Ecrire('||v|| =', norme)\nFin",
-      "solution": "v=[3,4] → ||v|| = sqrt(9+16) = sqrt(25) = 5",
-      "explication": "On somme les carrés de tous les composants, puis on prend la racine carrée. Pour le vecteur [3,4] : norme = 5 (triangle rectangle célèbre !)."
+      "enonce": "Lisez m, n puis une matrice m×n. Affichez sa transposée n×m.",
+      "entree": "m=2, n=3, M=[[1,2,3],[4,5,6]]",
+      "sortie_attendue": "1 4\n2 5\n3 6",
+      "variables_suggerees": ["m", "n", "i", "j", "M", "T"],
+      "pseudocode_solution": "Variables m, n, i, j : Entiers\nVariables M, T : Matrices\nDébut\n  Lire(m, n, M)\n  Pour i <- 1 à n\n    Pour j <- 1 à m\n      T[i][j] <- M[j][i]\n    FinPour\n  FinPour\n  Ecrire(T)\nFin",
+      "solution": "T[i][j] = M[j][i]",
+      "explication": "La transposée échange lignes et colonnes : T[i][j] = M[j][i].",
+      "tests": [
+        {"entree": "2\n3\n1\n2\n3\n4\n5\n6", "sortie": "1 4\n2 5\n3 6"},
+        {"entree": "1\n3\n7\n8\n9", "sortie": "7\n8\n9"}
+      ]
     },
     {
       "id": 48,
-      "titre": "Rotation de tableau",
-      "categorie": "Tableaux",
-      "niveau": "Avancé",
-      "enonce": "Décaler tous les éléments d'un tableau de 1 position vers la droite (le dernier devient le premier).",
-      "pseudocode": "Algorithme RotationDroite\nVariables n, i : Entiers\nVariable dernier : Réel\nVariables T : Tableau de n Réels\nDébut\n  Lire(n, T)\n  dernier = T[n]\n  pour i de n à 2 par -1 faire\n    T[i] = T[i-1]\n  finpour\n  T[1] = dernier\n  Ecrire(T)\nFin",
-      "solution": "T=[1,2,3,4,5] → T=[5,1,2,3,4]",
-      "explication": "On sauvegarde le dernier élément. On décale tous les éléments vers la droite (de n-1 jusqu'à 1). On place le dernier sauvegardé en première position. Il faut parcourir à REBOURS pour éviter d'écraser des valeurs."
+      "titre": "Signe de la fonction",
+      "categorie": "Conditions",
+      "niveau": "Débutant",
+      "enonce": "Lisez x. Évaluez f(x) = x³ - 2x + 1. Affichez 'positif', 'negatif' ou 'nul'.",
+      "entree": "x = 2",
+      "sortie_attendue": "positif",
+      "variables_suggerees": ["x", "fx"],
+      "pseudocode_solution": "Variables x, fx : Réels\nDébut\n  Lire(x)\n  fx <- x*x*x - 2*x + 1\n  Si fx > 0 Alors Ecrire('positif')\n  Sinon Si fx < 0 Alors Ecrire('negatif')\n  Sinon Ecrire('nul')\nFin",
+      "solution": "f(2) = 8-4+1 = 5 > 0 → positif",
+      "explication": "On évalue f(x) puis on teste son signe avec SI imbriqués.",
+      "tests": [
+        {"entree": "2", "sortie": "positif"},
+        {"entree": "0", "sortie": "positif"},
+        {"entree": "-2", "sortie": "negatif"}
+      ]
     },
     {
       "id": 49,
-      "titre": "Calcul de π par Monte Carlo",
-      "categorie": "Méthodes numériques",
-      "niveau": "Expert",
-      "enonce": "Estimer π par la méthode Monte Carlo : générer N points aléatoires (x,y) dans [0,1]×[0,1] et compter ceux qui tombent dans le quart de disque x²+y²≤1.",
-      "pseudocode": "Algorithme MonteCarloPi\nVariables N, k, compteur : Entiers\nVariables x, y : Réels\nDébut\n  Lire(N)\n  compteur = 0\n  pour k de 1 à N par 1 faire\n    x = aléatoire()  (entre 0 et 1)\n    y = aléatoire()  (entre 0 et 1)\n    si x*x + y*y <= 1 alors\n      compteur = compteur + 1\n    finsi\n  finpour\n  Ecrire('π ≈', 4 * compteur / N)\nFin",
-      "solution": "Pour N=1 000 000 : π ≈ 3.1415... (résultat variable selon les tirages)",
-      "explication": "L'aire du quart de disque unité est π/4. Si on tire des points uniformément dans le carré [0,1]², la proportion qui tombe dans le quart de disque est π/4. On multiplie par 4 pour obtenir π."
+      "titre": "Approximation de π (Leibniz)",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Approximez π par la série de Leibniz : π/4 = 1 - 1/3 + 1/5 - 1/7 + ... Utilisez N termes. Affichez π à 4 décimales.",
+      "entree": "N = 10000",
+      "sortie_attendue": "3.1415",
+      "variables_suggerees": ["N", "i", "pi", "signe"],
+      "pseudocode_solution": "Variables N, i : Entiers\nVariables pi, signe : Réels\nDébut\n  Lire(N)\n  pi <- 0; signe <- 1\n  Pour i <- 0 à N-1\n    pi <- pi + signe/(2*i+1)\n    signe <- -signe\n  FinPour\n  pi <- pi * 4\n  Ecrire(pi)\nFin",
+      "solution": "π ≈ 3.1415",
+      "explication": "On alterne le signe et on divise par les impairs successifs. On multiplie par 4 à la fin.",
+      "tests": [
+        {"entree": "10000", "sortie": "3.1415"}
+      ]
     },
     {
       "id": 50,
-      "titre": "Méthode de Gauss — Système 2×2",
+      "titre": "Rectangles — intégrale approchée",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Calculez ∫₀¹ sin(x) dx par rectangles à gauche avec M=100. Valeur exacte = 1-cos(1) ≈ 0.4597. Affichez à 4 décimales.",
+      "entree": "a=0, b=1, M=100",
+      "sortie_attendue": "0.4597",
+      "variables_suggerees": ["a", "b", "M", "H", "I", "k", "x"],
+      "pseudocode_solution": "Variables a,b,H,I,x : Réels\nVariables M,k : Entiers\nDébut\n  a<-0; b<-1; M<-100\n  H <- (b-a)/M\n  I <- 0\n  Pour k <- 1 à M\n    x <- a+(k-1)*H\n    I <- I + H*sin(x)\n  FinPour\n  Ecrire(I)\nFin",
+      "solution": "I ≈ 0.4597",
+      "explication": "On divise [0,1] en 100 rectangles de largeur H=0.01 et on somme H×sin(xₖ).",
+      "tests": [
+        {"entree": "0\n1\n100", "sortie": "0.4597"}
+      ]
+    },
+    {
+      "id": 51,
+      "titre": "Température min et max",
+      "categorie": "Tableaux",
+      "niveau": "Débutant",
+      "enonce": "Lisez 7 températures (une par jour). Affichez la température minimale et maximale.",
+      "entree": "T = [22, 19, 25, 30, 17, 21, 28]",
+      "sortie_attendue": "min=17 max=30",
+      "variables_suggerees": ["T", "mini", "maxi", "i", "val"],
+      "pseudocode_solution": "Variables mini, maxi, val : Réels\nVariables i : Entier\nDébut\n  Lire(mini)\n  maxi <- mini\n  Pour i <- 2 à 7\n    Lire(val)\n    Si val < mini Alors mini <- val\n    Si val > maxi Alors maxi <- val\n  FinPour\n  Ecrire('min=', mini, 'max=', maxi)\nFin",
+      "solution": "min=17 max=30",
+      "explication": "On initialise mini et maxi avec le premier élément et on met à jour à chaque lecture.",
+      "tests": [
+        {"entree": "22\n19\n25\n30\n17\n21\n28", "sortie": "min=17 max=30"}
+      ]
+    },
+    {
+      "id": 52,
+      "titre": "Carré magique vérification",
+      "categorie": "Matrices",
+      "niveau": "Avancé",
+      "enonce": "Un carré magique n×n a la même somme pour chaque ligne, colonne et diagonale. Lisez n puis n×n entiers. Affichez 'magique' ou 'non magique'.",
+      "entree": "n=3, M=[[2,7,6],[9,5,1],[4,3,8]]",
+      "sortie_attendue": "magique",
+      "variables_suggerees": ["n", "M", "i", "j", "cible", "somme"],
+      "pseudocode_solution": "Calculer somme ligne 1 (cible)\nVérifier toutes lignes, colonnes et 2 diagonales\nSi toutes = cible → magique",
+      "solution": "Toutes les sommes = 15",
+      "explication": "On calcule la cible avec la première ligne, puis on vérifie toutes les autres.",
+      "tests": [
+        {"entree": "3\n2\n7\n6\n9\n5\n1\n4\n3\n8", "sortie": "magique"},
+        {"entree": "3\n1\n2\n3\n4\n5\n6\n7\n8\n9", "sortie": "non magique"}
+      ]
+    },
+    {
+      "id": 53,
+      "titre": "Encodage César",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Le chiffrement de César décale chaque lettre de k positions dans l'alphabet. Lisez un message (lettres minuscules) et k. Affichez le message chiffré.",
+      "entree": "message='hello', k=3",
+      "sortie_attendue": "khoor",
+      "variables_suggerees": ["message", "k", "i", "c", "code"],
+      "pseudocode_solution": "Pour chaque lettre c du message:\n  code <- (position(c) + k) mod 26\n  Ecrire(lettre(code))",
+      "solution": "h→k, e→h, l→o, l→o, o→r",
+      "explication": "Chaque lettre est décalée de k positions (modulo 26 pour rester dans l'alphabet).",
+      "tests": [
+        {"entree": "hello\n3", "sortie": "khoor"},
+        {"entree": "xyz\n3", "sortie": "abc"},
+        {"entree": "abc\n0", "sortie": "abc"}
+      ]
+    },
+    {
+      "id": 54,
+      "titre": "Somme des nombres premiers jusqu'à N",
+      "categorie": "Fonctions",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N. Calculez et affichez la somme de tous les nombres premiers ≤ N.",
+      "entree": "N = 10",
+      "sortie_attendue": "17",
+      "variables_suggerees": ["N", "i", "S"],
+      "pseudocode_solution": "Variables N, i, S : Entiers\nDébut\n  Lire(N)\n  S <- 0\n  Pour i <- 2 à N\n    Si EstPremier(i) Alors\n      S <- S + i\n    FinSi\n  FinPour\n  Ecrire(S)\nFin",
+      "solution": "2+3+5+7 = 17",
+      "explication": "On utilise la fonction EstPremier pour filtrer les nombres et on somme ceux qui passent le test.",
+      "tests": [
+        {"entree": "10", "sortie": "17"},
+        {"entree": "20", "sortie": "77"},
+        {"entree": "2", "sortie": "2"}
+      ]
+    },
+    {
+      "id": 55,
+      "titre": "Rotation d'un tableau",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N entiers, puis k. Effectuez une rotation droite de k positions et affichez le résultat.",
+      "entree": "N=5, T=[1,2,3,4,5], k=2",
+      "sortie_attendue": "4 5 1 2 3",
+      "variables_suggerees": ["N", "k", "i", "T", "temp"],
+      "pseudocode_solution": "Pour chaque rotation de 1 à k:\n  temp <- T[N]\n  Pour i <- N à 2 par -1:\n    T[i] <- T[i-1]\n  T[1] <- temp",
+      "solution": "[1,2,3,4,5] rotationné de 2 → [4,5,1,2,3]",
+      "explication": "On effectue k fois une rotation d'une position : on sauvegarde le dernier, on décale, on place le dernier en premier.",
+      "tests": [
+        {"entree": "5\n1\n2\n3\n4\n5\n2", "sortie": "4 5 1 2 3"},
+        {"entree": "3\n1\n2\n3\n1", "sortie": "3 1 2"}
+      ]
+    },
+    {
+      "id": 56,
+      "titre": "Intervalle de confiance",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Lisez N valeurs. Calculez la moyenne et l'écart-type σ = √(Σ(xᵢ−μ)²/N). Affichez μ et σ arrondis à 2 décimales.",
+      "entree": "N=4, valeurs: 2 4 4 4",
+      "sortie_attendue": "mu=3.50 sigma=0.87",
+      "variables_suggerees": ["N", "i", "mu", "sigma", "S", "val"],
+      "pseudocode_solution": "Calculer mu = somme/N\nCalculer sigma = sqrt(somme((xi-mu)²)/N)\nEcrire(mu, sigma)",
+      "solution": "μ=3.50, σ=0.87",
+      "explication": "Deux passes : d'abord la moyenne, ensuite la variance, puis on prend la racine.",
+      "tests": [
+        {"entree": "4\n2\n4\n4\n4", "sortie": "mu=3.50 sigma=0.87"},
+        {"entree": "3\n1\n2\n3", "sortie": "mu=2.00 sigma=0.82"}
+      ]
+    },
+    {
+      "id": 57,
+      "titre": "Jeu du plus ou moins",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Simulez un jeu : la cible est 42. Lisez des tentatives jusqu'à trouver. Affichez 'plus grand', 'plus petit' ou 'bravo!' et le nombre de tentatives.",
+      "entree": "tentatives: 20 60 42",
+      "sortie_attendue": "plus grand\nplus petit\nbravo! en 3 tentatives",
+      "variables_suggerees": ["cible", "essai", "nb"],
+      "pseudocode_solution": "Variables cible, essai, nb : Entiers\nDébut\n  cible <- 42; nb <- 0\n  Repeter\n    Lire(essai)\n    nb <- nb+1\n    Si essai < cible Alors Ecrire('plus grand')\n    Sinon Si essai > cible Alors Ecrire('plus petit')\n  JusquA essai = cible\n  Ecrire('bravo! en', nb, 'tentatives')\nFin",
+      "solution": "3 tentatives",
+      "explication": "REPETER garantit au moins une tentative. On compare chaque essai à la cible.",
+      "tests": [
+        {"entree": "20\n60\n42", "sortie": "plus grand\nplus petit\nbravo! en 3 tentatives"}
+      ]
+    },
+    {
+      "id": 58,
+      "titre": "Multiplication russe",
+      "categorie": "Boucles",
+      "niveau": "Avancé",
+      "enonce": "La multiplication russe : pour multiplier a×b, doubler a et diviser b (entier) par 2. Sommer les a où b est impair. Exemple : 18×23=414.",
+      "entree": "a=18, b=23",
+      "sortie_attendue": "414",
+      "variables_suggerees": ["a", "b", "S"],
+      "pseudocode_solution": "Variables a, b, S : Entiers\nDébut\n  Lire(a, b)\n  S <- 0\n  TantQue b > 0 Faire\n    Si b mod 2 != 0 Alors\n      S <- S + a\n    FinSi\n    a <- a * 2\n    b <- b / 2\n  FinTantQue\n  Ecrire(S)\nFin",
+      "solution": "18×23 = 414",
+      "explication": "On ajoute a quand b est impair, puis on double a et on divise b par 2. Repose sur la représentation binaire de b.",
+      "tests": [
+        {"entree": "18\n23", "sortie": "414"},
+        {"entree": "5\n7", "sortie": "35"},
+        {"entree": "3\n4", "sortie": "12"}
+      ]
+    },
+    {
+      "id": 59,
+      "titre": "Crible d'Ératosthène",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Utilisez le crible d'Ératosthène pour trouver tous les nombres premiers jusqu'à N. Affichez-les séparés par des espaces.",
+      "entree": "N = 30",
+      "sortie_attendue": "2 3 5 7 11 13 17 19 23 29",
+      "variables_suggerees": ["N", "i", "j", "estPremier"],
+      "pseudocode_solution": "estPremier[2..N] <- Vrai\nPour i <- 2 à sqrt(N)\n  Si estPremier[i] Alors\n    Pour j <- i² à N par i\n      estPremier[j] <- Faux\nAfficher tous i où estPremier[i] = Vrai",
+      "solution": "2 3 5 7 11 13 17 19 23 29",
+      "explication": "On marque les multiples de chaque premier comme non-premiers. Ce qui reste non-marqué est premier.",
+      "tests": [
+        {"entree": "30", "sortie": "2 3 5 7 11 13 17 19 23 29"},
+        {"entree": "10", "sortie": "2 3 5 7"},
+        {"entree": "2", "sortie": "2"}
+      ]
+    },
+    {
+      "id": 60,
+      "titre": "Calcul de e (exponentielle)",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Approximez e = Σ(1/k!) pour k=0 à N. Affichez à 6 décimales.",
+      "entree": "N = 10",
+      "sortie_attendue": "2.718282",
+      "variables_suggerees": ["N", "i", "e", "terme"],
+      "pseudocode_solution": "Variables N, i : Entiers\nVariables e, terme : Réels\nDébut\n  Lire(N)\n  e <- 0; terme <- 1\n  Pour i <- 0 à N\n    e <- e + terme\n    terme <- terme / (i+1)\n  FinPour\n  Ecrire(e)\nFin",
+      "solution": "e ≈ 2.718282",
+      "explication": "On calcule terme = 1/k! de façon incrémentale : terme[k] = terme[k-1]/k.",
+      "tests": [
+        {"entree": "10", "sortie": "2.718282"},
+        {"entree": "5", "sortie": "2.716667"}
+      ]
+    },
+    {
+      "id": 61,
+      "titre": "Interclassement de deux tableaux",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Lisez deux tableaux triés de tailles N et M. Fusionnez-les en un seul tableau trié et affichez-le.",
+      "entree": "T1=[1,3,5,7], T2=[2,4,6]",
+      "sortie_attendue": "1 2 3 4 5 6 7",
+      "variables_suggerees": ["N", "M", "i", "j", "k", "T1", "T2", "T3"],
+      "pseudocode_solution": "i<-1; j<-1; k<-1\nTantQue i<=N ET j<=M\n  Si T1[i]<=T2[j] Alors T3[k]<-T1[i]; i++\n  Sinon T3[k]<-T2[j]; j++\n  k++\nCopier reste de T1 ou T2",
+      "solution": "1 2 3 4 5 6 7",
+      "explication": "On compare les têtes des deux tableaux et on prend le plus petit à chaque étape.",
+      "tests": [
+        {"entree": "4\n1\n3\n5\n7\n3\n2\n4\n6", "sortie": "1 2 3 4 5 6 7"},
+        {"entree": "2\n1\n5\n2\n2\n4", "sortie": "1 2 4 5"}
+      ]
+    },
+    {
+      "id": 62,
+      "titre": "Histogramme horizontal",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez N entiers (entre 1 et 10). Pour chaque valeur, affichez autant d'étoiles '*' que la valeur.",
+      "entree": "N=4, valeurs: 3 1 5 2",
+      "sortie_attendue": "***\n*\n*****\n**",
+      "variables_suggerees": ["N", "i", "j", "val"],
+      "pseudocode_solution": "Pour i <- 1 à N\n  Lire(val)\n  Pour j <- 1 à val\n    Ecrire('*') (sans saut de ligne)\n  FinPour\n  Saut de ligne\nFinPour",
+      "solution": "3 étoiles, 1 étoile, 5 étoiles, 2 étoiles",
+      "explication": "Double boucle : externe pour chaque valeur, interne pour afficher les étoiles.",
+      "tests": [
+        {"entree": "4\n3\n1\n5\n2", "sortie": "***\n*\n*****\n**"},
+        {"entree": "3\n1\n1\n1", "sortie": "*\n*\n*"}
+      ]
+    },
+    {
+      "id": 63,
+      "titre": "Évaluation d'un polynôme (Horner)",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Évaluez p(x) = aₙxⁿ + ... + a₁x + a₀ par le schéma de Horner. Lisez n+1 coefficients (du plus grand au plus petit) et x.",
+      "entree": "coeffs=[1,-2,1] (x²-2x+1), x=3",
+      "sortie_attendue": "4",
+      "variables_suggerees": ["n", "i", "x", "a", "res"],
+      "pseudocode_solution": "Lire(n+1 coefficients a[0..n], x)\nres <- a[0]\nPour i <- 1 à n\n  res <- res*x + a[i]\nFinPour\nEcrire(res)",
+      "solution": "p(3) = 9-6+1 = 4",
+      "explication": "Horner : res = (...((a₀×x + a₁)×x + a₂)...). Évite de calculer les puissances.",
+      "tests": [
+        {"entree": "3\n1\n-2\n1\n3", "sortie": "4"},
+        {"entree": "2\n1\n0\n2", "sortie": "2"},
+        {"entree": "4\n1\n0\n0\n0\n2", "sortie": "18"}
+      ]
+    },
+    {
+      "id": 64,
+      "titre": "Suite de Syracuse — record",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Calculez la suite de Syracuse partant de n (n pair→n/2, n impair→3n+1). Affichez la valeur maximale atteinte avant d'arriver à 1.",
+      "entree": "n = 27",
+      "sortie_attendue": "9232",
+      "variables_suggerees": ["n", "record"],
+      "pseudocode_solution": "record <- n\nTantQue n != 1\n  Si n mod 2 = 0 Alors n <- n/2\n  Sinon n <- 3*n+1\n  Si n > record Alors record <- n\nEcrire(record)",
+      "solution": "9232 (valeur max de la suite partant de 27)",
+      "explication": "On applique la règle de Collatz en mémorisant le maximum atteint.",
+      "tests": [
+        {"entree": "27", "sortie": "9232"},
+        {"entree": "6", "sortie": "16"}
+      ]
+    },
+    {
+      "id": 65,
+      "titre": "Recherche du kᵉ plus petit",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Lisez N entiers et k. Trouvez le kᵉ plus petit élément (par ex. k=2 → 2ᵉ plus petit).",
+      "entree": "N=5, T=[3,1,4,1,5], k=3",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["N", "k", "i", "j", "T", "temp"],
+      "pseudocode_solution": "Trier T par ordre croissant\nEcrire(T[k])",
+      "solution": "Trié : [1,1,3,4,5] → 3ᵉ = 3",
+      "explication": "On trie le tableau et on retourne l'élément à la position k.",
+      "tests": [
+        {"entree": "5\n3\n1\n4\n1\n5\n3", "sortie": "3"},
+        {"entree": "4\n10\n20\n5\n15\n2", "sortie": "10"}
+      ]
+    },
+    {
+      "id": 66,
+      "titre": "Décodage César",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Décodez un message chiffré par César de clé k. Lisez le message chiffré et k. Affichez le message original.",
+      "entree": "message='khoor', k=3",
+      "sortie_attendue": "hello",
+      "variables_suggerees": ["message", "k", "i", "c"],
+      "pseudocode_solution": "Pour chaque lettre c du message:\n  position <- (position(c) - k + 26) mod 26\n  Ecrire(lettre(position))",
+      "solution": "k→h, h→e, o→l, o→l, r→o",
+      "explication": "On décale en sens inverse : (position - k + 26) mod 26. Le +26 évite les valeurs négatives.",
+      "tests": [
+        {"entree": "khoor\n3", "sortie": "hello"},
+        {"entree": "abc\n3", "sortie": "xyz"},
+        {"entree": "abc\n0", "sortie": "abc"}
+      ]
+    },
+    {
+      "id": 67,
+      "titre": "Multiplication matricielle n×n",
+      "categorie": "Matrices",
+      "niveau": "Expert",
+      "enonce": "Lisez n, puis deux matrices n×n A et B. Calculez et affichez C = A×B.",
+      "entree": "n=2, A=[[1,2],[3,4]], B=[[1,0],[0,1]]",
+      "sortie_attendue": "1 2\n3 4",
+      "variables_suggerees": ["n", "i", "j", "k", "A", "B", "C"],
+      "pseudocode_solution": "Pour i <- 1 à n\n  Pour j <- 1 à n\n    C[i][j] <- 0\n    Pour k <- 1 à n\n      C[i][j] <- C[i][j]+A[i][k]*B[k][j]\n    FinPour\n  FinPour\nEcrire(C)",
+      "solution": "A × I = A",
+      "explication": "Triple boucle classique. Le produit par la matrice identité donne A.",
+      "tests": [
+        {"entree": "2\n1\n2\n3\n4\n1\n0\n0\n1", "sortie": "1 2\n3 4"},
+        {"entree": "2\n1\n2\n3\n4\n5\n6\n7\n8", "sortie": "19 22\n43 50"}
+      ]
+    },
+    {
+      "id": 68,
+      "titre": "Nombre abondant",
+      "categorie": "Fonctions",
+      "niveau": "Intermédiaire",
+      "enonce": "Un nombre est abondant si la somme de ses diviseurs propres est > lui-même. Affichez 'abondant' ou 'non abondant'.",
+      "entree": "n = 12",
+      "sortie_attendue": "abondant",
+      "variables_suggerees": ["n", "i", "S"],
+      "pseudocode_solution": "S <- 0\nPour i <- 1 à n-1\n  Si n mod i = 0 Alors S <- S+i\nFinPour\nSi S > n Alors Ecrire('abondant')\nSinon Ecrire('non abondant')",
+      "solution": "12 : diviseurs = 1+2+3+4+6 = 16 > 12 → abondant",
+      "explication": "On somme les diviseurs propres et on compare avec n.",
+      "tests": [
+        {"entree": "12", "sortie": "abondant"},
+        {"entree": "9", "sortie": "non abondant"},
+        {"entree": "20", "sortie": "abondant"}
+      ]
+    },
+    {
+      "id": 69,
+      "titre": "Compression par plages (RLE)",
+      "categorie": "Boucles",
+      "niveau": "Avancé",
+      "enonce": "Encodez une chaîne par Run-Length Encoding : remplacez les suites de caractères identiques par (count)(char). Ex: 'aaabbc' → '3a2b1c'.",
+      "entree": "s = 'aaabbc'",
+      "sortie_attendue": "3a2b1c",
+      "variables_suggerees": ["s", "i", "cpt", "c"],
+      "pseudocode_solution": "cpt <- 1\nPour i <- 2 à longueur(s)\n  Si s[i] = s[i-1] Alors\n    cpt <- cpt+1\n  Sinon\n    Ecrire(cpt, s[i-1])\n    cpt <- 1\n  FinSi\nFinPour\nEcrire(cpt, s[dernière])",
+      "solution": "3a2b1c",
+      "explication": "On compare chaque caractère au précédent. Quand ça change, on écrit le compte et le caractère.",
+      "tests": [
+        {"entree": "aaabbc", "sortie": "3a2b1c"},
+        {"entree": "abcd", "sortie": "1a1b1c1d"},
+        {"entree": "aaaa", "sortie": "4a"}
+      ]
+    },
+    {
+      "id": 70,
+      "titre": "Minimum de la fonction par balayage",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Trouvez le minimum de f(x) = x²-4x+5 sur [0,5] par balayage avec pas=0.01. Affichez x_min et f(x_min) à 2 décimales.",
+      "entree": "a=0, b=5, pas=0.01",
+      "sortie_attendue": "x=2.00 f=1.00",
+      "variables_suggerees": ["a", "b", "pas", "x", "xmin", "fmin"],
+      "pseudocode_solution": "x <- a; xmin <- a; fmin <- f(a)\nTantQue x <= b\n  Si f(x) < fmin Alors\n    xmin <- x; fmin <- f(x)\n  FinSi\n  x <- x + pas\nEcrire(xmin, fmin)",
+      "solution": "Min en x=2 : f(2)=4-8+5=1",
+      "explication": "On évalue f sur une grille fine et on garde le point où f est minimum.",
+      "tests": [
+        {"entree": "0\n5\n0.01", "sortie": "x=2.00 f=1.00"}
+      ]
+    },
+    {
+      "id": 71,
+      "titre": "Plus long sous-tableau contigu",
+      "categorie": "Tableaux",
+      "niveau": "Expert",
+      "enonce": "Algorithme de Kadane : trouvez la somme maximale d'un sous-tableau contigu dans un tableau d'entiers (peut contenir des négatifs).",
+      "entree": "N=8, T=[-2,1,-3,4,-1,2,1,-5,4]",
+      "sortie_attendue": "6",
+      "variables_suggerees": ["N", "i", "maxSomme", "sommeCourante"],
+      "pseudocode_solution": "maxSomme <- T[1]\nsommeCourante <- T[1]\nPour i <- 2 à N\n  sommeCourante <- max(T[i], sommeCourante+T[i])\n  maxSomme <- max(maxSomme, sommeCourante)\nFinPour\nEcrire(maxSomme)",
+      "solution": "Sous-tableau [4,-1,2,1] → somme = 6",
+      "explication": "À chaque pas, on décide de continuer le sous-tableau courant ou d'en commencer un nouveau à partir de T[i].",
+      "tests": [
+        {"entree": "9\n-2\n1\n-3\n4\n-1\n2\n1\n-5\n4", "sortie": "6"},
+        {"entree": "4\n-1\n-2\n-3\n-4", "sortie": "-1"},
+        {"entree": "5\n1\n2\n3\n4\n5", "sortie": "15"}
+      ]
+    },
+    {
+      "id": 72,
+      "titre": "Chiffres en toutes lettres",
+      "categorie": "Conditions",
+      "niveau": "Débutant",
+      "enonce": "Lisez un chiffre entre 0 et 9. Affichez-le en toutes lettres.",
+      "entree": "n = 5",
+      "sortie_attendue": "cinq",
+      "variables_suggerees": ["n"],
+      "pseudocode_solution": "Selon n\n  0: Ecrire('zero')\n  1: Ecrire('un')\n  2: Ecrire('deux')\n  3: Ecrire('trois')\n  4: Ecrire('quatre')\n  5: Ecrire('cinq')\n  6: Ecrire('six')\n  7: Ecrire('sept')\n  8: Ecrire('huit')\n  9: Ecrire('neuf')\nFinSelon",
+      "solution": "cinq",
+      "explication": "La structure SELON est parfaite pour mapper chaque chiffre à son mot.",
+      "tests": [
+        {"entree": "5", "sortie": "cinq"},
+        {"entree": "0", "sortie": "zero"},
+        {"entree": "9", "sortie": "neuf"}
+      ]
+    },
+    {
+      "id": 73,
+      "titre": "Détection de suite croissante",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N entiers. Affichez 'croissant' si le tableau est strictement croissant, 'non croissant' sinon.",
+      "entree": "N=5, T=[1,3,5,7,9]",
+      "sortie_attendue": "croissant",
+      "variables_suggerees": ["N", "i", "val", "prev", "ok"],
+      "pseudocode_solution": "Lire(prev)\nok <- Vrai\nPour i <- 2 à N\n  Lire(val)\n  Si val <= prev Alors ok <- Faux\n  prev <- val\nFinPour\nSi ok Alors Ecrire('croissant')\nSinon Ecrire('non croissant')",
+      "solution": "1<3<5<7<9 → croissant",
+      "explication": "On vérifie chaque paire de voisins : si un élément n'est pas strictement supérieur au précédent, c'est non croissant.",
+      "tests": [
+        {"entree": "5\n1\n3\n5\n7\n9", "sortie": "croissant"},
+        {"entree": "4\n1\n2\n2\n3", "sortie": "non croissant"},
+        {"entree": "3\n5\n3\n1", "sortie": "non croissant"}
+      ]
+    },
+    {
+      "id": 74,
+      "titre": "Somme des diviseurs d'un tableau",
+      "categorie": "Fonctions",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N entiers. Pour chacun, affichez la somme de ses diviseurs (1 inclus, lui-même inclus).",
+      "entree": "N=3, valeurs: 6 7 12",
+      "sortie_attendue": "12\n8\n28",
+      "variables_suggerees": ["N", "i", "j", "n", "S"],
+      "pseudocode_solution": "Pour i <- 1 à N\n  Lire(n)\n  S <- 0\n  Pour j <- 1 à n\n    Si n mod j = 0 Alors S <- S+j\n  FinPour\n  Ecrire(S)\nFinPour",
+      "solution": "6→12, 7→8, 12→28",
+      "explication": "Pour chaque n, on somme tous ses diviseurs de 1 à n inclus.",
+      "tests": [
+        {"entree": "3\n6\n7\n12", "sortie": "12\n8\n28"},
+        {"entree": "1\n1", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 75,
+      "titre": "Tableau en escalier",
+      "categorie": "Matrices",
+      "niveau": "Intermédiaire",
+      "enonce": "Affichez un tableau n×n tel que T[i][j] = i×j (table de multiplication). Ligne par ligne, éléments séparés par des espaces.",
+      "entree": "n = 4",
+      "sortie_attendue": "1 2 3 4\n2 4 6 8\n3 6 9 12\n4 8 12 16",
+      "variables_suggerees": ["n", "i", "j"],
+      "pseudocode_solution": "Pour i <- 1 à n\n  Pour j <- 1 à n\n    Ecrire(i*j)\n  FinPour\nFinPour",
+      "solution": "T[i][j] = i×j",
+      "explication": "Double boucle : ligne i, colonne j. Chaque cellule vaut i×j.",
+      "tests": [
+        {"entree": "4", "sortie": "1 2 3 4\n2 4 6 8\n3 6 9 12\n4 8 12 16"},
+        {"entree": "2", "sortie": "1 2\n2 4"}
+      ]
+    },
+    {
+      "id": 76,
+      "titre": "Comptage dans l'intervalle",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez N entiers et deux bornes a et b (a<b). Comptez combien d'entiers du tableau sont dans l'intervalle [a, b].",
+      "entree": "N=6, T=[1,5,3,8,2,7], a=3, b=7",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["N", "a", "b", "i", "cpt", "val"],
+      "pseudocode_solution": "cpt <- 0\nPour i <- 1 à N\n  Lire(val)\n  Si val >= a ET val <= b Alors\n    cpt <- cpt+1\n  FinSi\nFinPour\nEcrire(cpt)",
+      "solution": "3, 5, 7 sont dans [3,7] → 3 éléments",
+      "explication": "On vérifie la double condition val>=a ET val<=b pour chaque élément.",
+      "tests": [
+        {"entree": "6\n1\n5\n3\n8\n2\n7\n3\n7", "sortie": "3"},
+        {"entree": "4\n1\n2\n3\n4\n1\n4", "sortie": "4"}
+      ]
+    },
+    {
+      "id": 77,
+      "titre": "Collatz — chemin complet",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Affichez chaque valeur de la suite de Collatz partant de n jusqu'à 1 (inclus).",
+      "entree": "n = 6",
+      "sortie_attendue": "6\n3\n10\n5\n16\n8\n4\n2\n1",
+      "variables_suggerees": ["n"],
+      "pseudocode_solution": "Lire(n)\nEcrire(n)\nTantQue n != 1\n  Si n mod 2 = 0 Alors n <- n/2\n  Sinon n <- 3*n+1\n  Ecrire(n)\nFinTantQue",
+      "solution": "6→3→10→5→16→8→4→2→1",
+      "explication": "On affiche n à chaque étape, y compris le 1 final.",
+      "tests": [
+        {"entree": "6", "sortie": "6\n3\n10\n5\n16\n8\n4\n2\n1"},
+        {"entree": "1", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 78,
+      "titre": "Puissance de 2",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Affichez toutes les puissances de 2 inférieures ou égales à N.",
+      "entree": "N = 100",
+      "sortie_attendue": "1\n2\n4\n8\n16\n32\n64",
+      "variables_suggerees": ["N", "p"],
+      "pseudocode_solution": "p <- 1\nTantQue p <= N\n  Ecrire(p)\n  p <- p*2\nFinTantQue",
+      "solution": "1,2,4,8,16,32,64 ≤ 100",
+      "explication": "On double p à chaque étape. On s'arrête quand p dépasse N.",
+      "tests": [
+        {"entree": "100", "sortie": "1\n2\n4\n8\n16\n32\n64"},
+        {"entree": "1", "sortie": "1"},
+        {"entree": "8", "sortie": "1\n2\n4\n8"}
+      ]
+    },
+    {
+      "id": 79,
+      "titre": "Produit scalaire",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N puis deux vecteurs A et B de taille N. Calculez et affichez leur produit scalaire A·B = Σ(Aᵢ×Bᵢ).",
+      "entree": "N=3, A=[1,2,3], B=[4,5,6]",
+      "sortie_attendue": "32",
+      "variables_suggerees": ["N", "i", "S", "ai", "bi"],
+      "pseudocode_solution": "S <- 0\nPour i <- 1 à N\n  Lire(ai, bi)\n  S <- S + ai*bi\nFinPour\nEcrire(S)",
+      "solution": "1×4+2×5+3×6 = 4+10+18 = 32",
+      "explication": "On multiplie les composantes deux à deux et on somme.",
+      "tests": [
+        {"entree": "3\n1\n4\n2\n5\n3\n6", "sortie": "32"},
+        {"entree": "2\n1\n0\n0\n1", "sortie": "0"},
+        {"entree": "4\n1\n1\n1\n1\n1\n1\n1\n1", "sortie": "4"}
+      ]
+    },
+    {
+      "id": 80,
+      "titre": "Nombre de Kaprekar",
+      "categorie": "Boucles",
+      "niveau": "Expert",
+      "enonce": "La constante de Kaprekar : partant d'un nombre à 4 chiffres non tous identiques, trier décroissant puis croissant, soustraire. Répéter jusqu'à 6174. Affichez le nombre d'étapes.",
+      "entree": "n = 1234",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["n", "etapes"],
+      "pseudocode_solution": "etapes <- 0\nTantQue n != 6174\n  grand <- trier_decroissant(n)\n  petit <- trier_croissant(n)\n  n <- grand - petit\n  etapes <- etapes+1\nEcrire(etapes)",
+      "solution": "1234→3087→8352→6174 : 3 étapes",
+      "explication": "On réordonne les chiffres pour former le plus grand et le plus petit nombre, puis on soustrait.",
+      "tests": [
+        {"entree": "1234", "sortie": "3"},
+        {"entree": "1111", "sortie": "Invalide"},
+        {"entree": "5432", "sortie": "3"}
+      ]
+    },
+    {
+      "id": 81,
+      "titre": "Calcul du déterminant 2×2",
+      "categorie": "Matrices",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez une matrice 2×2 ([[a,b],[c,d]]). Calculez et affichez son déterminant = a×d − b×c.",
+      "entree": "M=[[3,8],[4,6]]",
+      "sortie_attendue": "-14",
+      "variables_suggerees": ["a", "b", "c", "d", "det"],
+      "pseudocode_solution": "Lire(a, b, c, d)\ndet <- a*d - b*c\nEcrire(det)",
+      "solution": "3×6 - 8×4 = 18-32 = -14",
+      "explication": "Le déterminant d'une matrice 2×2 est ad-bc.",
+      "tests": [
+        {"entree": "3\n8\n4\n6", "sortie": "-14"},
+        {"entree": "1\n0\n0\n1", "sortie": "1"},
+        {"entree": "2\n3\n1\n4", "sortie": "5"}
+      ]
+    },
+    {
+      "id": 82,
+      "titre": "Longueur de la plus longue séquence",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Lisez N entiers. Trouvez la longueur de la plus longue suite de valeurs identiques consécutives.",
+      "entree": "N=8, T=[1,1,2,2,2,1,3,3]",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["N", "i", "maxLen", "curLen", "prev"],
+      "pseudocode_solution": "Lire(prev)\ncurLen <- 1; maxLen <- 1\nPour i <- 2 à N\n  Lire(val)\n  Si val = prev Alors curLen <- curLen+1\n  Sinon curLen <- 1\n  Si curLen > maxLen Alors maxLen <- curLen\n  prev <- val\nFinPour\nEcrire(maxLen)",
+      "solution": "2,2,2 → longueur 3",
+      "explication": "On compte la séquence courante et on garde le maximum.",
+      "tests": [
+        {"entree": "8\n1\n1\n2\n2\n2\n1\n3\n3", "sortie": "3"},
+        {"entree": "4\n1\n2\n3\n4", "sortie": "1"},
+        {"entree": "5\n7\n7\n7\n7\n7", "sortie": "5"}
+      ]
+    },
+    {
+      "id": 83,
+      "titre": "Escalier d'étoiles",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez N. Affichez un escalier de N lignes : ligne i contient i étoiles.",
+      "entree": "N = 4",
+      "sortie_attendue": "*\n**\n***\n****",
+      "variables_suggerees": ["N", "i", "j"],
+      "pseudocode_solution": "Pour i <- 1 à N\n  Pour j <- 1 à i\n    Ecrire('*') sans saut\n  FinPour\n  Saut de ligne\nFinPour",
+      "solution": "Ligne i a i étoiles",
+      "explication": "Double boucle : la boucle interne s'arrête à i (pas à N).",
+      "tests": [
+        {"entree": "4", "sortie": "*\n**\n***\n****"},
+        {"entree": "1", "sortie": "*"},
+        {"entree": "3", "sortie": "*\n**\n***"}
+      ]
+    },
+    {
+      "id": 84,
+      "titre": "Tableau de Fibonacci jusqu'à N",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez N. Affichez tous les nombres de Fibonacci ≤ N.",
+      "entree": "N = 50",
+      "sortie_attendue": "0\n1\n1\n2\n3\n5\n8\n13\n21\n34",
+      "variables_suggerees": ["N", "a", "b", "c"],
+      "pseudocode_solution": "a <- 0; b <- 1\nEcrire(a)\nTantQue b <= N\n  Ecrire(b)\n  c <- a+b\n  a <- b\n  b <- c\nFinTantQue",
+      "solution": "Fibonacci jusqu'à 50",
+      "explication": "On génère les termes de Fibonacci et on s'arrête quand le suivant dépasse N.",
+      "tests": [
+        {"entree": "50", "sortie": "0\n1\n1\n2\n3\n5\n8\n13\n21\n34"},
+        {"entree": "5", "sortie": "0\n1\n1\n2\n3\n5"}
+      ]
+    },
+    {
+      "id": 85,
+      "titre": "Médiane d'un tableau",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N entiers. Affichez la médiane (valeur centrale si N impair, moyenne des deux centraux si N pair).",
+      "entree": "N=5, T=[3,1,4,1,5]",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["N", "i", "T", "mediane"],
+      "pseudocode_solution": "Trier T\nSi N mod 2 != 0 Alors\n  mediane <- T[N/2+1]\nSinon\n  mediane <- (T[N/2]+T[N/2+1])/2\nEcrire(mediane)",
+      "solution": "Trié [1,1,3,4,5] → médiane = 3",
+      "explication": "On trie puis on prend le (ou les) élément central.",
+      "tests": [
+        {"entree": "5\n3\n1\n4\n1\n5", "sortie": "3"},
+        {"entree": "4\n1\n2\n3\n4", "sortie": "2.5"},
+        {"entree": "1\n7", "sortie": "7"}
+      ]
+    },
+    {
+      "id": 86,
+      "titre": "Puissance récursive",
+      "categorie": "Fonctions",
+      "niveau": "Avancé",
+      "enonce": "Calculez x^n de façon récursive : x^0=1, x^n = x × x^(n-1). Affichez le résultat.",
+      "entree": "x=2, n=8",
+      "sortie_attendue": "256",
+      "variables_suggerees": ["x", "n"],
+      "pseudocode_solution": "Fonction PuissanceRec(x, n)\n  Si n = 0 Alors Retourner 1\n  Sinon Retourner x * PuissanceRec(x, n-1)\n\nEcrire(PuissanceRec(x,n))",
+      "solution": "2^8 = 256",
+      "explication": "La récursivité : x^n = x × x^(n-1), avec x^0 = 1 comme cas de base.",
+      "tests": [
+        {"entree": "2\n8", "sortie": "256"},
+        {"entree": "3\n5", "sortie": "243"},
+        {"entree": "7\n0", "sortie": "1"}
+      ]
+    },
+    {
+      "id": 87,
+      "titre": "Division entière sans opérateur",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Calculez a÷b (quotient entier) sans utiliser / ou mod, uniquement des soustractions.",
+      "entree": "a=17, b=5",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["a", "b", "q"],
+      "pseudocode_solution": "q <- 0\nTantQue a >= b\n  a <- a - b\n  q <- q + 1\nFinTantQue\nEcrire(q)",
+      "solution": "17÷5 = 3 (reste 2)",
+      "explication": "On soustrait b de a jusqu'à ce que a<b. Le nombre de soustractions est le quotient.",
+      "tests": [
+        {"entree": "17\n5", "sortie": "3"},
+        {"entree": "20\n4", "sortie": "5"},
+        {"entree": "7\n10", "sortie": "0"}
+      ]
+    },
+    {
+      "id": 88,
+      "titre": "Chiffre le plus fréquent",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez un entier positif n. Trouvez et affichez le chiffre le plus fréquent dans n. Si égalité, affichez le plus petit.",
+      "entree": "n = 122333",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["n", "freq", "r", "maxFreq", "result"],
+      "pseudocode_solution": "Initialiser freq[0..9] à 0\nTantQue n > 0\n  freq[n mod 10]++\n  n /= 10\nTrouver chiffre avec freq max\nEcrire(résultat)",
+      "solution": "1×1, 2×2, 3×3 → 3 le plus fréquent",
+      "explication": "On compte la fréquence de chaque chiffre (0-9) et on trouve le maximum.",
+      "tests": [
+        {"entree": "122333", "sortie": "3"},
+        {"entree": "111222", "sortie": "1"},
+        {"entree": "9", "sortie": "9"}
+      ]
+    },
+    {
+      "id": 89,
+      "titre": "Tableau zéro-un (triage rapide)",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N entiers ne contenant que des 0 et des 1. Triez-les en O(N) sans utiliser de tri standard.",
+      "entree": "N=7, T=[1,0,1,0,0,1,0]",
+      "sortie_attendue": "0 0 0 0 1 1 1",
+      "variables_suggerees": ["N", "zeros", "i", "val"],
+      "pseudocode_solution": "zeros <- 0\nPour i <- 1 à N\n  Lire(val)\n  Si val = 0 Alors zeros <- zeros+1\nFinPour\nPour i <- 1 à zeros: Ecrire(0)\nPour i <- 1 à N-zeros: Ecrire(1)",
+      "solution": "Compter les zéros puis afficher",
+      "explication": "On compte les zéros en une passe, puis on affiche zeros zéros et (N-zeros) uns.",
+      "tests": [
+        {"entree": "7\n1\n0\n1\n0\n0\n1\n0", "sortie": "0 0 0 0 1 1 1"},
+        {"entree": "4\n1\n1\n0\n1", "sortie": "0 1 1 1"}
+      ]
+    },
+    {
+      "id": 90,
+      "titre": "Intégrale par rectangles du point milieu",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Calculez ∫₀^(π/2) cos(x) dx par rectangles du point milieu avec M=10. Valeur exacte = 1. Affichez à 4 décimales.",
+      "entree": "a=0, b=pi/2, M=10",
+      "sortie_attendue": "1.0000",
+      "variables_suggerees": ["a", "b", "M", "H", "I", "k", "xm"],
+      "pseudocode_solution": "a<-0; b<-pi/2; M<-10\nH <- (b-a)/M\nI <- 0\nPour k <- 1 à M\n  xm <- a+(k-0.5)*H\n  I <- I + H*cos(xm)\nFinPour\nEcrire(I)",
+      "solution": "I ≈ 1.0000",
+      "explication": "Le milieu de l'intervalle k est xm = a+(k-0.5)×H. cos intégré sur [0,π/2] = 1.",
+      "tests": [
+        {"entree": "0\n1.5708\n10", "sortie": "1.0000"}
+      ]
+    },
+    {
+      "id": 91,
+      "titre": "Suite de Stern-Brocot (premiers termes)",
+      "categorie": "Boucles",
+      "niveau": "Expert",
+      "enonce": "Générez les N premiers termes de la suite de Stern : s(0)=0, s(1)=1, s(2n)=s(n), s(2n+1)=s(n)+s(n+1). Affichez-les.",
+      "entree": "N = 8",
+      "sortie_attendue": "0 1 1 2 1 3 2 3",
+      "variables_suggerees": ["N", "i", "s"],
+      "pseudocode_solution": "s[0]<-0; s[1]<-1\nPour i <- 2 à N-1\n  Si i mod 2 = 0 Alors s[i] <- s[i/2]\n  Sinon s[i] <- s[(i-1)/2]+s[(i+1)/2]\nFinPour\nAfficher s[0..N-1]",
+      "solution": "0 1 1 2 1 3 2 3",
+      "explication": "Suite liée aux fractions de Farey. Les valeurs s(n) et s(n+1) sont toujours premières entre elles.",
+      "tests": [
+        {"entree": "8", "sortie": "0 1 1 2 1 3 2 3"},
+        {"entree": "4", "sortie": "0 1 1 2"}
+      ]
+    },
+    {
+      "id": 92,
+      "titre": "Escalier inversé",
+      "categorie": "Boucles",
+      "niveau": "Débutant",
+      "enonce": "Lisez N. Affichez un escalier inversé : ligne 1 a N étoiles, ligne 2 en a N-1, ..., ligne N en a 1.",
+      "entree": "N = 4",
+      "sortie_attendue": "****\n***\n**\n*",
+      "variables_suggerees": ["N", "i", "j"],
+      "pseudocode_solution": "Pour i <- N à 1 par -1\n  Pour j <- 1 à i\n    Ecrire('*') sans saut\n  Saut de ligne\nFinPour",
+      "solution": "4,3,2,1 étoiles",
+      "explication": "Boucle externe décroissante de N à 1, boucle interne va de 1 à i.",
+      "tests": [
+        {"entree": "4", "sortie": "****\n***\n**\n*"},
+        {"entree": "2", "sortie": "**\n*"}
+      ]
+    },
+    {
+      "id": 93,
+      "titre": "Recherche d'un saut de séquence",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N entiers censés former une séquence consécutive de 1 à N, mais il manque un nombre. Trouvez-le.",
+      "entree": "N=5, T=[1,2,4,5,6] (manque 3, séquence 1..N+1 avec trou)",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["N", "i", "S", "val"],
+      "pseudocode_solution": "Somme attendue <- N*(N+1)/2 + (N+1) // car 1..N+1 manque un\nS <- 0\nPour i <- 1 à N: Lire(val); S <- S+val\nEcrire(somme_attendue - S)",
+      "solution": "Somme(1..6) - somme(T) = 21-18 = 3",
+      "explication": "La somme 1+2+...+(N+1) moins la somme des éléments lus donne le nombre manquant.",
+      "tests": [
+        {"entree": "5\n1\n2\n4\n5\n6", "sortie": "3"},
+        {"entree": "3\n1\n3\n4", "sortie": "2"}
+      ]
+    },
+    {
+      "id": 94,
+      "titre": "Calcul de la dérivée numérique",
+      "categorie": "Méthodes numériques",
+      "niveau": "Avancé",
+      "enonce": "Approximez f'(x) par la formule centrée : f'(x) ≈ (f(x+h)-f(x-h))/(2h). Pour f(x)=x³, calculez f'(2) avec h=0.001. Valeur exacte = 12.",
+      "entree": "x=2, h=0.001",
+      "sortie_attendue": "12.0000",
+      "variables_suggerees": ["x", "h", "fp"],
+      "pseudocode_solution": "x <- 2; h <- 0.001\nfp <- (f(x+h)-f(x-h))/(2*h)\nEcrire(fp)",
+      "solution": "f'(2) = 3×4 = 12",
+      "explication": "La dérivée centrée est plus précise que la dérivée à droite car l'erreur est en O(h²) au lieu de O(h).",
+      "tests": [
+        {"entree": "2\n0.001", "sortie": "12.0000"}
+      ]
+    },
+    {
+      "id": 95,
+      "titre": "Sac à dos simplifié (0/1)",
+      "categorie": "Tableaux",
+      "niveau": "Expert",
+      "enonce": "N objets avec poids w[i] et valeur v[i]. Capacité C. Sélectionnez les objets par valeur/poids décroissant (approche gloutonne) tant que la capacité le permet. Affichez la valeur totale.",
+      "entree": "N=4, w=[2,3,4,5], v=[3,4,5,7], C=5",
+      "sortie_attendue": "7",
+      "variables_suggerees": ["N", "C", "i", "total"],
+      "pseudocode_solution": "Trier par ratio v/w décroissant\ntotal <- 0; poidsRestant <- C\nPour chaque objet\n  Si w[i] <= poidsRestant Alors\n    total <- total + v[i]\n    poidsRestant <- poidsRestant - w[i]\nEcrire(total)",
+      "solution": "Objet 4 (v=7,w=5) entre dans C=5 → total=7",
+      "explication": "Glouton : on prend les objets avec le meilleur ratio valeur/poids tant qu'ils rentrent.",
+      "tests": [
+        {"entree": "4\n2\n3\n4\n5\n3\n4\n5\n7\n5", "sortie": "7"}
+      ]
+    },
+    {
+      "id": 96,
+      "titre": "Comptage de mots",
+      "categorie": "Boucles",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez une phrase (terminée par un point). Comptez et affichez le nombre de mots (séparés par des espaces).",
+      "entree": "phrase = 'bonjour le monde.'",
+      "sortie_attendue": "3",
+      "variables_suggerees": ["phrase", "i", "cpt", "dansMot"],
+      "pseudocode_solution": "cpt <- 0; dansMot <- Faux\nPour chaque caractère c\n  Si c != ' ' ET c != '.' Alors\n    Si NON dansMot Alors cpt++; dansMot <- Vrai\n  Sinon\n    dansMot <- Faux\nEcrire(cpt)",
+      "solution": "3 mots",
+      "explication": "On détecte les transitions espace→lettre pour compter les débuts de mots.",
+      "tests": [
+        {"entree": "bonjour le monde.", "sortie": "3"},
+        {"entree": "un.", "sortie": "1"},
+        {"entree": "a b c d.", "sortie": "4"}
+      ]
+    },
+    {
+      "id": 97,
+      "titre": "Calcul de la variance",
+      "categorie": "Tableaux",
+      "niveau": "Intermédiaire",
+      "enonce": "Lisez N réels. Calculez la variance = Σ(xᵢ-μ)²/N. Affichez à 2 décimales.",
+      "entree": "N=5, T=[2,4,4,4,5,5,7,9]",
+      "sortie_attendue": "4.00",
+      "variables_suggerees": ["N", "i", "mu", "S", "val"],
+      "pseudocode_solution": "// Passe 1 : moyenne\nS <- 0; Pour chaque val: S <- S+val\nmu <- S/N\n// Passe 2 : variance\nS <- 0; Pour chaque val: S <- S+(val-mu)²\nEcrire(S/N)",
+      "solution": "variance = 4.00",
+      "explication": "Deux passes : d'abord la moyenne μ, puis la somme des carrés des écarts.",
+      "tests": [
+        {"entree": "8\n2\n4\n4\n4\n5\n5\n7\n9", "sortie": "4.00"},
+        {"entree": "3\n1\n2\n3", "sortie": "0.67"}
+      ]
+    },
+    {
+      "id": 98,
+      "titre": "Méthode de la sécante",
       "categorie": "Méthodes numériques",
       "niveau": "Expert",
-      "enonce": "Résoudre le système : 2x + y = 5 et x + 3y = 10 par élimination de Gauss.",
-      "pseudocode": "Algorithme Gauss_2x2\nVariables A : Matrice 2×3 (matrice augmentée)\nVariables pivot, m : Réels\nDébut\n  A = [[2, 1, 5], [1, 3, 10]]\n  \n  Étape triangulation :\n  m = A[2][1] / A[1][1]  (= 1/2 = 0.5)\n  A[2][1] = A[2][1] - m*A[1][1]\n  A[2][2] = A[2][2] - m*A[1][2]\n  A[2][3] = A[2][3] - m*A[1][3]\n  \n  Système triangulaire : 2x + y = 5 et 2.5y = 7.5\n  \n  Résolution remontée :\n  y = A[2][3] / A[2][2] = 7.5/2.5 = 3\n  x = (A[1][3] - A[1][2]*y) / A[1][1] = (5-3)/2 = 1\nFin",
-      "solution": "x = 1, y = 3",
-      "explication": "La méthode de Gauss comprend 2 étapes : 1) Triangulation : on élimine les inconnues pour obtenir un système triangulaire. 2) Résolution remontrée : on résout en partant de la dernière équation."
+      "enonce": "La méthode de la sécante : xₙ₊₁ = xₙ - f(xₙ)×(xₙ-xₙ₋₁)/(f(xₙ)-f(xₙ₋₁)). Appliquez sur f(x)=x³-2 avec x₀=1, x₁=2 et ε=0.0001. Racine = ∛2.",
+      "entree": "x0=1, x1=2, eps=0.0001",
+      "sortie_attendue": "1.2599",
+      "variables_suggerees": ["x0", "x1", "x2", "eps"],
+      "pseudocode_solution": "TantQue abs(x1-x0) > eps\n  x2 <- x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))\n  x0 <- x1\n  x1 <- x2\nEcrire(x1)",
+      "solution": "∛2 ≈ 1.2599",
+      "explication": "La méthode de la sécante approche la tangente par une sécante passant par deux points consécutifs.",
+      "tests": [
+        {"entree": "1\n2\n0.0001", "sortie": "1.2599"}
+      ]
+    },
+    {
+      "id": 99,
+      "titre": "Validation de parenthèses",
+      "categorie": "Tableaux",
+      "niveau": "Avancé",
+      "enonce": "Lisez une expression contenant des parenthèses. Affichez 'valide' si les parenthèses sont bien équilibrées, 'invalide' sinon.",
+      "entree": "expr = '((a+b)*(c-d))'",
+      "sortie_attendue": "valide",
+      "variables_suggerees": ["expr", "i", "cpt", "c"],
+      "pseudocode_solution": "cpt <- 0\nPour chaque caractère c\n  Si c = '(' Alors cpt++\n  Si c = ')' Alors cpt--\n  Si cpt < 0 Alors Arrêt (invalide)\nFinPour\nSi cpt = 0 Alors Ecrire('valide')\nSinon Ecrire('invalide')",
+      "solution": "Parenthèses équilibrées → valide",
+      "explication": "On compte les ouvrantes (+1) et fermantes (-1). Si jamais le compteur est négatif ou non nul à la fin → invalide.",
+      "tests": [
+        {"entree": "((a+b)*(c-d))", "sortie": "valide"},
+        {"entree": "((a+b)", "sortie": "invalide"},
+        {"entree": ")(", "sortie": "invalide"},
+        {"entree": "a+b", "sortie": "valide"}
+      ]
+    },
+    {
+      "id": 100,
+      "titre": "Méthode de Gauss — système 2×2",
+      "categorie": "Méthodes numériques",
+      "niveau": "Expert",
+      "enonce": "Résolvez le système 2×2 : a₁x+b₁y=c₁ et a₂x+b₂y=c₂ par élimination de Gauss. Affichez x et y à 2 décimales.",
+      "entree": "a1=2,b1=1,c1=5 / a2=1,b2=3,c2=10",
+      "sortie_attendue": "x=1.00 y=3.00",
+      "variables_suggerees": ["a1", "b1", "c1", "a2", "b2", "c2", "m", "x", "y"],
+      "pseudocode_solution": "Lire(a1,b1,c1,a2,b2,c2)\nm <- a2/a1\na2 <- a2-m*a1; b2 <- b2-m*b1; c2 <- c2-m*c1\ny <- c2/b2\nx <- (c1-b1*y)/a1\nEcrire('x=',x,'y=',y)",
+      "solution": "x=1, y=3",
+      "explication": "Triangulation : on élimine x de L2 en soustrayant (a2/a1)×L1. Puis résolution remontée.",
+      "tests": [
+        {"entree": "2\n1\n5\n1\n3\n10", "sortie": "x=1.00 y=3.00"},
+        {"entree": "1\n1\n2\n1\n-1\n0", "sortie": "x=1.00 y=1.00"}
+      ]
     }
   ]
 }
