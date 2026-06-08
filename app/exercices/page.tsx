@@ -359,7 +359,6 @@ function ExerciceCard({ ex }: { ex: Exercice }) {
               )}
             </div>
           </div>
-
         </div>
       )}
     </div>
@@ -441,72 +440,8 @@ export default function ExercicesPage() {
           <p className="text-4xl mb-3">🔍</p>
           <p className="text-lg font-medium">Aucun exercice trouvé</p>
           <p className="text-sm mt-1">Essayez d'autres filtres</p>
-
         </div>
       )}
     </div>
   );
 }
-
-/* ─── Main Page ─────────────────────────────────── */
-export default function ExercicesPage() {
-  const [niveau, setNiveau] = useState("Tous");
-  const [categorie, setCategorie] = useState("Toutes");
-  const [search, setSearch] = useState("");
-
-  const exercices = exercicesData.exercices as Exercice[];
-  const filtered = exercices.filter(ex => {
-    const mN = niveau === "Tous" || ex.niveau === niveau;
-    const mC = categorie === "Toutes" || ex.categorie === categorie;
-    const mS = !search || ex.titre.toLowerCase().includes(search.toLowerCase()) || ex.enonce.toLowerCase().includes(search.toLowerCase());
-    return mN && mC && mS;
-  });
-
-  return (
-    <div className="max-w-5xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-1">Exercices</h1>
-      <p className="text-gray-500 text-sm mb-5">
-        {exercices.length} exercices progressifs — Écrivez votre pseudo-code et validez-le contre des cas de test.
-      </p>
-
-      {/* Level pills */}
-      <div className="flex flex-wrap gap-2 mb-5">
-        {["Débutant","Intermédiaire","Avancé","Expert"].map(n => (
-          <button key={n} onClick={() => setNiveau(p => p === n ? "Tous" : n)}
-            className={`text-xs px-3 py-1.5 rounded-full border font-semibold transition-colors ${
-              niveau === n ? "bg-gray-800 text-white border-gray-800" : NIVEAU_COLOR[n]
-            }`}>
-            <span className={`inline-block w-2 h-2 rounded-full mr-1.5 ${NIVEAU_DOT[n]}`} />
-            {n} ({exercices.filter(e => e.niveau === n).length})
-          </button>
-        ))}
-      </div>
-
-      {/* Filters */}
-      <div className="bg-gray-50 border border-gray-200 rounded p-4 mb-5">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-          <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">🔍 Rechercher</label>
-            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Titre, mot-clé..."
-              className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm focus:outline-none focus:border-[#04aa6d]" />
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">📊 Niveau</label>
-            <select value={niveau} onChange={e => setNiveau(e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm">
-              {NIVEAUX.map(n => <option key={n}>{n}</option>)}
-            </select>
-          </div>
-          <div>
-            <label className="text-xs font-semibold text-gray-500 block mb-1">📁 Catégorie</label>
-            <select value={categorie} onChange={e => setCategorie(e.target.value)} className="w-full border border-gray-300 rounded px-2 py-1.5 text-sm">
-              {CATEGORIES.map(c => <option key={c}>{c}</option>)}
-            </select>
-          </div>
-        </div>
-        <p className="text-xs text-gray-500 mt-2">{filtered.length} exercice(s) affiché(s)</p>
-      </div>
-
-      {/* Legend */}
-      <div className="flex flex-wrap gap-4 mb-4 text-xs text-gray-500">
-        <span className="flex items-center gap-1.5"><span className="w-2.5 h-2.5 rounded-full bg-green-500" />Tous réussis</span>
-        <span cl
