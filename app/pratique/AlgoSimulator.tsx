@@ -11,184 +11,163 @@ type Step = {
   iteration: number;
   explanation: string;
 };
+type LintError = {
+  line: number; // 1-indexed
+  message: string;
+  severity: "error" | "warning";
+};
 
-/* ─── VS Code-style syntax highlighting ─────────────── */
-const KEYWORDS_MOT  = /\b(Pour|FinPour|TantQue|FinTantQue|Faire|Si|Alors|Sinon|FinSi|Repeter|JusquA|à|de|par)\b/gi;
-const KEYWORDS_FN   = /\b(Ecrire|Lire|sqrt|abs|mod)\b/gi;
-const KEYWORDS_OP   = /(<-|←|>=|<=|!=|=|>|<|\+|-|\*|\/)/g;
-const KEYWORDS_NUM  = /\b(\d+(\.\d+)?)\b/g;
-const KEYWORDS_STR  = /('.*?'|".*?")/g;
-const KEYWORDS_CMT  = /(\/\/.*|\/\*.*?\*\/)/g;
+/* ─── Syntax highlighting ────────────────────────────── */
+const RULES: { re: RegExp; cls: string }[] = [
+  { re: /(\/\/.*)/g,                                                           cls: "text-[#6a9955]" },
+  { re: /('.*?'|".*?")/g,                                                      cls: "text-[#ce9178]" },
+  { re: /\b(Pour|FinPour|TantQue|FinTantQue|Faire|Si|Alors|Sinon|FinSi|Repeter|JusquA|à|de|par)\b/gi, cls: "text-[#c586c0]" },
+  { re: /\b(Ecrire|Lire|sqrt|abs|mod)\b/gi,                                   cls: "text-[#dcdcaa]" },
+  { re: /\b(\d+(\.\d+)?)\b/g,                                                 cls: "text-[#b5cea8]" },
+  { re: /(<-|←|>=|<=|!=|=|>|<|\+|-|\*|\/)/g,                                 cls: "text-[#569cd6]" },
+];
 
 function highlightLine(line: string): React.ReactNode {
-  // We'll tokenize character by character using regex splits
-  // Build an array of {text, color} tokens
   type Token = { text: string; cls: string };
   const tokens: Token[] = [];
-
-  // Process with ordered regex replacements
-  // Strategy: find first match, emit plain text before it, emit colored token, advance
-  const rules: { re: RegExp; cls: string }[] = [
-    { re: KEYWORDS_CMT,  cls: "text-[#6a9955]" },   // green - comments
-    { re: KEYWORDS_STR,  cls: "text-[#ce9178]" },   // orange - strings
-    { re: KEYWORDS_MOT,  cls: "text-[#c586c0]" },   // purple - keywords
-    { re: KEYWORDS_FN,   cls: "text-[#dcdcaa]" },   // yellow - functions
-    { re: KEYWORDS_NUM,  cls: "text-[#b5cea8]" },   // light green - numbers
-    { re: KEYWORDS_OP,   cls: "text-[#569cd6]" },   // blue - operators
-  ];
-
   let remaining = line;
-  let key = 0;
-
   while (remaining.length > 0) {
     let earliest: { index: number; len: number; cls: string } | null = null;
-
-    for (const rule of rules) {
+    for (const rule of RULES) {
       rule.re.lastIndex = 0;
       const m = rule.re.exec(remaining);
-      if (m && (earliest === null || m.index < earliest.index)) {
+      if (m && (earliest === null || m.index < earliest.index))
         earliest = { index: m.index, len: m[0].length, cls: rule.cls };
-      }
     }
-
-    if (!earliest) {
-      tokens.push({ text: remaining, cls: "text-[#d4d4d4]" });
-      break;
-    }
-
-    if (earliest.index > 0) {
-      tokens.push({ text: remaining.slice(0, earliest.index), cls: "text-[#d4d4d4]" });
-    }
+    if (!earliest) { tokens.push({ text: remaining, cls: "text-[#d4d4d4]" }); break; }
+    if (earliest.index > 0) tokens.push({ text: remaining.slice(0, earliest.index), cls: "text-[#d4d4d4]" });
     tokens.push({ text: remaining.slice(earliest.index, earliest.index + earliest.len), cls: earliest.cls });
     remaining = remaining.slice(earliest.index + earliest.len);
   }
-
-  return (
-    <>
-      {tokens.map((t, i) => (
-        <span key={i} className={t.cls}>{t.text}</span>
-      ))}
-    </>
-  );
+  return <>{tokens.map((t, i) => <span key={i} className={t.cls}>{t.text}</span>)}</>;
 }
 
-/* ─── Preset examples ────────────────────────────────── */
+/* ─── Static linter ──────────────────────────────────── */
+function lintCode(code: string): LintError[] {
+  const errors: LintError[] = [];
+  const lines = code.split("\n");
+  let pourDepth = 0, tantqueDepth = 0, siDepth = 0;
+  const pourLines: number[] = [], tantqueLines: number[] = [], siLines: number[] = [];
+
+  lines.forEach((rawLine, idx) => {
+    const lineNum = idx + 1;
+    const line = rawLine.trim();
+    if (!line || line.startsWith("//")) return;
+
+    // Track structure openings
+    if (/^Pour\b/i.test(line)) { pourDepth++; pourLines.push(lineNum); }
+    if (/^FinPour$/i.test(line)) {
+      if (pourDepth === 0) errors.push({ line: lineNum, message: "FinPour sans Pour correspondant", severity: "error" });
+      else { pourDepth--; pourLines.pop(); }
+    }
+    if (/^TantQue\b/i.test(line)) { tantqueDepth++; tantqueLines.push(lineNum); }
+    if (/^FinTantQue$/i.test(line)) {
+      if (tantqueDepth === 0) errors.push({ line: lineNum, message: "FinTantQue sans TantQue correspondant", severity: "error" });
+      else { tantqueDepth--; tantqueLines.pop(); }
+    }
+    if (/^Si\b/i.test(line)) { siDepth++; siLines.push(lineNum); }
+    if (/^FinSi$/i.test(line)) {
+      if (siDepth === 0) errors.push({ line: lineNum, message: "FinSi sans Si correspondant", severity: "error" });
+      else { siDepth--; siLines.pop(); }
+    }
+
+    // Pour syntax check
+    if (/^Pour\b/i.test(line) && !/^Pour\s+\w+\s*(<-|←|=)\s*.+\s+[àa]\s+.+/i.test(line))
+      errors.push({ line: lineNum, message: "Syntaxe Pour incorrecte — attendu : Pour i <- debut à fin", severity: "error" });
+
+    // TantQue syntax check
+    if (/^TantQue\b/i.test(line) && !/^TantQue\s+.+\s+Faire$/i.test(line))
+      errors.push({ line: lineNum, message: "Syntaxe TantQue incorrecte — attendu : TantQue condition Faire", severity: "error" });
+
+    // Si syntax check
+    if (/^Si\b/i.test(line) && !/^Si\s+.+\s+Alors$/i.test(line))
+      errors.push({ line: lineNum, message: "Syntaxe Si incorrecte — attendu : Si condition Alors", severity: "error" });
+
+    // Ecrire without parentheses
+    if (/^Ecrire\s+[^(]/i.test(line))
+      errors.push({ line: lineNum, message: "Ecrire nécessite des parenthèses — ex: Ecrire(x)", severity: "error" });
+
+    // Lire without parentheses
+    if (/^Lire\s+[^(]/i.test(line))
+      errors.push({ line: lineNum, message: "Lire nécessite des parenthèses — ex: Lire(x)", severity: "error" });
+
+    // Assignment check: something <- but bad right side
+    const assign = line.match(/^(\w+)\s*(<-|←)\s*(.*)$/);
+    if (assign && assign[3].trim() === "")
+      errors.push({ line: lineNum, message: `Affectation incomplète — la valeur après '<-' est manquante`, severity: "error" });
+
+    // Unclosed parenthesis
+    const opens = (line.match(/\(/g) || []).length;
+    const closes = (line.match(/\)/g) || []).length;
+    if (opens > closes)
+      errors.push({ line: lineNum, message: `Parenthèse ouvrante non fermée '('`, severity: "error" });
+    if (closes > opens)
+      errors.push({ line: lineNum, message: `Parenthèse fermante en trop ')'`, severity: "error" });
+  });
+
+  // Unclosed blocks at end
+  if (pourDepth > 0)
+    pourLines.forEach(l => errors.push({ line: l, message: "Pour sans FinPour — bloc non fermé", severity: "error" }));
+  if (tantqueDepth > 0)
+    tantqueLines.forEach(l => errors.push({ line: l, message: "TantQue sans FinTantQue — bloc non fermé", severity: "error" }));
+  if (siDepth > 0)
+    siLines.forEach(l => errors.push({ line: l, message: "Si sans FinSi — bloc non fermé", severity: "error" }));
+
+  return errors;
+}
+
+/* ─── Presets ────────────────────────────────────────── */
 const PRESETS = [
-  {
-    label: "Somme 1 à 5",
-    code: `somme <- 0
-Pour i <- 1 à 5
-  somme <- somme + i
-FinPour
-Ecrire(somme)`,
-  },
-  {
-    label: "Factorielle 5",
-    code: `n <- 5
-f <- 1
-Pour i <- 2 à n
-  f <- f * i
-FinPour
-Ecrire(f)`,
-  },
-  {
-    label: "Maximum a,b,c",
-    code: `a <- 12
-b <- 7
-c <- 19
-Si a > b Alors
-  max <- a
-Sinon
-  max <- b
-FinSi
-Si c > max Alors
-  max <- c
-FinSi
-Ecrire(max)`,
-  },
-  {
-    label: "Nombres pairs",
-    code: `Pour i <- 1 à 10
-  Si i mod 2 = 0 Alors
-    Ecrire(i)
-  FinSi
-FinPour`,
-  },
-  {
-    label: "Boucle TantQue",
-    code: `n <- 1
-TantQue n <= 5 Faire
-  Ecrire(n)
-  n <- n + 1
-FinTantQue`,
-  },
-  {
-    label: "Fibonacci 8 termes",
-    code: `a <- 0
-b <- 1
-Ecrire(a)
-Ecrire(b)
-Pour i <- 3 à 8
-  c <- a + b
-  Ecrire(c)
-  a <- b
-  b <- c
-FinPour`,
-  },
+  { label: "Somme 1 à 5", code: `somme <- 0\nPour i <- 1 à 5\n  somme <- somme + i\nFinPour\nEcrire(somme)` },
+  { label: "Factorielle 5", code: `n <- 5\nf <- 1\nPour i <- 2 à n\n  f <- f * i\nFinPour\nEcrire(f)` },
+  { label: "Maximum a,b,c", code: `a <- 12\nb <- 7\nc <- 19\nSi a > b Alors\n  max <- a\nSinon\n  max <- b\nFinSi\nSi c > max Alors\n  max <- c\nFinSi\nEcrire(max)` },
+  { label: "Nombres pairs", code: `Pour i <- 1 à 10\n  Si i mod 2 = 0 Alors\n    Ecrire(i)\n  FinSi\nFinPour` },
+  { label: "Boucle TantQue", code: `n <- 1\nTantQue n <= 5 Faire\n  Ecrire(n)\n  n <- n + 1\nFinTantQue` },
+  { label: "Fibonacci 8 termes", code: `a <- 0\nb <- 1\nEcrire(a)\nEcrire(b)\nPour i <- 3 à 8\n  c <- a + b\n  Ecrire(c)\n  a <- b\n  b <- c\nFinPour` },
 ];
 
-/* ─── Safe expression evaluator ─────────────────────── */
+/* ─── Expression evaluator ───────────────────────────── */
 function evalExpr(expr: string, vars: VarMap): number | string {
   let e = expr.trim();
-  if ((e.startsWith("'") && e.endsWith("'")) || (e.startsWith('"') && e.endsWith('"'))) {
+  if ((e.startsWith("'") && e.endsWith("'")) || (e.startsWith('"') && e.endsWith('"')))
     return e.slice(1, -1);
+  const sorted = Object.keys(vars).sort((a, b) => b.length - a.length);
+  for (const k of sorted) {
+    const v = vars[k];
+    e = e.replace(new RegExp(`\\b${k}\\b`, "gi"), typeof v === "string" ? `"${v}"` : String(v));
   }
-  const sortedKeys = Object.keys(vars).sort((a, b) => b.length - a.length);
-  for (const k of sortedKeys) {
-    const val = vars[k];
-    const safeVal = typeof val === "string" ? `"${val}"` : String(val);
-    e = e.replace(new RegExp(`\\b${k}\\b`, "gi"), safeVal);
-  }
-  e = e.replace(/\bmod\b/gi, "%")
-       .replace(/\bET\b/gi, "&&")
-       .replace(/\bOU\b/gi, "||")
-       .replace(/\bNON\b/gi, "!")
-       .replace(/←/g, "")
-       .replace(/π/g, "Math.PI")
-       .replace(/sqrt\(/gi, "Math.sqrt(")
-       .replace(/abs\(/gi, "Math.abs(");
-  try {
-    const result = new Function(`"use strict"; return (${e});`)();
-    return result;
-  } catch {
-    return NaN;
-  }
+  e = e.replace(/\bmod\b/gi, "%").replace(/\bET\b/gi, "&&").replace(/\bOU\b/gi, "||")
+       .replace(/\bNON\b/gi, "!").replace(/←/g, "").replace(/π/g, "Math.PI")
+       .replace(/sqrt\(/gi, "Math.sqrt(").replace(/abs\(/gi, "Math.abs(");
+  try { return new Function(`"use strict"; return (${e});`)(); } catch { return NaN; }
 }
 
-/* ─── Main interpreter ──────────────────────────────── */
-function interpret(code: string, breakpoints: Set<number>): { steps: Step[]; breakHit: number | null } {
-  const rawLines = code.split("\n");
-  const lines = rawLines.map(l => l.trim()).filter(l => l.length > 0);
+/* ─── Interpreter ────────────────────────────────────── */
+function interpret(code: string): Step[] {
+  const lines = code.split("\n").map(l => l.trim()).filter(l => l.length > 0);
   const steps: Step[] = [];
   let vars: VarMap = {};
   let output: string[] = [];
   let iteration = 0;
-  const MAX_STEPS = 300;
 
-  function execLines(lineList: string[], startIp: number): void {
-    let i = startIp;
-    while (i < lineList.length && steps.length < MAX_STEPS) {
+  function execLines(lineList: string[]): void {
+    let i = 0;
+    while (i < lineList.length && steps.length < 300) {
       const raw = lineList[i];
       const line = raw.trim();
-
-      if (!line || line.startsWith("//") || line.startsWith("/*")) { i++; continue; }
+      if (!line || line.startsWith("//")) { i++; continue; }
 
       const assignMatch = line.match(/^(\w+)\s*(?:<-|←|=)\s*(.+)$/i);
-      if (assignMatch && !line.match(/^(Si|TantQue|Pour|Sinon|FinSi|FinTantQue|FinPour|Ecrire|Lire|Repeter|JusquA)/i)) {
+      if (assignMatch && !/^(Si|TantQue|Pour|Sinon|FinSi|FinTantQue|FinPour|Ecrire|Lire|Repeter|JusquA)/i.test(line)) {
         const [, varName, exprRaw] = assignMatch;
         const val = evalExpr(exprRaw, vars);
         vars = { ...vars, [varName.toLowerCase()]: val };
-        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Variable "${varName}" reçoit la valeur ${val}` });
+        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `"${varName}" reçoit ${val}` });
         i++; continue;
       }
 
@@ -207,21 +186,20 @@ function interpret(code: string, breakpoints: Set<number>): { steps: Step[]; bre
         const start = Number(evalExpr(startExpr, vars));
         const end = Number(evalExpr(endExpr, vars));
         let depth = 1, j = i + 1;
-        const bodyLines: string[] = [];
+        const body: string[] = [];
         while (j < lineList.length && depth > 0) {
           const bl = lineList[j].trim();
           if (/^Pour\b/i.test(bl)) depth++;
           if (/^FinPour$/i.test(bl)) { depth--; if (depth === 0) break; }
-          bodyLines.push(lineList[j]);
-          j++;
+          body.push(lineList[j]); j++;
         }
         vars = { ...vars, [counter.toLowerCase()]: start };
-        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Initialisation boucle POUR : ${counter} de ${start} à ${end}` });
-        for (let cv = start; cv <= end && steps.length < MAX_STEPS; cv++) {
+        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Boucle POUR : ${counter} de ${start} à ${end}` });
+        for (let cv = start; cv <= end && steps.length < 300; cv++) {
           iteration++;
           vars = { ...vars, [counter.toLowerCase()]: cv };
           steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Itération ${cv - start + 1} : ${counter} = ${cv}` });
-          execLines(bodyLines, 0);
+          execLines(body);
         }
         i = j + 1; continue;
       }
@@ -229,26 +207,23 @@ function interpret(code: string, breakpoints: Set<number>): { steps: Step[]; bre
       const tantqueMatch = line.match(/^TantQue\s+(.+?)\s+Faire$/i);
       if (tantqueMatch) {
         const [, condExpr] = tantqueMatch;
-        let depth2 = 1; let j2 = i + 1;
-        const bodyLines2: string[] = [];
+        let depth2 = 1, j2 = i + 1;
+        const body2: string[] = [];
         while (j2 < lineList.length && depth2 > 0) {
           const bl = lineList[j2].trim();
           if (/^TantQue\b/i.test(bl)) depth2++;
           if (/^FinTantQue$/i.test(bl)) { depth2--; if (depth2 === 0) break; }
-          bodyLines2.push(lineList[j2]);
-          j2++;
+          body2.push(lineList[j2]); j2++;
         }
-        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Début boucle TANTQUE : vérifier "${condExpr}"` });
-        while (steps.length < MAX_STEPS) {
-          const cond = evalExpr(condExpr, vars);
-          if (!cond) {
-            steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Condition TANTQUE fausse → fin de boucle` });
-            break;
-          }
+        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Début TantQue : "${condExpr}"` });
+        let loops = 0;
+        while (evalExpr(condExpr, vars) && loops++ < 500 && steps.length < 300) {
           iteration++;
-          steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Condition TANTQUE vraie (itération ${iteration}) → bloc exécuté` });
-          execLines(bodyLines2, 0);
+          steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `TantQue vraie (itération ${iteration})` });
+          execLines(body2);
         }
+        if (!evalExpr(condExpr, vars))
+          steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `TantQue fausse → fin de boucle` });
         i = j2 + 1; continue;
       }
 
@@ -256,22 +231,20 @@ function interpret(code: string, breakpoints: Set<number>): { steps: Step[]; bre
       if (siMatch) {
         const [, condExpr] = siMatch;
         let depth3 = 1, j3 = i + 1;
-        const thenLines: string[] = [];
-        const elseLines: string[] = [];
+        const thenL: string[] = [], elseL: string[] = [];
         let inElse = false;
         while (j3 < lineList.length && depth3 > 0) {
           const bl = lineList[j3].trim();
           if (/^Si\b/i.test(bl)) depth3++;
           if (/^FinSi$/i.test(bl)) { depth3--; if (depth3 === 0) break; }
           if (/^Sinon$/i.test(bl) && depth3 === 1) { inElse = true; j3++; continue; }
-          if (!inElse) thenLines.push(lineList[j3]);
-          else elseLines.push(lineList[j3]);
+          if (!inElse) thenL.push(lineList[j3]); else elseL.push(lineList[j3]);
           j3++;
         }
         const condResult = evalExpr(condExpr, vars);
-        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Test SI : "${condExpr}" → ${condResult ? "VRAI → branche ALORS" : "FAUX → branche SINON"}` });
-        if (condResult) execLines(thenLines, 0);
-        else if (elseLines.length > 0) execLines(elseLines, 0);
+        steps.push({ lineIdx: i, line: raw, vars: { ...vars }, output: [...output], iteration, explanation: `Si "${condExpr}" → ${condResult ? "VRAI (branche Alors)" : "FAUX (branche Sinon)"}` });
+        if (condResult) execLines(thenL);
+        else if (elseL.length) execLines(elseL);
         i = j3 + 1; continue;
       }
 
@@ -280,153 +253,203 @@ function interpret(code: string, breakpoints: Set<number>): { steps: Step[]; bre
     }
   }
 
-  try { execLines(lines, 0); } catch { /* return what we have */ }
-  return { steps, breakHit: null };
+  try { execLines(lines); } catch { /* return what we have */ }
+  return steps;
 }
 
-/* ─── Syntax-highlighted read-only code viewer ─────── */
-function CodeViewer({
+/* ─── Editable code editor with line numbers ─────────── */
+function CodeEditor({
   code,
-  currentLineIdx,
-  breakpoints,
-  onToggleBreakpoint,
+  onChange,
+  currentLine,
+  errorLines,
 }: {
   code: string;
-  currentLineIdx: number | null;
-  breakpoints: Set<number>;
-  onToggleBreakpoint: (idx: number) => void;
+  onChange: (v: string) => void;
+  currentLine: number | null;
+  errorLines: Set<number>;
 }) {
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const overlayRef = useRef<HTMLDivElement>(null);
+  const gutterRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+
   const codeLines = code.split("\n");
+  const lineCount = codeLines.length;
+
+  // Sync scroll between textarea, overlay and gutter
+  const syncScroll = () => {
+    const ta = textareaRef.current;
+    const ov = overlayRef.current;
+    const gu = gutterRef.current;
+    if (!ta || !ov || !gu) return;
+    ov.scrollTop = ta.scrollTop;
+    ov.scrollLeft = ta.scrollLeft;
+    gu.scrollTop = ta.scrollTop;
+  };
+
+  // Tab key support
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Tab") {
+      e.preventDefault();
+      const ta = e.currentTarget;
+      const start = ta.selectionStart;
+      const end = ta.selectionEnd;
+      const newVal = code.slice(0, start) + "  " + code.slice(end);
+      onChange(newVal);
+      requestAnimationFrame(() => {
+        ta.selectionStart = ta.selectionEnd = start + 2;
+      });
+    }
+  };
 
   return (
-    <div className="rounded overflow-hidden border border-[#3c3c3c] font-mono text-sm bg-[#1e1e1e] select-none">
-      {/* VS Code top bar */}
-      <div className="flex items-center gap-2 px-3 py-1.5 bg-[#2d2d2d] border-b border-[#3c3c3c]">
+    <div className="rounded overflow-hidden border border-[#3c3c3c] font-mono text-sm bg-[#1e1e1e]" ref={containerRef}>
+      {/* Title bar */}
+      <div className="flex items-center gap-2 px-3 py-1.5 bg-[#2d2d2d] border-b border-[#3c3c3c] select-none">
         <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
         <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
         <div className="w-3 h-3 rounded-full bg-[#28c840]" />
         <span className="text-[#858585] text-xs ml-2">algorithme.pseudo</span>
+        <span className="text-[#858585] text-xs ml-auto">{lineCount} ligne{lineCount > 1 ? "s" : ""}</span>
       </div>
 
-      <div className="overflow-auto max-h-72">
-        {codeLines.map((line, idx) => {
-          const isCurrent = currentLineIdx === idx;
-          const isBreakpoint = breakpoints.has(idx);
-          return (
-            <div
-              key={idx}
-              className={`flex items-stretch group ${isCurrent ? "bg-[#264f78]" : "hover:bg-[#2a2d2e]"}`}
-            >
-              {/* Breakpoint dot column */}
+      {/* Editor body */}
+      <div className="flex overflow-hidden" style={{ maxHeight: "380px" }}>
+        {/* Gutter — line numbers */}
+        <div
+          ref={gutterRef}
+          className="select-none overflow-hidden shrink-0 bg-[#1e1e1e] border-r border-[#3c3c3c]"
+          style={{ width: "44px", overflowY: "hidden" }}
+        >
+          {codeLines.map((_, idx) => {
+            const lineNum = idx + 1;
+            const isCurrentLine = currentLine === lineNum;
+            const hasError = errorLines.has(lineNum);
+            return (
               <div
-                className="w-5 flex items-center justify-center cursor-pointer shrink-0"
-                onClick={() => onToggleBreakpoint(idx)}
-                title="Cliquer pour ajouter/retirer un point d'arrêt"
+                key={idx}
+                className={`flex items-center justify-end pr-2 leading-6 text-xs
+                  ${isCurrentLine ? "text-yellow-300 bg-[#264f78]" : hasError ? "text-red-400" : "text-[#858585]"}
+                `}
+                style={{ height: "24px" }}
               >
-                {isBreakpoint ? (
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 block" />
-                ) : (
-                  <span className="w-2.5 h-2.5 rounded-full bg-transparent group-hover:bg-red-800 block" />
-                )}
+                {hasError && <span className="mr-1 text-red-500">●</span>}
+                {lineNum}
               </div>
+            );
+          })}
+        </div>
 
-              {/* Line number */}
-              <div className="w-8 text-right pr-2 text-[#858585] text-xs leading-6 shrink-0 select-none">
-                {idx + 1}
-              </div>
+        {/* Code area — stacked: highlighted overlay + transparent textarea */}
+        <div className="relative flex-1 overflow-hidden">
+          {/* Highlighted overlay (read-only visual) */}
+          <div
+            ref={overlayRef}
+            aria-hidden="true"
+            className="absolute inset-0 overflow-auto pointer-events-none px-3 py-0"
+            style={{ whiteSpace: "pre", lineHeight: "24px", fontSize: "13px" }}
+          >
+            {codeLines.map((line, idx) => {
+              const lineNum = idx + 1;
+              const isCurrentLine = currentLine === lineNum;
+              const hasError = errorLines.has(lineNum);
+              return (
+                <div
+                  key={idx}
+                  className={`
+                    ${isCurrentLine ? "bg-[#264f78]" : ""}
+                    ${hasError && !isCurrentLine ? "bg-red-950/30" : ""}
+                  `}
+                  style={{ height: "24px", display: "flex", alignItems: "center" }}
+                >
+                  <span>{highlightLine(line || " ")}</span>
+                </div>
+              );
+            })}
+          </div>
 
-              {/* Arrow for current line */}
-              <div className="w-4 text-center leading-6 shrink-0 text-yellow-400 text-xs">
-                {isCurrent ? "→" : " "}
-              </div>
-
-              {/* Code content */}
-              <div className="flex-1 leading-6 pl-1 whitespace-pre">
-                {highlightLine(line || " ")}
-              </div>
-            </div>
-          );
-        })}
+          {/* Actual editable textarea — transparent text, caret visible */}
+          <textarea
+            ref={textareaRef}
+            value={code}
+            onChange={e => onChange(e.target.value)}
+            onScroll={syncScroll}
+            onKeyDown={handleKeyDown}
+            spellCheck={false}
+            autoCapitalize="none"
+            autoCorrect="off"
+            className="absolute inset-0 w-full h-full resize-none bg-transparent outline-none px-3 py-0 caret-white"
+            style={{
+              color: "transparent",
+              lineHeight: "24px",
+              fontSize: "13px",
+              fontFamily: "inherit",
+              whiteSpace: "pre",
+              overflowWrap: "normal",
+              overflow: "auto",
+              caretColor: "white",
+            }}
+          />
+        </div>
       </div>
     </div>
   );
 }
 
-/* ─── Main Component ────────────────────────────────── */
+/* ─── Main component ─────────────────────────────────── */
 export default function AlgoSimulator() {
   const [code, setCode] = useState(PRESETS[0].code);
   const [steps, setSteps] = useState<Step[]>([]);
   const [stepIdx, setStepIdx] = useState(-1);
   const [mode, setMode] = useState<"idle" | "all" | "step">("idle");
-  const [error, setError] = useState("");
-  const [breakpoints, setBreakpoints] = useState<Set<number>>(new Set());
-  const [activeTab, setActiveTab] = useState<"editor" | "debug">("editor");
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const [lintErrors, setLintErrors] = useState<LintError[]>([]);
 
-  const toggleBreakpoint = useCallback((idx: number) => {
-    setBreakpoints(prev => {
-      const next = new Set(prev);
-      if (next.has(idx)) next.delete(idx);
-      else next.add(idx);
-      return next;
-    });
-  }, []);
+  // Run linter on every code change
+  useEffect(() => {
+    setLintErrors(lintCode(code));
+  }, [code]);
 
   const reset = useCallback(() => {
-    setSteps([]); setStepIdx(-1); setMode("idle"); setError("");
+    setSteps([]); setStepIdx(-1); setMode("idle");
   }, []);
 
   const run = useCallback((runMode: "all" | "step") => {
-    setError("");
-    try {
-      const { steps: s } = interpret(code, breakpoints);
-      if (s.length === 0) { setError("Aucune étape détectée. Vérifiez la syntaxe."); return; }
-      setSteps(s);
-      setMode(runMode);
-      setStepIdx(runMode === "step" ? 0 : s.length - 1);
-      if (runMode === "step") setActiveTab("debug");
-    } catch {
-      setError("Erreur d'exécution.");
-    }
-  }, [code, breakpoints]);
-
-  // Run to next breakpoint
-  const runToBreakpoint = useCallback(() => {
-    if (steps.length === 0) return;
-    const codeLines = code.split("\n");
-    let next = stepIdx + 1;
-    while (next < steps.length) {
-      // find the original line index in code
-      const lineText = steps[next].line.trim();
-      const lineIdx = codeLines.findIndex(l => l.trim() === lineText && breakpoints.has(codeLines.indexOf(l)));
-      if (lineIdx >= 0 && breakpoints.has(lineIdx)) break;
-      next++;
-    }
-    setStepIdx(Math.min(next, steps.length - 1));
-  }, [steps, stepIdx, code, breakpoints]);
+    const errors = lintCode(code).filter(e => e.severity === "error");
+    if (errors.length > 0) return; // block execution on errors
+    const s = interpret(code);
+    if (s.length === 0) return;
+    setSteps(s);
+    setMode(runMode);
+    setStepIdx(runMode === "step" ? 0 : s.length - 1);
+  }, [code]);
 
   const currentStep = steps[stepIdx] ?? null;
   const displayedSteps = mode === "all" ? steps : steps.slice(0, stepIdx + 1);
   const finalOutput = steps.length > 0 ? steps[steps.length - 1].output : [];
 
-  // Current line in the original code (0-indexed)
-  const currentCodeLine = currentStep
-    ? code.split("\n").findIndex(l => l.trim() === currentStep.line.trim() && l.trim().length > 0)
-    : null;
+  // Error lines set (1-indexed)
+  const errorLineSet = new Set(lintErrors.filter(e => e.severity === "error").map(e => e.line));
+  const warnLineSet  = new Set(lintErrors.filter(e => e.severity === "warning").map(e => e.line));
+  const allErrorLines = new Set([...errorLineSet, ...warnLineSet]);
+
+  // Current line for highlighting (1-indexed)
+  const currentHighlightLine: number | null = (() => {
+    if (!currentStep) return null;
+    const codeLines = code.split("\n");
+    const idx = codeLines.findIndex(l => l.trim() === currentStep.line.trim() && l.trim().length > 0);
+    return idx >= 0 ? idx + 1 : null;
+  })();
+
+  const hasErrors = lintErrors.some(e => e.severity === "error");
 
   const generateExplanation = () => {
     if (steps.length === 0) return "";
-    const iterCount = steps.filter(s => s.explanation.startsWith("Itération") || s.explanation.startsWith("Condition TANTQUE vraie")).length;
-    const outputs = finalOutput;
-    const varNames = Object.keys(steps[steps.length - 1]?.vars ?? {});
-    let expl = `Cet algorithme s'exécute en ${steps.length} étapes`;
-    if (iterCount > 0) expl += ` dont ${iterCount} itération(s) de boucle`;
+    const iterCount = steps.filter(s => s.explanation.startsWith("Itération") || s.explanation.startsWith("TantQue vraie")).length;
+    let expl = `Algorithme exécuté en ${steps.length} étapes`;
+    if (iterCount > 0) expl += `, ${iterCount} itération(s) de boucle`;
+    if (finalOutput.length > 0) expl += `. Résultat : ${finalOutput.join(", ")}`;
     expl += ".";
-    if (outputs.length > 0) expl += ` Il affiche : ${outputs.join(", ")}.`;
-    if (varNames.length > 0) {
-      const last = steps[steps.length - 1].vars;
-      expl += ` À la fin, les variables sont : ${varNames.map(k => `${k} = ${last[k]}`).join(", ")}.`;
-    }
     return expl;
   };
 
@@ -447,224 +470,128 @@ export default function AlgoSimulator() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* ── Left panel : Editor + Viewer ── */}
-        <div>
-          {/* Tab toggle */}
-          <div className="flex border-b border-gray-200 mb-2">
-            {(["editor", "debug"] as const).map(tab => (
-              <button key={tab} onClick={() => setActiveTab(tab)}
-                className={`text-xs px-4 py-1.5 font-semibold transition-colors ${activeTab === tab ? "border-b-2 border-[#04aa6d] text-[#04aa6d]" : "text-gray-500 hover:text-gray-700"}`}>
-                {tab === "editor" ? "✏️ Éditeur" : "🐛 Débogueur"}
-              </button>
-            ))}
-          </div>
+        {/* ── Left : editor ── */}
+        <div className="space-y-3">
+          <CodeEditor
+            code={code}
+            onChange={v => { setCode(v); reset(); }}
+            currentLine={currentHighlightLine}
+            errorLines={allErrorLines}
+          />
 
-          {activeTab === "editor" ? (
-            <>
-              <label className="text-xs font-semibold text-gray-600 block mb-1">
-                Pseudo-code (syntaxe S3) — cliquez sur un numéro de ligne pour un breakpoint :
-              </label>
-              {/* Highlighted view (read-only, shows breakpoints) */}
-              <CodeViewer
-                code={code}
-                currentLineIdx={mode !== "idle" ? currentCodeLine : null}
-                breakpoints={breakpoints}
-                onToggleBreakpoint={toggleBreakpoint}
-              />
-              {/* Editable textarea below */}
-              <textarea
-                ref={textareaRef}
-                value={code}
-                onChange={e => { setCode(e.target.value); reset(); }}
-                rows={5}
-                className="w-full border border-gray-300 rounded px-3 py-2 font-mono text-sm resize-y focus:outline-none focus:border-[#04aa6d] mt-2 bg-gray-50"
-                spellCheck={false}
-                placeholder="Modifiez votre code ici..."
-              />
-            </>
-          ) : (
-            /* ── Debugger panel ── */
-            <div className="space-y-3">
-              {/* Breakpoints list */}
-              <div className="border border-gray-200 rounded p-3 bg-[#1e1e1e]">
-                <p className="text-xs font-bold text-[#858585] mb-2 uppercase">● Points d'arrêt (breakpoints)</p>
-                {breakpoints.size === 0 ? (
-                  <p className="text-xs text-[#6a9955] italic">
-                    Aucun breakpoint — cliquez sur ● à gauche d'une ligne dans l'éditeur
-                  </p>
-                ) : (
-                  <div className="space-y-1">
-                    {Array.from(breakpoints).sort((a, b) => a - b).map(bp => {
-                      const lineText = code.split("\n")[bp] ?? "";
-                      return (
-                        <div key={bp} className="flex items-center gap-2">
-                          <span className="w-2.5 h-2.5 rounded-full bg-red-500 shrink-0" />
-                          <span className="text-[#858585] text-xs w-6">L{bp + 1}</span>
-                          <span className="text-[#d4d4d4] text-xs font-mono truncate">{lineText.trim()}</span>
-                          <button onClick={() => toggleBreakpoint(bp)}
-                            className="ml-auto text-[#858585] hover:text-red-400 text-xs">✕</button>
-                        </div>
-                      );
-                    })}
-                  </div>
-                )}
+          {/* Error panel */}
+          {lintErrors.length > 0 && (
+            <div className="rounded border border-[#3c3c3c] bg-[#1e1e1e] overflow-hidden">
+              <div className="px-3 py-1.5 bg-[#2d2d2d] border-b border-[#3c3c3c] flex items-center gap-2">
+                <span className="text-red-400 text-xs font-bold uppercase">
+                  ⚠ {lintErrors.filter(e => e.severity === "error").length} erreur(s)
+                  {lintErrors.filter(e => e.severity === "warning").length > 0 &&
+                    ` · ${lintErrors.filter(e => e.severity === "warning").length} avertissement(s)`}
+                </span>
               </div>
-
-              {/* Watch variables */}
-              {currentStep && (
-                <div className="border border-gray-200 rounded p-3 bg-[#1e1e1e]">
-                  <p className="text-xs font-bold text-[#858585] mb-2 uppercase">👁 Variables (Watch)</p>
-                  {Object.keys(currentStep.vars).length === 0 ? (
-                    <p className="text-xs text-[#6a9955] italic">Aucune variable encore définie</p>
-                  ) : (
-                    <div className="space-y-1">
-                      {Object.entries(currentStep.vars).map(([k, v]) => (
-                        <div key={k} className="flex items-center gap-2 font-mono text-xs">
-                          <span className="text-[#9cdcfe]">{k}</span>
-                          <span className="text-[#858585]">=</span>
-                          <span className={typeof v === "number" ? "text-[#b5cea8]" : "text-[#ce9178]"}>
-                            {String(v)}
-                          </span>
-                          <span className="text-[#6a9955] ml-auto">
-                            {typeof v === "number" ? (Number.isInteger(v) ? "entier" : "réel") : "chaîne"}
-                          </span>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-
-              {/* Call stack / current step */}
-              {currentStep && (
-                <div className="border border-gray-200 rounded p-3 bg-[#1e1e1e]">
-                  <p className="text-xs font-bold text-[#858585] mb-2 uppercase">📍 Étape courante</p>
-                  <div className="font-mono text-xs text-[#d4d4d4] bg-[#264f78] rounded px-2 py-1 mb-1">
-                    → {currentStep.line.trim()}
+              <div className="divide-y divide-[#3c3c3c]">
+                {lintErrors.map((err, i) => (
+                  <div key={i} className="flex items-start gap-3 px-3 py-2">
+                    <span className={`text-xs font-mono shrink-0 mt-0.5 ${err.severity === "error" ? "text-red-400" : "text-yellow-400"}`}>
+                      Ligne {err.line}
+                    </span>
+                    <span className={`text-xs ${err.severity === "error" ? "text-red-300" : "text-yellow-300"}`}>
+                      {err.message}
+                    </span>
                   </div>
-                  <p className="text-xs text-[#6a9955] italic">{currentStep.explanation}</p>
-                  {currentStep.iteration > 0 && (
-                    <p className="text-xs text-[#dcdcaa] mt-1">Itération de boucle : {currentStep.iteration}</p>
-                  )}
-                </div>
-              )}
+                ))}
+              </div>
             </div>
           )}
 
           {/* Controls */}
-          <div className="flex gap-2 mt-3 flex-wrap">
-            <button onClick={() => run("all")}
-              className="bg-[#04aa6d] text-white px-4 py-1.5 rounded text-sm font-semibold hover:bg-[#088a5b] transition-colors">
+          <div className="flex gap-2 flex-wrap">
+            <button
+              onClick={() => run("all")}
+              disabled={hasErrors}
+              className={`px-4 py-1.5 rounded text-sm font-semibold transition-colors ${
+                hasErrors
+                  ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                  : "bg-[#04aa6d] text-white hover:bg-[#088a5b]"
+              }`}
+              title={hasErrors ? "Corrigez les erreurs avant d'exécuter" : ""}
+            >
               ▶ Exécuter
             </button>
-            <button onClick={() => run("step")}
-              className="border border-[#04aa6d] text-[#04aa6d] px-4 py-1.5 rounded text-sm font-semibold hover:bg-green-50 transition-colors">
+            <button
+              onClick={() => run("step")}
+              disabled={hasErrors}
+              className={`px-4 py-1.5 rounded text-sm font-semibold border transition-colors ${
+                hasErrors
+                  ? "border-gray-300 text-gray-400 cursor-not-allowed"
+                  : "border-[#04aa6d] text-[#04aa6d] hover:bg-green-50"
+              }`}
+            >
               ▷ Pas à Pas
             </button>
+
             {mode === "step" && steps.length > 0 && (
               <>
-                <button onClick={() => setStepIdx(i => Math.max(0, i - 1))}
-                  className="px-3 py-1.5 rounded text-sm border border-gray-300 hover:bg-gray-100 disabled:opacity-40"
-                  disabled={stepIdx === 0} title="Étape précédente">⏮</button>
-                <span className="text-xs text-gray-500 self-center whitespace-nowrap">
-                  {stepIdx + 1}/{steps.length}
-                </span>
-                <button onClick={() => setStepIdx(i => Math.min(steps.length - 1, i + 1))}
-                  className="px-3 py-1.5 rounded text-sm border border-gray-300 hover:bg-gray-100 disabled:opacity-40"
-                  disabled={stepIdx === steps.length - 1} title="Étape suivante">⏭</button>
-                {breakpoints.size > 0 && (
-                  <button onClick={runToBreakpoint}
-                    className="px-3 py-1.5 rounded text-sm border border-red-400 text-red-600 hover:bg-red-50 transition-colors"
-                    title="Avancer jusqu'au prochain breakpoint">
-                    ⏩ Breakpoint
-                  </button>
-                )}
+                <button onClick={() => setStepIdx(i => Math.max(0, i - 1))} disabled={stepIdx === 0}
+                  className="px-3 py-1.5 rounded text-sm border border-gray-300 hover:bg-gray-100 disabled:opacity-40">⏮</button>
+                <span className="text-xs text-gray-500 self-center">{stepIdx + 1}/{steps.length}</span>
+                <button onClick={() => setStepIdx(i => Math.min(steps.length - 1, i + 1))} disabled={stepIdx === steps.length - 1}
+                  className="px-3 py-1.5 rounded text-sm border border-gray-300 hover:bg-gray-100 disabled:opacity-40">⏭</button>
               </>
             )}
+
             {mode !== "idle" && (
-              <button onClick={reset}
-                className="px-3 py-1.5 rounded text-sm border border-gray-300 hover:bg-gray-100 text-gray-600">
+              <button onClick={reset} className="px-3 py-1.5 rounded text-sm border border-gray-300 hover:bg-gray-100 text-gray-600">
                 ↺ Reset
               </button>
             )}
           </div>
 
-          {error && (
-            <div className="mt-3 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded flex items-start gap-2">
-              <span>⚠</span><span>{error}</span>
-            </div>
-          )}
-
           {/* Syntax reference */}
-          <div className="mt-4 border border-[#3c3c3c] rounded p-3 bg-[#1e1e1e]">
-            <p className="text-xs font-bold text-[#858585] mb-2 uppercase">Syntaxe supportée</p>
+          <div className="border border-[#3c3c3c] rounded p-3 bg-[#1e1e1e]">
+            <p className="text-xs font-bold text-[#858585] mb-2 uppercase">Syntaxe</p>
             <pre className="text-xs leading-relaxed">
-              <span className="text-[#9cdcfe]">variable</span>
-              <span className="text-[#569cd6]"> &lt;- </span>
-              <span className="text-[#d4d4d4]">expression</span>
-              <span className="text-[#6a9955]">   // affectation{"\n"}</span>
-              <span className="text-[#dcdcaa]">Ecrire</span>
-              <span className="text-[#d4d4d4]">(variable)     </span>
-              <span className="text-[#6a9955]">// affichage{"\n"}</span>
-              <span className="text-[#c586c0]">Pour </span>
-              <span className="text-[#9cdcfe]">i </span>
-              <span className="text-[#569cd6]">&lt;- </span>
-              <span className="text-[#b5cea8]">1 </span>
-              <span className="text-[#c586c0]">à </span>
-              <span className="text-[#9cdcfe]">n</span>
-              <span className="text-[#6a9955]">    // boucle POUR{"\n"}</span>
-              <span className="text-[#c586c0]">FinPour{"\n"}</span>
-              <span className="text-[#c586c0]">TantQue </span>
-              <span className="text-[#d4d4d4]">condition </span>
-              <span className="text-[#c586c0]">Faire{"\n"}</span>
-              <span className="text-[#c586c0]">FinTantQue{"\n"}</span>
-              <span className="text-[#c586c0]">Si </span>
-              <span className="text-[#d4d4d4]">condition </span>
-              <span className="text-[#c586c0]">Alors </span>
-              <span className="text-[#569cd6]">/ </span>
-              <span className="text-[#c586c0]">Sinon </span>
-              <span className="text-[#569cd6]">/ </span>
-              <span className="text-[#c586c0]">FinSi{"\n"}</span>
-              <span className="text-[#6a9955]">Opérateurs : + - * / mod{"\n"}</span>
-              <span className="text-[#6a9955]">Comparateurs : {">"} {"<"} {"<="} {">="} = !={"\n"}</span>
-              <span className="text-[#6a9955]">// commentaire sur une ligne</span>
+              <span className="text-[#9cdcfe]">variable</span><span className="text-[#569cd6]"> &lt;- </span><span className="text-[#d4d4d4]">expression     </span><span className="text-[#6a9955]">// affectation{"\n"}</span>
+              <span className="text-[#dcdcaa]">Ecrire</span><span className="text-[#d4d4d4]">(x)            </span><span className="text-[#6a9955]">// affichage{"\n"}</span>
+              <span className="text-[#c586c0]">Pour </span><span className="text-[#9cdcfe]">i</span><span className="text-[#569cd6]"> &lt;- </span><span className="text-[#b5cea8]">1 </span><span className="text-[#c586c0]">à </span><span className="text-[#9cdcfe]">n  </span><span className="text-[#6a9955]">/ </span><span className="text-[#c586c0]">FinPour{"\n"}</span>
+              <span className="text-[#c586c0]">TantQue </span><span className="text-[#d4d4d4]">cond </span><span className="text-[#c586c0]">Faire  </span><span className="text-[#6a9955]">/ </span><span className="text-[#c586c0]">FinTantQue{"\n"}</span>
+              <span className="text-[#c586c0]">Si </span><span className="text-[#d4d4d4]">cond </span><span className="text-[#c586c0]">Alors </span><span className="text-[#6a9955]">/ </span><span className="text-[#c586c0]">Sinon </span><span className="text-[#6a9955]">/ </span><span className="text-[#c586c0]">FinSi{"\n"}</span>
+              <span className="text-[#6a9955]">Opérateurs : + - * /   Comparateurs : {">"} {"<"} {"<="} {">="} = !=</span>
             </pre>
           </div>
         </div>
 
-        {/* ── Right panel : step visualization ── */}
+        {/* ── Right : execution panel ── */}
         <div>
           {currentStep ? (
             <div className="space-y-3">
-              {/* Current line highlight */}
+              {/* Current line */}
               <div>
                 <p className="text-xs font-semibold text-gray-500 mb-1">LIGNE EN COURS :</p>
-                <div className="bg-[#264f78] border border-[#4a8fb5] rounded px-3 py-2 font-mono text-sm">
+                <div className="bg-[#264f78] border border-[#4a8fb5] rounded px-3 py-2 font-mono text-sm flex items-center gap-2">
+                  <span className="text-[#858585] text-xs">{currentHighlightLine}</span>
+                  <span className="text-[#3c3c3c]">│</span>
                   {highlightLine(currentStep.line.trim())}
                 </div>
                 <p className="text-xs text-gray-600 mt-1 italic">→ {currentStep.explanation}</p>
               </div>
 
-              {/* Memory table */}
+              {/* Memory */}
               <div>
                 <p className="text-xs font-semibold text-gray-500 mb-1">
-                  MÉMOIRE DES VARIABLES {mode === "step" ? `(étape ${stepIdx + 1})` : "(final)"} :
+                  MÉMOIRE {mode === "step" ? `(étape ${stepIdx + 1})` : "(final)"} :
                 </p>
                 {Object.keys(currentStep.vars).length === 0 ? (
                   <p className="text-xs text-gray-400 italic">Aucune variable encore</p>
                 ) : (
                   <table className="data-table text-sm w-full">
-                    <thead>
-                      <tr><th>Variable</th><th>Valeur</th><th>Type</th></tr>
-                    </thead>
+                    <thead><tr><th>Variable</th><th>Valeur</th><th>Type</th></tr></thead>
                     <tbody>
                       {Object.entries(currentStep.vars).map(([k, v]) => (
                         <tr key={k}>
                           <td className="font-mono font-bold text-[#9cdcfe] bg-[#1e1e1e]">{k}</td>
                           <td className="font-mono font-bold text-blue-700">{String(v)}</td>
-                          <td className="text-gray-500 text-xs">
-                            {typeof v === "number" ? (Number.isInteger(v) ? "Entier" : "Réel") : "Chaîne"}
-                          </td>
+                          <td className="text-gray-500 text-xs">{typeof v === "number" ? (Number.isInteger(v) ? "Entier" : "Réel") : "Chaîne"}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -699,40 +626,37 @@ export default function AlgoSimulator() {
             </div>
           ) : (
             <div className="border border-dashed border-gray-300 rounded p-8 text-center text-gray-400">
-              <p className="text-2xl mb-2">🖥️</p>
-              <p className="text-sm">Cliquez sur <strong>Exécuter</strong> ou <strong>Pas à Pas</strong></p>
-              <p className="text-xs mt-1">pour voir la simulation</p>
+              <p className="text-3xl mb-2">🖥️</p>
+              <p className="text-sm font-medium">
+                {hasErrors ? "Corrigez les erreurs pour exécuter" : "Cliquez sur Exécuter ou Pas à Pas"}
+              </p>
+              <p className="text-xs mt-1 text-gray-400">
+                {hasErrors ? `${lintErrors.filter(e => e.severity === "error").length} erreur(s) détectée(s)` : "pour voir la simulation"}
+              </p>
             </div>
           )}
         </div>
       </div>
 
-      {/* History table */}
+      {/* History */}
       {displayedSteps.length > 0 && (
         <div>
-          <p className="text-xs font-semibold text-gray-500 mb-2">
-            HISTORIQUE DES ÉTAPES ({displayedSteps.length}/{steps.length}) :
-          </p>
+          <p className="text-xs font-semibold text-gray-500 mb-2">HISTORIQUE ({displayedSteps.length}/{steps.length}) :</p>
           <div className="border border-gray-200 rounded overflow-hidden">
-            <div className="max-h-56 overflow-y-auto">
+            <div className="max-h-52 overflow-y-auto">
               <table className="data-table text-xs w-full">
                 <thead className="sticky top-0">
-                  <tr>
-                    <th className="w-8">#</th>
-                    <th>Ligne exécutée</th>
-                    <th>Explication</th>
-                    <th>Variables clés</th>
-                  </tr>
+                  <tr><th className="w-8">#</th><th>Ligne</th><th>Action</th><th>Variables</th></tr>
                 </thead>
                 <tbody>
                   {displayedSteps.map((s, i) => (
                     <tr key={i}
-                      className={`cursor-pointer transition-colors ${i === stepIdx ? "bg-yellow-100" : "hover:bg-gray-50"}`}
-                      onClick={() => { setStepIdx(i); setMode("step"); setActiveTab("debug"); }}>
-                      <td className="font-bold text-gray-500">{i + 1}</td>
-                      <td><code className="font-mono">{s.line.trim()}</code></td>
+                      className={`cursor-pointer ${i === stepIdx ? "bg-yellow-100" : "hover:bg-gray-50"}`}
+                      onClick={() => { setStepIdx(i); setMode("step"); }}>
+                      <td className="font-bold text-gray-400">{i + 1}</td>
+                      <td><code className="font-mono text-xs">{s.line.trim()}</code></td>
                       <td className="text-gray-600">{s.explanation}</td>
-                      <td className="font-mono text-blue-700">
+                      <td className="font-mono text-blue-700 text-xs">
                         {Object.entries(s.vars).slice(0, 3).map(([k, v]) => `${k}=${v}`).join(", ")}
                         {Object.keys(s.vars).length > 3 ? "…" : ""}
                       </td>
@@ -745,15 +669,15 @@ export default function AlgoSimulator() {
         </div>
       )}
 
-      {/* Logical explanation */}
+      {/* Explanation */}
       {steps.length > 0 && (
         <div className="bg-blue-50 border border-blue-200 rounded p-4">
           <p className="font-bold text-sm mb-1">💡 Explication logique</p>
           <p className="text-sm text-gray-700">{generateExplanation()}</p>
           {finalOutput.length > 0 && (
             <div className="mt-2">
-              <p className="text-xs font-semibold text-gray-500">RÉSULTAT FINAL :</p>
-              <div className="bg-[#1e1e1e] rounded p-2 font-mono text-sm mt-1 border border-[#3c3c3c]">
+              <p className="text-xs font-semibold text-gray-500 mb-1">RÉSULTAT FINAL :</p>
+              <div className="bg-[#1e1e1e] rounded p-2 font-mono text-sm border border-[#3c3c3c]">
                 {finalOutput.map((o, i) => (
                   <div key={i} className="flex gap-2">
                     <span className="text-[#569cd6]">›</span>
@@ -764,9 +688,7 @@ export default function AlgoSimulator() {
             </div>
           )}
           <p className="text-xs text-gray-500 mt-2">
-            Total : <strong>{steps.length} étapes</strong> •{" "}
-            <strong>{Object.keys(steps[steps.length - 1]?.vars ?? {}).length} variables</strong> •{" "}
-            <strong>{finalOutput.length} sortie(s)</strong>
+            <strong>{steps.length} étapes</strong> · <strong>{Object.keys(steps[steps.length - 1]?.vars ?? {}).length} variables</strong> · <strong>{finalOutput.length} sortie(s)</strong>
           </p>
         </div>
       )}
